@@ -27,7 +27,7 @@ jobs:
             docker-entrypoint.sh
             workflows/
             .env.example
-          target: /var/www/n8n-location
+          target: /var/www/n8n-location.dibodev.fr
           overwrite: true
 
       - name: 🐳 Deploy n8n with Docker Compose
@@ -40,7 +40,7 @@ jobs:
           script: |
             set -e
 
-            cd /var/www/n8n-location
+            cd /var/www/n8n-location.dibodev.fr
 
             # Installer Docker si nécessaire
             if ! command -v docker &> /dev/null; then
