@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "docker-compose.yml,docker-entrypoint.sh,workflows/,.env.example"
-          target: /var/www/n8n-location.dibodev.fr
+          target: /var/www/n8n-location.dibodev.fr/html
           overwrite: true
 
       - name: 🐳 Deploy n8n with Docker Compose
@@ -38,7 +38,7 @@ jobs:
           script: |
             set -e
 
-            cd /var/www/n8n-location.dibodev.fr
+            cd /var/www/n8n-location.dibodev.fr/html
 
             # Installer Docker si nécessaire
             if ! command -v docker &> /dev/null; then
