@@ -10,6 +10,8 @@ jobs:
   deploy-n8n:
     name: 📦 Build & Deploy n8n
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: 📥 Checkout repository
@@ -22,11 +24,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: |
-            docker-compose.yml
-            docker-entrypoint.sh
-            workflows/
-            .env.example
+          source: "docker-compose.yml,docker-entrypoint.sh,workflows/,.env.example"
           target: /var/www/n8n-location.dibodev.fr
           overwrite: true
 
