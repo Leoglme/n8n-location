@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-location
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    env_file:
+      - .env
+    environment:
+      # Sécurité basique pour l'UI n8n
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=change_me
+
+      # Configuration serveur
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_HOST=localhost
+      - N8N_EDITOR_BASE_URL=http://localhost:5678
+      - N8N_API_BASE_URL=http://localhost:5678
+
+      # Timezone (pour les Cron)
+      - GENERIC_TIMEZONE=Europe/Paris
+
+      # Clé d'encryption (prioritaire sur .env si définie ici)
+      - N8N_ENCRYPTION_KEY=define_une_cle_longue_ici
+
+      # Injection de la clé Groq dans le credential HTTP Header Auth (nom "Authorization", valeur "Bearer <GROQ_API_KEY>")
+      # Remplace la valeur du credential utilisé par le node "Groq - Générer message" si GROQ_API_KEY est défini dans .env
+      - "CREDENTIALS_OVERWRITE_DATA={\"httpHeaderAuth\":{\"name\":\"Authorization\",\"value\":\"Bearer ${GROQ_API_KEY}\"}}"
+
+    volumes:
+      # Persistance (volume Docker nommé : workflows, credentials, exécutions)
+      - n8n_data:/home/node/.n8n
+      # Workflow(s) à importer automatiquement au premier démarrage
+      - ./workflows:/workflows:ro
+      # Script d'entrée pour import auto au premier lancement
+      - ./docker-entrypoint.sh:/docker-entrypoint.sh:ro
+
+    entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
+
+    # Optionnel : si tu veux fixer l'UID/GID
+    # user: "1000:1000"
+
+volumes:
+  n8n_data:
+
+networks:
+  default:
+    name: n8n-location-network

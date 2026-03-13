@@ -1,0 +1,67 @@
+name: 🚀 Deploy n8n to VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy-n8n:
+    name: 📦 Build & Deploy n8n
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📤 Sync project files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: |
+            docker-compose.yml
+            docker-entrypoint.sh
+            workflows/
+            .env.example
+          target: /var/www/n8n-location
+          overwrite: true
+
+      - name: 🐳 Deploy n8n with Docker Compose
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+
+            cd /var/www/n8n-location
+
+            # Installer Docker si nécessaire
+            if ! command -v docker &> /dev/null; then
+              echo "Docker non installé, installation..."
+              curl -fsSL https://get.docker.com | sh
+              sudo usermod -aG docker $USER || true
+            fi
+
+            # Vérifier docker compose (plugin)
+            if ! docker compose version &> /dev/null; then
+              echo "⚠️ docker compose (plugin) non disponible. Vérifie l'installation Docker si ça échoue."
+            fi
+
+            # Créer .env si absent (à éditer ensuite sur le VPS)
+            if [ ! -f .env ]; then
+              cp .env.example .env
+              echo "Fichier .env créé à partir de .env.example (pense à le remplir sur le VPS)."
+            fi
+
+            # Mettre à jour l'image et redémarrer n8n
+            docker compose pull n8n || true
+            docker compose up -d n8n
+
+            docker compose ps

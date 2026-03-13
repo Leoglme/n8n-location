@@ -1,0 +1,311 @@
+{
+  "id": "recherche-appart-rennes-workflow",
+  "name": "Recherche Appart Rennes T2/T3",
+  "nodes": [
+    {
+      "id": "schedule-trigger",
+      "name": "Cron - Vérif annonces",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [280, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsBetweenTriggers": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "config-node",
+      "name": "Config critères (défaut)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [520, 300],
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            { "id": "surface_min_m2", "name": "surface_min_m2", "value": 35, "type": "number" },
+            { "id": "surface_max_m2", "name": "surface_max_m2", "value": 75, "type": "number" },
+            { "id": "prix_max_cc", "name": "prix_max_cc", "value": 750, "type": "number" },
+            { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
+            { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
+            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\"]", "type": "string" },
+            { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
+            { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bienici-http",
+      "name": "Bienici - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [780, 220],
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.bienici.com/realEstateAds.json?filters=%7B%22size%22%3A24%2C%22from%22%3A0%2C%22filterType%22%3A%22rent%22%2C%22propertyType%22%3A%5B%22flat%22%5D%2C%22maxPrice%22%3A750%2C%22minRooms%22%3A2%2C%22maxRooms%22%3A3%2C%22minArea%22%3A35%2C%22page%22%3A1%2C%22sortBy%22%3A%22relevance%22%2C%22sortOrder%22%3A%22desc%22%2C%22onTheMarket%22%3A%5Btrue%5D%2C%22limit%22%3A%22uxpeH~mtI%3FuaYhff%40%3F%3FtaY%22%2C%22newProperty%22%3Afalse%2C%22blurInfoType%22%3A%5B%22disk%22%2C%22exact%22%5D%2C%22zoneIdsByTypes%22%3A%7B%22zoneIds%22%3A%5B%22-145996%22%5D%7D%7D&extensionType=extendedIfNoResult&id=69ac364ff3e55c00b4185c9f",
+        "options": {}
+      }
+    },
+    {
+      "id": "bienici-transform",
+      "name": "Bienici - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 220],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const item = $input.first();\nconst body = item.json.realEstateAds ?? item.json.body?.realEstateAds ?? item.json;\nconst ads = Array.isArray(body) ? body : (body.realEstateAds || []);\nreturn ads.map(ad => ({\n  json: {\n    source: 'bienici',\n    id_site: ad.id || '',\n    titre: ad.title || '',\n    description: (ad.description || '').replace(/<[^>]+>/g, ' ').trim().slice(0, 500),\n    ville: ad.city || ad.district?.name || '',\n    quartier: ad.district?.libelle || ad.district?.name || '',\n    adresse: '',\n    pieces: ad.roomsQuantity ?? null,\n    surface_m2: ad.surfaceArea ?? null,\n    loyer_cc: (ad.price || 0) + (ad.charges || 0),\n    charges: ad.charges ?? null,\n    meuble: ad.isFurnished ?? null,\n    url: `https://www.bienici.com/annonce/location/${(ad.city || '').toLowerCase().replace(/\\s+/g, '-')}-${ad.postalCode || ''}/${ad.id || ''}`,\n    date_publication: ad.publicationDate || null\n  }\n}));"
+      }
+    },
+    {
+      "id": "other-sites-http",
+      "name": "Autres sites (placeholder)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [780, 400],
+      "parameters": {}
+    },
+    {
+      "id": "merge-branches",
+      "name": "Fusionner branches",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [980, 300],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "normalize-node",
+      "name": "Normaliser annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1180, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const allItems = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const html = (j.data != null && typeof j.data === 'string') ? j.data : (j.body != null && typeof j.body === 'string') ? j.body : '';\n  let source = j.source || '';\n  if (html && !source) {\n    if (/bienici\\.com|bien'ici/i.test(html)) source = 'bienici';\n    else if (/seloger/i.test(html)) source = 'seloger';\n    else source = 'inconnu';\n  }\n  if (html && !j.titre && !j.loyer_cc && !j.surface_m2) {\n    continue;\n  }\n  allItems.push({\n    json: {\n      source: source || 'inconnu',\n      id_site: j.id_site || '',\n      titre: j.titre || '',\n      description: j.description || '',\n      ville: j.ville || '',\n      quartier: j.quartier || '',\n      adresse: j.adresse || '',\n      pieces: j.pieces ?? null,\n      surface_m2: j.surface_m2 ?? null,\n      loyer_cc: j.loyer_cc ?? null,\n      charges: j.charges ?? null,\n      meuble: j.meuble ?? null,\n      url: j.url || '',\n      date_publication: j.date_publication ?? null\n    }\n  });\n}\nreturn allItems;"
+      }
+    },
+    {
+      "id": "filter-node",
+      "name": "Filtrer selon critères",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1380, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction matchVille(item) {\n  const ville = (item.ville || '').toLowerCase();\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCibles = JSON.parse(cfg.villes_cibles || '[]').map(v => v.toLowerCase());\n  if (villesCibles.includes(ville)) return true;\n  if (ville === (cfg.ville_speciale || '').toLowerCase()) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
+      }
+    },
+    {
+      "id": "id-global-node",
+      "name": "Construire id_global",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1580, 300],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "function normalize(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[^a-z0-9 ]/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nconst j = $input.item.json;\nconst keyBase = [\n  normalize(j.ville),\n  normalize(j.quartier),\n  normalize(j.titre),\n  String(j.surface_m2 || ''),\n  String(j.loyer_cc || '')\n].join('|');\nlet hash = 0;\nfor (let i = 0; i < keyBase.length; i++) {\n  hash = ((hash << 5) - hash) + keyBase.charCodeAt(i);\n  hash |= 0;\n}\nj.id_global = 'a_' + Math.abs(hash);\nj._isAnnonce = true;\nreturn { json: j };"
+      }
+    },
+    {
+      "id": "limit-one",
+      "name": "Prendre 1 pour GS",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1720, 380],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const items = $input.all();\nreturn items.length ? [items[0]] : [];"
+      }
+    },
+    {
+      "id": "sheets-read-all",
+      "name": "GS - Lire toutes les lignes",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1840, 380],
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "Feuille 1", "mode": "name" }
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "", "name": "Google Sheets" } }
+    },
+    {
+      "id": "merge-doublons",
+      "name": "Merge annonces + sheet",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1780, 300],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "filter-doublons-code",
+      "name": "Filtrer doublons",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1980, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const all = $input.all();\nconst annonces = all.filter(i => i.json._isAnnonce === true);\nconst sheetRows = all.filter(i => i.json._isAnnonce !== true);\nfunction getId(row) {\n  const j = row.json;\n  const key = Object.keys(j).find(k => k.trim().toLowerCase() === 'id_global');\n  return String(key ? j[key] : j.id_global || '').trim();\n}\nconst existingIds = new Set(sheetRows.map(r => getId(r)));\nconst kept = annonces.filter(a => !existingIds.has(getId(a)));\nreturn kept.map(a => {\n  const j = { ...a.json };\n  delete j._isAnnonce;\n  return { json: j };\n});"
+      }
+    },
+    {
+      "id": "sheets-append",
+      "name": "GS - Enregistrer annonces",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [2180, 180],
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "Feuille 1", "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_global": "={{ $json.id_global }}",
+            "id_site": "={{ $json.id_site }}",
+            "source": "={{ $json.source }}",
+            "titre": "={{ $json.titre }}",
+            "description": "={{ $json.description }}",
+            "ville": "={{ $json.ville }}",
+            "quartier": "={{ $json.quartier }}",
+            "adresse": "={{ $json.adresse }}",
+            "pieces": "={{ $json.pieces }}",
+            "surface_m2": "={{ $json.surface_m2 }}",
+            "loyer_cc": "={{ $json.loyer_cc }}",
+            "charges": "={{ $json.charges }}",
+            "meuble": "={{ $json.meuble }}",
+            "url": "={{ $json.url }}",
+            "date_publication": "={{ $json.date_publication }}",
+            "date_detection": "={{ $now.toISO() }}",
+            "statut": "nouveau"
+          }
+        }
+      },
+      "credentials": { "googleSheetsOAuth2Api": { "id": "", "name": "Google Sheets" } }
+    },
+    {
+      "id": "groq-http",
+      "name": "Groq - Générer message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2180, 340],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.GROQ_API_KEY }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"Tu rédiges des messages courts pour Telegram à partir d'annonces immobilières.\" },\n    { \"role\": \"user\", \"content\": \"Résumé 3-4 lignes en français. Inclure type (T2/T3), ville/quartier, surface, prix CC et lien.\\nTitre: {{ $json.titre }}\\nVille: {{ $json.ville }} {{ $json.quartier }}\\nSurface: {{ $json.surface_m2 }} m², Loyer: {{ $json.loyer_cc }} €/mois CC\\nURL: {{ $json.url }}\" }\n  ]\n}",
+        "options": {}
+      }
+    },
+    {
+      "id": "extract-message-node",
+      "name": "Extraire texte Groq",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2380, 340],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const res = $input.item.json;\nconst choice = (res.choices && res.choices[0]) || {};\nconst msg = (choice.message && choice.message.content) || '';\nconst prev = $('Filtrer doublons').item.json;\nreturn { json: { ...prev, message_telegram: msg || 'Nouvelle annonce' } };"
+      }
+    },
+    {
+      "id": "telegram-node",
+      "name": "Telegram - Envoyer message",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [2580, 340],
+      "parameters": {
+        "chatId": { "__rl": true, "value": "", "mode": "id" },
+        "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}"
+      },
+      "credentials": { "telegramApi": { "id": "", "name": "Telegram" } }
+    }
+  ],
+  "connections": {
+    "Cron - Vérif annonces": {
+      "main": [[{ "node": "Config critères (défaut)", "type": "main", "index": 0 }]]
+    },
+    "Config critères (défaut)": {
+      "main": [[
+        { "node": "Bienici - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Autres sites (placeholder)", "type": "main", "index": 0 }
+      ]]
+    },
+    "Bienici - Récup annonces": {
+      "main": [[{ "node": "Bienici - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Bienici - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches", "type": "main", "index": 0 }]]
+    },
+    "Autres sites (placeholder)": {
+      "main": [[{ "node": "Fusionner branches", "type": "main", "index": 1 }]]
+    },
+    "Fusionner branches": {
+      "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
+    },
+    "Normaliser annonces": {
+      "main": [[{ "node": "Filtrer selon critères", "type": "main", "index": 0 }]]
+    },
+    "Filtrer selon critères": {
+      "main": [[{ "node": "Construire id_global", "type": "main", "index": 0 }]]
+    },
+    "Construire id_global": {
+      "main": [
+        [{ "node": "Merge annonces + sheet", "type": "main", "index": 0 }],
+        [{ "node": "Prendre 1 pour GS", "type": "main", "index": 0 }]
+      ]
+    },
+    "Prendre 1 pour GS": {
+      "main": [[{ "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }]]
+    },
+    "GS - Lire toutes les lignes": {
+      "main": [[{ "node": "Merge annonces + sheet", "type": "main", "index": 1 }]]
+    },
+    "Merge annonces + sheet": {
+      "main": [[{ "node": "Filtrer doublons", "type": "main", "index": 0 }]]
+    },
+    "Filtrer doublons": {
+      "main": [[
+        { "node": "GS - Enregistrer annonces", "type": "main", "index": 0 },
+        { "node": "Groq - Générer message", "type": "main", "index": 0 }
+      ]]
+    },
+    "Groq - Générer message": {
+      "main": [[{ "node": "Extraire texte Groq", "type": "main", "index": 0 }]]
+    },
+    "Extraire texte Groq": {
+      "main": [[{ "node": "Telegram - Envoyer message", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "timezone": "Europe/Paris" },
+  "meta": { "templateCredsSetupCompleted": false }
+}
