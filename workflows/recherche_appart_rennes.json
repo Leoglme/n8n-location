@@ -7,7 +7,7 @@
       "name": "Cron - Vérif annonces",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [280, 300],
+      "position": [300, 400],
       "parameters": {
         "rule": {
           "interval": [
@@ -24,7 +24,7 @@
       "name": "Config critères (défaut)",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [520, 300],
+      "position": [620, 400],
       "parameters": {
         "mode": "manual",
         "duplicateItem": false,
@@ -35,7 +35,7 @@
             { "id": "prix_max_cc", "name": "prix_max_cc", "value": 700, "type": "number" },
             { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
             { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
-            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\"]", "type": "string" },
+            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\"]", "type": "string" },
             { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
             { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" },
             { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
@@ -48,7 +48,7 @@
       "name": "Bienici - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [780, 220],
+      "position": [940, 180],
       "parameters": {
         "method": "GET",
         "url": "={{ 'https://www.bienici.com/realEstateAds.json?filters=' + encodeURIComponent(JSON.stringify({ size: 24, from: 0, filterType: 'rent', propertyType: ['house','flat'], maxPrice: $('Config critères (défaut)').first().json.prix_max_cc, minRooms: $('Config critères (défaut)').first().json.pieces_min, maxRooms: $('Config critères (défaut)').first().json.pieces_max, minArea: $('Config critères (défaut)').first().json.surface_min_m2, maxArea: $('Config critères (défaut)').first().json.surface_max_m2, page: 1, sortBy: 'relevance', sortOrder: 'desc', onTheMarket: [true], mapMode: 'enabled', newProperty: false, blurInfoType: ['disk','exact'], zoneIdsByTypes: { zoneIds: ($('Config critères (défaut)').first().json.zone_ids_bienici || '-145996,-29339,-78150,-75588,-54517').split(',').map(z => z.trim()).filter(Boolean) } })) + '&extensionType=extendedIfNoResult&enableGoogleStructuredDataAggregates=true&leadingCount=2&id=69ac364ff3e55c00b4185c9f' }}",
@@ -60,7 +60,7 @@
       "name": "Bienici - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [900, 220],
+      "position": [1260, 180],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -72,7 +72,7 @@
       "name": "Trente Cinq Notaires - Récup HTML",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [780, 400],
+      "position": [940, 400],
       "parameters": {
         "method": "GET",
         "url": "https://www.trente-cinq-notaires.fr/recherche-annonces-immobilieres-notaires-bruz.html",
@@ -84,7 +84,7 @@
       "name": "Trente Cinq Notaires - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [900, 400],
+      "position": [1260, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -92,11 +92,49 @@
       }
     },
     {
+      "id": "actionlogement-http",
+      "name": "Action Logement - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 620],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.logement-actionlogement.fr/api/v1/demands/public/offers-overview?size=20&page=0",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { municipalities: [{ code: '35238', postcode: '35000' }], searchRadiusInKm: 50, maxRent: $('Config critères (défaut)').first().json.prix_max_cc, typologyCodes: ['T2','T3'], productGuids: ['712f4424-7590-4912-8ed8-f192b26557f8'] } }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "actionlogement-transform",
+      "name": "Action Logement - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 620],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE_URL = 'https://logement-actionlogement.fr/search/detail/';\nconst item = $input.first();\nconst body = item.json?.data ?? item.json;\nconst data = Array.isArray(body) ? body : (body?.data || []);\nconst typoToPieces = { 'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4, 'T5': 5 };\nreturn data.map(o => {\n  const lodg = o.lodging || {};\n  const muni = lodg.municipality || {};\n  const typo = lodg.lodgingTypology || {};\n  const pieces = typoToPieces[typo.code] ?? null;\n  const desc = (lodg.description || o.description || '').replace(/\\s+/g, ' ').trim().slice(0, 500);\n  return {\n    json: {\n      source: 'actionlogement',\n      id_site: String(o.reference || o.id || ''),\n      titre: [typo.commercialLabel || typo.label, muni.name].filter(Boolean).join(' - ') || 'Annonce ' + (o.reference || o.id),\n      description: desc,\n      ville: muni.name || '',\n      quartier: (o.residency && o.residency.name) || '',\n      adresse: (o.residency && o.residency.name) || '',\n      pieces,\n      surface_m2: lodg.area ?? null,\n      loyer_cc: o.totalRentAmountBaseBound ?? null,\n      charges: o.estimatedExternalCharges ?? null,\n      meuble: null,\n      url: o.guid ? BASE_URL + o.guid : '',\n      date_publication: o.startDateOfPublication ?? null\n    }\n  };\n});"
+      }
+    },
+    {
       "id": "merge-branches",
       "name": "Fusionner branches",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [980, 300],
+      "position": [1580, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "merge-branches-2",
+      "name": "Fusionner branches 2",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [1900, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -107,7 +145,7 @@
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1180, 300],
+      "position": [2220, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -119,7 +157,7 @@
       "name": "Filtrer selon critères",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1380, 300],
+      "position": [2540, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -131,7 +169,7 @@
       "name": "Construire id_global",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1580, 300],
+      "position": [2860, 400],
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
@@ -143,7 +181,7 @@
       "name": "GS - Lire toutes les lignes",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [1840, 380],
+      "position": [3180, 620],
       "parameters": {
         "operation": "read",
         "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
@@ -156,7 +194,7 @@
       "name": "Merge annonces + sheet",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [1780, 300],
+      "position": [3180, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -167,7 +205,7 @@
       "name": "Filtrer doublons",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1980, 300],
+      "position": [3500, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -179,7 +217,7 @@
       "name": "GS - Enregistrer annonces",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [2180, 180],
+      "position": [3820, 200],
       "parameters": {
         "operation": "append",
         "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
@@ -214,7 +252,7 @@
       "name": "Groq - Générer message",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [2180, 340],
+      "position": [3820, 400],
       "parameters": {
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
@@ -232,7 +270,7 @@
       "name": "Extraire texte Groq",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [2380, 340],
+      "position": [4140, 400],
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
@@ -244,7 +282,7 @@
       "name": "Telegram - Envoyer message",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [2580, 340],
+      "position": [4460, 400],
       "parameters": {
         "chatId": "6558659046",
         "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}",
@@ -263,6 +301,7 @@
       "main": [[
         { "node": "Bienici - Récup annonces", "type": "main", "index": 0 },
         { "node": "Trente Cinq Notaires - Récup HTML", "type": "main", "index": 0 },
+        { "node": "Action Logement - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -278,7 +317,16 @@
     "Trente Cinq Notaires - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches", "type": "main", "index": 1 }]]
     },
+    "Action Logement - Récup annonces": {
+      "main": [[{ "node": "Action Logement - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Action Logement - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
+      "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 2": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
