@@ -211,6 +211,48 @@
       }
     },
     {
+      "id": "ouestfrance-http",
+      "name": "Ouest France Immo - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 1200],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.ouestfrance-immo.com/api/annonces/?url=%2Flouer%2Frennes-35-35000%2F&search_key=list-search&limit=24&pieces_min=' + $('Config critères (défaut)').first().json.pieces_min + '&prix_max=' + $('Config critères (défaut)').first().json.prix_max_cc + '&surface_min=' + $('Config critères (défaut)').first().json.surface_min_m2 + '&surface_max=' + $('Config critères (défaut)').first().json.surface_max_m2 + '&meuble=0&colocation=0&rayon=20&idslieu=15818&tra=L&typIds=214%2C216&classifIds=6201%2C6202&tri=date_desc' }}",
+        "options": {},
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Accept", "value": "application/json, text/plain, */*" },
+            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ouestfrance-transform",
+      "name": "Ouest France Immo - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 1200],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.ouestfrance-immo.com';\nconst item = $input.first();\nconst data = item.json?.data ?? [];\nif (!Array.isArray(data)) return [];\nreturn data.map(a => ({\n  json: {\n    source: 'ouestfrance_immo',\n    id_site: String(a.id ?? ''),\n    titre: [a.typ_lib, a.cla_lib].filter(Boolean).join(' - ') || ('Annonce ' + (a.id ?? '')),\n    description: (a.texte || '').replace(/\\s+/g, ' ').trim().slice(0, 500),\n    ville: a.lieu_lib || '',\n    quartier: (a.quartier && a.quartier.libelle) || '',\n    adresse: a.adresse_geoloc || '',\n    pieces: a.nb_pieces ?? null,\n    surface_m2: a.surface ?? null,\n    loyer_cc: a.prix ?? null,\n    charges: a.charges ?? null,\n    meuble: a.meuble === true ? 'oui' : 'non',\n    url: (a.url && a.url.startsWith('http')) ? a.url : (a.url ? BASE + a.url : ''),\n    date_publication: a.date_creation || a.date_deb_aff || null\n  }\n}));"
+      }
+    },
+    {
+      "id": "merge-branches-5",
+      "name": "Fusionner branches 5",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+            "position": [2400, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
@@ -374,6 +416,7 @@
         { "node": "Action Logement - Récup annonces", "type": "main", "index": 0 },
         { "node": "Giboire - Récup annonces", "type": "main", "index": 0 },
         { "node": "Afedim - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Ouest France Immo - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -407,6 +450,12 @@
     "Afedim - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 4", "type": "main", "index": 1 }]]
     },
+    "Ouest France Immo - Récup annonces": {
+      "main": [[{ "node": "Ouest France Immo - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Ouest France Immo - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 5", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -417,6 +466,9 @@
       "main": [[{ "node": "Fusionner branches 4", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 4": {
+      "main": [[{ "node": "Fusionner branches 5", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 5": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
