@@ -73,3 +73,8 @@ jobs:
             docker compose up -d n8n
 
             docker compose ps
+
+            # Ré-importer le workflow depuis le JSON (met à jour le workflow en prod à chaque deploy)
+            echo "Import du workflow depuis workflows/recherche_appart_rennes.json..."
+            sleep 5
+            docker compose exec -T n8n n8n import:workflow --input=/workflows/recherche_appart_rennes.json
