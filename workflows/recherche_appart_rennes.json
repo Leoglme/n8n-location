@@ -37,7 +37,7 @@
             { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
             { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\"]", "type": "string" },
             { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
-            { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" },
+            { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze,St Jacques,Arsenal", "type": "string" },
             { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
           ]
         }
@@ -299,6 +299,48 @@
       }
     },
     {
+      "id": "lafrancaise-http",
+      "name": "La Française Immobilière - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 1560],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.la-francaise-immobiliere.fr/location/?post_types=location&categorie%5B%5D=27&categorie%5B%5D=23&nb_chambres_min=' + Math.max(0, ($('Config critères (défaut)').first().json.pieces_min || 2) - 1) + '&nb_chambres_max=' + Math.max(0, ($('Config critères (défaut)').first().json.pieces_max || 3) - 1) + '&prix_min=0&prix_max=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&submitted=1&o=date-desc&action=load_search_results&wia_6_type=&searchOnMap=0&searchNeighbor=true&wia_1_reference=' }}",
+        "options": { "timeout": 15000 },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" },
+            { "name": "Accept", "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lafrancaise-transform",
+      "name": "La Française Immobilière - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 1560],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nconst out = [];\nconst articleRegex = /<article\\s+id=\"post-(\\d+)\"[^>]*>([\\s\\S]*?)<\\/article>/gi;\nlet m;\nwhile ((m = articleRegex.exec(html)) !== null) {\n  const id_site = (m[1] || '').trim();\n  const block = m[2] || '';\n  const hrefMatch = block.match(/<a[^>]+href=\"(https?:\\/\\/[^\"]+\\/location\\/[^\"]+)\"[^>]*(?:rel=\"bookmark\"|>)/i) || block.match(/href=\"(https?:\\/\\/[^\"]+\\/location\\/[^\"]+)\"/i);\n  const url = (hrefMatch && hrefMatch[1]) ? hrefMatch[1].trim() : '';\n  const titleMatch = block.match(/<h2[^>]*class=\"[^\"]*card-title[^\"]*\"[^>]*>([\\s\\S]*?)<\\/h2>/i);\n  const titre = (titleMatch && titleMatch[1]) ? titleMatch[1].replace(/\\s+/g, ' ').trim() : '';\n  const cityMatch = block.match(/<p class=\"city[^\"]*\"[^>]*>[\\s\\S]*?<span>([^<]+)<\\/span>/i);\n  const cityRaw = (cityMatch && cityMatch[1]) ? cityMatch[1].trim() : '';\n  let ville = cityRaw;\n  let quartier = '';\n  if (cityRaw.indexOf(' / ') >= 0) { const p = cityRaw.split(' / '); ville = (p[0] || '').trim(); const q = (p[1] || '').match(/\\(([^)]+)\\)/); quartier = (q && q[1]) ? q[1].trim() : ''; }\n  const typeMatch = block.match(/<span class=\"type_bien\"[^>]*>[\\s\\S]*?T(\\d+)/i) || block.match(/>\\s*T(\\d+)\\s*</);\n  const pieces = typeMatch ? parseInt(typeMatch[1], 10) : null;\n  const surfaceMatch = block.match(/(\\d+)\\s*&nbsp;m²|(\\d+)\\s*m²/i);\n  const surface_m2 = surfaceMatch ? parseFloat(surfaceMatch[1] || surfaceMatch[2] || 0) : null;\n  const prixMatch = block.match(/<span class=\"prix\"[^>]*>([^<]+)<\\/span>/i);\n  const prixRaw = (prixMatch && prixMatch[1]) ? prixMatch[1].replace(/\\s/g, ' ').replace(/&nbsp;/gi, ' ').trim() : '';\n  const numMatch = prixRaw.match(/\\d+/);\n  const loyer_cc = numMatch ? parseInt(numMatch[0], 10) : null;\n  out.push({\n    json: {\n      source: 'la_francaise_immobiliere',\n      id_site: id_site || url.slice(-12),\n      titre: titre || 'Annonce ' + id_site,\n      description: '',\n      ville: ville,\n      quartier: quartier,\n      adresse: '',\n      pieces: pieces,\n      surface_m2: surface_m2,\n      loyer_cc: loyer_cc,\n      charges: null,\n      meuble: null,\n      url: url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-7",
+      "name": "Fusionner branches 7",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [2790, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
@@ -464,6 +506,7 @@
         { "node": "Afedim - Récup annonces", "type": "main", "index": 0 },
         { "node": "Ouest France Immo - Récup annonces", "type": "main", "index": 0 },
         { "node": "Foncia - Récup annonces", "type": "main", "index": 0 },
+        { "node": "La Française Immobilière - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -509,6 +552,12 @@
     "Foncia - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 6", "type": "main", "index": 1 }]]
     },
+    "La Française Immobilière - Récup annonces": {
+      "main": [[{ "node": "La Française Immobilière - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "La Française Immobilière - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 7", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -525,6 +574,9 @@
       "main": [[{ "node": "Fusionner branches 6", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 6": {
+      "main": [[{ "node": "Fusionner branches 7", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 7": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
