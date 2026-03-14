@@ -35,7 +35,7 @@
             { "id": "prix_max_cc", "name": "prix_max_cc", "value": 700, "type": "number" },
             { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
             { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
-            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\"]", "type": "string" },
+            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\"]", "type": "string" },
             { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
             { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" },
             { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
@@ -119,6 +119,30 @@
       }
     },
     {
+      "id": "giboire-http",
+      "name": "Giboire - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 760],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minB = Math.max(0, (c.pieces_min || 2) - 1); const maxB = Math.max(0, (c.pieces_max || 3) - 1); let beds = ''; for (let i = minB; i <= maxB; i++) beds += '&nbBedrooms%5B%5D=' + i; return 'https://www.giboire.com/recherche-location/appartement_maison/?searchBy=default&address%5B%5D=35&priceMax=' + (c.prix_max_cc || 700) + '&livingSurfaceMin=' + (c.surface_min_m2 || 35) + '&livingSurfaceMax=' + (c.surface_max_m2 || 75) + beds + '&transactionType%5B%5D=Location&searchBy=default'; })() }}",
+        "options": { "timeout": 15000 }
+      }
+    },
+    {
+      "id": "giboire-transform",
+      "name": "Giboire - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 760],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const item = $input.first();\nlet html = item.json?.data ?? item.json?.body ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nconst out = [];\nconst articleRegex = /<article class=\"card card--list-mobile\"\\s+entityid=\"(\\d+)\"[^>]*>([\\s\\S]*?)<\\/article>/gi;\nlet m;\nwhile ((m = articleRegex.exec(html)) !== null) {\n  const id_site = (m[1] || '').trim();\n  const block = m[2] || '';\n  const hrefMatch = block.match(/<a href=\"(https?:\\/\\/[^\"]+)\"[^>]*class=\"card_title[^\"]*\"[^>]*>([^<]*)<\\/a>/i);\n  const url = (hrefMatch && hrefMatch[1]) ? hrefMatch[1].trim() : '';\n  const titre = (hrefMatch && hrefMatch[2]) ? hrefMatch[2].trim() : '';\n  const subtitleMatch = block.match(/<h3 class=\"card_subtitle\">([^<]+)<\\/h3>/);\n  const villeRaw = (subtitleMatch && subtitleMatch[1]) ? subtitleMatch[1].trim() : '';\n  const ville = villeRaw.replace(/\\s*\\(\\s*\\d+\\s*\\)\\s*$/, '').trim();\n  const priceMatch = block.match(/<h4 class=\"card_price\">\\s*([\\d\\s]+)\\s*€/);\n  const loyerStr = priceMatch ? priceMatch[1].replace(/\\s/g, '') : '';\n  const loyer_cc = loyerStr ? parseInt(loyerStr, 10) : null;\n  const surfaceMatch = block.match(/card_info_item\">[^<]*[\\s\\S]*?(\\d+)\\s*m2/);\n  const surface_m2 = surfaceMatch ? parseInt(surfaceMatch[1], 10) : null;\n  const piecesMatch = block.match(/card_info_item\">[^<]*[\\s\\S]*?(\\d+)\\s*chambres/);\n  const piecesRaw = piecesMatch ? parseInt(piecesMatch[1], 10) : null;\n  const pieces = piecesRaw != null ? piecesRaw + 1 : null;\n  const refMatch = block.match(/ref\\.\\s*([\\d\\-]+)/i);\n  const ref = (refMatch && refMatch[1]) ? refMatch[1].trim() : id_site;\n  out.push({\n    json: {\n      source: 'giboire',\n      id_site: ref || id_site,\n      titre: titre || 'Annonce ' + (ref || id_site),\n      description: '',\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
       "id": "merge-branches",
       "name": "Fusionner branches",
       "type": "n8n-nodes-base.merge",
@@ -135,6 +159,17 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [1900, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "merge-branches-3",
+      "name": "Fusionner branches 3",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [2060, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -161,7 +196,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction matchVille(item) {\n  const ville = (item.ville || '').toLowerCase();\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCibles = JSON.parse(cfg.villes_cibles || '[]').map(v => v.toLowerCase());\n  if (villesCibles.includes(ville)) return true;\n  if (ville === (cfg.ville_speciale || '').toLowerCase()) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\u0300-\u036f]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
       }
     },
     {
@@ -302,6 +337,7 @@
         { "node": "Bienici - Récup annonces", "type": "main", "index": 0 },
         { "node": "Trente Cinq Notaires - Récup HTML", "type": "main", "index": 0 },
         { "node": "Action Logement - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Giboire - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -323,10 +359,19 @@
     "Action Logement - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 1 }]]
     },
+    "Giboire - Récup annonces": {
+      "main": [[{ "node": "Giboire - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Giboire - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 3", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 2": {
+      "main": [[{ "node": "Fusionner branches 3", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 3": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
