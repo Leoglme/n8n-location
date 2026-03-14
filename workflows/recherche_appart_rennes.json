@@ -35,7 +35,7 @@
             { "id": "prix_max_cc", "name": "prix_max_cc", "value": 700, "type": "number" },
             { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
             { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
-            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\"]", "type": "string" },
+            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\"]", "type": "string" },
             { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
             { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" },
             { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
@@ -68,12 +68,28 @@
       }
     },
     {
-      "id": "other-sites-http",
-      "name": "Autres sites (placeholder)",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
+      "id": "trentecinq-http",
+      "name": "Trente Cinq Notaires - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [780, 400],
-      "parameters": {}
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.trente-cinq-notaires.fr/recherche-annonces-immobilieres-notaires-bruz.html",
+        "options": { "timeout": 15000 }
+      }
+    },
+    {
+      "id": "trentecinq-transform",
+      "name": "Trente Cinq Notaires - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 400],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.trente-cinq-notaires.fr';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nconst cardBlocks = html.split(/<div class=\"il-card-wrap\">/).slice(1);\nconst out = [];\nfor (const block of cardBlocks) {\n  if (!block.includes('il-card--LOCA') && !/il-card-transaction\">\\s*Location\\s*</.test(block)) continue;\n  const hrefMatch = block.match(/<a href=\"(\\/recherche-annonces-immobilieres-notaires-bruz\\/[^\"]+\\.html)\"\\s+class=\"reset-link\">/);\n  const path = hrefMatch ? hrefMatch[1] : '';\n  const url = path ? BASE + path : '';\n  const localeMatch = block.match(/il-card-locale\">([^<]+)</);\n  const locale = (localeMatch && localeMatch[1]) ? localeMatch[1].trim() : '';\n  const idx = locale.lastIndexOf(' - ');\n  const ville = (idx >= 0 ? locale.slice(0, idx) : locale).trim() || '';\n  const priceMatch = block.match(/Loyer\\s*:\\s*([\\d\\s,]+)/);\n  const loyerStr = priceMatch ? priceMatch[1].replace(/[^\\d,]/g, '').replace(',', '.') : '';\n  const loyer_cc = loyerStr ? parseFloat(loyerStr) : null;\n  const refMatch = block.match(/Réf:\\s*([\\d\\-]+)/);\n  const id_site = (refMatch && refMatch[1]) ? refMatch[1].trim() : '';\n  const surfaceMatch = block.match(/Intérieur[\\s\\S]*?<strong>\\s*([\\d,\\.]+)\\s*m²/);\n  const surfaceStr = surfaceMatch ? surfaceMatch[1].replace(',', '.') : '';\n  const surface_m2 = surfaceStr ? parseFloat(surfaceStr) : null;\n  const piecesMatch = block.match(/<strong>(\\d+)<\\/strong>\\s*<span>Pièces/);\n  const pieces = piecesMatch ? parseInt(piecesMatch[1], 10) : null;\n  const typeMatch = block.match(/il-card-type\">([^<]+)</);\n  const typeBien = (typeMatch && typeMatch[1]) ? typeMatch[1].trim() : '';\n  let description = '';\n  const excerptMatch = block.match(/il-card-excerpt\">\\s*([\\s\\S]*?)<\\/p>/);\n  if (excerptMatch && excerptMatch[1]) {\n    description = excerptMatch[1].replace(/<small>[\\s\\S]*?<\\/small>/, '').replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500);\n  }\n  const titre = [typeBien, ville].filter(Boolean).join(' - ') || 'Annonce ' + id_site;\n  out.push({\n    json: {\n      source: 'trentecinq',\n      id_site,\n      titre,\n      description,\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
     },
     {
       "id": "merge-branches",
@@ -246,7 +262,7 @@
     "Config critères (défaut)": {
       "main": [[
         { "node": "Bienici - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Autres sites (placeholder)", "type": "main", "index": 0 },
+        { "node": "Trente Cinq Notaires - Récup HTML", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -256,7 +272,10 @@
     "Bienici - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches", "type": "main", "index": 0 }]]
     },
-    "Autres sites (placeholder)": {
+    "Trente Cinq Notaires - Récup HTML": {
+      "main": [[{ "node": "Trente Cinq Notaires - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Trente Cinq Notaires - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches", "type": "main", "index": 1 }]]
     },
     "Fusionner branches": {
