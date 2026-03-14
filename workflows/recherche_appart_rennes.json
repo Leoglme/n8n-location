@@ -32,12 +32,13 @@
           "assignments": [
             { "id": "surface_min_m2", "name": "surface_min_m2", "value": 35, "type": "number" },
             { "id": "surface_max_m2", "name": "surface_max_m2", "value": 75, "type": "number" },
-            { "id": "prix_max_cc", "name": "prix_max_cc", "value": 750, "type": "number" },
+            { "id": "prix_max_cc", "name": "prix_max_cc", "value": 700, "type": "number" },
             { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
             { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
             { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\"]", "type": "string" },
             { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
-            { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" }
+            { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze", "type": "string" },
+            { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
           ]
         }
       }
@@ -50,7 +51,7 @@
       "position": [780, 220],
       "parameters": {
         "method": "GET",
-        "url": "https://www.bienici.com/realEstateAds.json?filters=%7B%22size%22%3A24%2C%22from%22%3A0%2C%22filterType%22%3A%22rent%22%2C%22propertyType%22%3A%5B%22flat%22%5D%2C%22maxPrice%22%3A750%2C%22minRooms%22%3A2%2C%22maxRooms%22%3A3%2C%22minArea%22%3A35%2C%22page%22%3A1%2C%22sortBy%22%3A%22relevance%22%2C%22sortOrder%22%3A%22desc%22%2C%22onTheMarket%22%3A%5Btrue%5D%2C%22limit%22%3A%22uxpeH~mtI%3FuaYhff%40%3F%3FtaY%22%2C%22newProperty%22%3Afalse%2C%22blurInfoType%22%3A%5B%22disk%22%2C%22exact%22%5D%2C%22zoneIdsByTypes%22%3A%7B%22zoneIds%22%3A%5B%22-145996%22%5D%7D%7D&extensionType=extendedIfNoResult&id=69ac364ff3e55c00b4185c9f",
+        "url": "={{ 'https://www.bienici.com/realEstateAds.json?filters=' + encodeURIComponent(JSON.stringify({ size: 24, from: 0, filterType: 'rent', propertyType: ['house','flat'], maxPrice: $('Config critères (défaut)').first().json.prix_max_cc, minRooms: $('Config critères (défaut)').first().json.pieces_min, maxRooms: $('Config critères (défaut)').first().json.pieces_max, minArea: $('Config critères (défaut)').first().json.surface_min_m2, maxArea: $('Config critères (défaut)').first().json.surface_max_m2, page: 1, sortBy: 'relevance', sortOrder: 'desc', onTheMarket: [true], mapMode: 'enabled', newProperty: false, blurInfoType: ['disk','exact'], zoneIdsByTypes: { zoneIds: ($('Config critères (défaut)').first().json.zone_ids_bienici || '-145996,-29339,-78150,-75588,-54517').split(',').map(z => z.trim()).filter(Boolean) } })) + '&extensionType=extendedIfNoResult&enableGoogleStructuredDataAggregates=true&leadingCount=2&id=69ac364ff3e55c00b4185c9f' }}",
         "options": {}
       }
     },
@@ -63,7 +64,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const item = $input.first();\nconst body = item.json.realEstateAds ?? item.json.body?.realEstateAds ?? item.json;\nconst ads = Array.isArray(body) ? body : (body.realEstateAds || []);\nreturn ads.map(ad => ({\n  json: {\n    source: 'bienici',\n    id_site: ad.id || '',\n    titre: ad.title || '',\n    description: (ad.description || '').replace(/<[^>]+>/g, ' ').trim().slice(0, 500),\n    ville: ad.city || ad.district?.name || '',\n    quartier: ad.district?.libelle || ad.district?.name || '',\n    adresse: '',\n    pieces: ad.roomsQuantity ?? null,\n    surface_m2: ad.surfaceArea ?? null,\n    loyer_cc: (ad.price || 0) + (ad.charges || 0),\n    charges: ad.charges ?? null,\n    meuble: ad.isFurnished ?? null,\n    url: `https://www.bienici.com/annonce/location/${(ad.city || '').toLowerCase().replace(/\\s+/g, '-')}-${ad.postalCode || ''}/${ad.id || ''}`,\n    date_publication: ad.publicationDate || null\n  }\n}));"
+        "jsCode": "const item = $input.first();\nconst body = item.json.realEstateAds ?? item.json.body?.realEstateAds ?? item.json;\nconst ads = Array.isArray(body) ? body : (body.realEstateAds || []);\nreturn ads.map(ad => ({\n  json: {\n    source: 'bienici',\n    id_site: ad.id || '',\n    titre: ad.title || '',\n    description: (ad.description || '').replace(/<[^>]+>/g, ' ').trim().slice(0, 500),\n    ville: ad.city || ad.district?.name || '',\n    quartier: ad.district?.libelle || ad.district?.name || '',\n    adresse: '',\n    pieces: ad.roomsQuantity ?? null,\n    surface_m2: ad.surfaceArea ?? null,\n    loyer_cc: ad.price ?? null,\n    charges: ad.charges ?? null,\n    meuble: ad.isFurnished ?? null,\n    url: `https://www.bienici.com/annonce/location/${(ad.city || '').toLowerCase().replace(/\\s+/g, '-')}-${ad.postalCode || ''}/${ad.id || ''}`,\n    date_publication: ad.publicationDate || null\n  }\n}));"
       }
     },
     {
@@ -94,7 +95,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const allItems = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const html = (j.data != null && typeof j.data === 'string') ? j.data : (j.body != null && typeof j.body === 'string') ? j.body : '';\n  let source = j.source || '';\n  if (html && !source) {\n    if (/bienici\\.com|bien'ici/i.test(html)) source = 'bienici';\n    else if (/seloger/i.test(html)) source = 'seloger';\n    else source = 'inconnu';\n  }\n  if (html && !j.titre && !j.loyer_cc && !j.surface_m2) {\n    continue;\n  }\n  allItems.push({\n    json: {\n      source: source || 'inconnu',\n      id_site: j.id_site || '',\n      titre: j.titre || '',\n      description: j.description || '',\n      ville: j.ville || '',\n      quartier: j.quartier || '',\n      adresse: j.adresse || '',\n      pieces: j.pieces ?? null,\n      surface_m2: j.surface_m2 ?? null,\n      loyer_cc: j.loyer_cc ?? null,\n      charges: j.charges ?? null,\n      meuble: j.meuble ?? null,\n      url: j.url || '',\n      date_publication: j.date_publication ?? null\n    }\n  });\n}\nreturn allItems;"
+        "jsCode": "const allItems = [];\nfor (const item of $input.all()) {\n  const j = item.json;\n  const html = (j.data != null && typeof j.data === 'string') ? j.data : (j.body != null && typeof j.body === 'string') ? j.body : '';\n  let source = j.source || '';\n  if (html && !source) {\n    if (/bienici\\.com|bien'ici/i.test(html)) source = 'bienici';\n    else if (/seloger/i.test(html)) source = 'seloger';\n    else source = 'inconnu';\n  }\n  if (html && !j.titre && !j.loyer_cc && !j.surface_m2) {\n    continue;\n  }\n  if (!j.titre && (j.loyer_cc == null || j.loyer_cc === 0) && (j.surface_m2 == null || j.surface_m2 === 0)) {\n    continue;\n  }\n  allItems.push({\n    json: {\n      source: source || 'inconnu',\n      id_site: j.id_site || '',\n      titre: j.titre || '',\n      description: j.description || '',\n      ville: j.ville || '',\n      quartier: j.quartier || '',\n      adresse: j.adresse || '',\n      pieces: j.pieces ?? null,\n      surface_m2: j.surface_m2 ?? null,\n      loyer_cc: j.loyer_cc ?? null,\n      charges: j.charges ?? null,\n      meuble: j.meuble ?? null,\n      url: j.url || '',\n      date_publication: j.date_publication ?? null\n    }\n  });\n}\nreturn allItems;"
       }
     },
     {
@@ -119,18 +120,6 @@
         "mode": "runOnceForEachItem",
         "language": "javaScript",
         "jsCode": "function normalize(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[^a-z0-9 ]/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nconst j = $input.item.json;\nconst keyBase = [\n  normalize(j.ville),\n  normalize(j.quartier),\n  normalize(j.titre),\n  String(j.surface_m2 || ''),\n  String(j.loyer_cc || '')\n].join('|');\nlet hash = 0;\nfor (let i = 0; i < keyBase.length; i++) {\n  hash = ((hash << 5) - hash) + keyBase.charCodeAt(i);\n  hash |= 0;\n}\nj.id_global = 'a_' + Math.abs(hash);\nj._isAnnonce = true;\nreturn { json: j };"
-      }
-    },
-    {
-      "id": "limit-one",
-      "name": "Prendre 1 pour GS",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [1720, 380],
-      "parameters": {
-        "mode": "runOnceForAllItems",
-        "language": "javaScript",
-        "jsCode": "const items = $input.all();\nreturn items.length ? [items[0]] : [];"
       }
     },
     {
@@ -166,7 +155,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const all = $input.all();\nconst annonces = all.filter(i => i.json._isAnnonce === true);\nconst sheetRows = all.filter(i => i.json._isAnnonce !== true);\nfunction getId(row) {\n  const j = row.json;\n  const key = Object.keys(j).find(k => k.trim().toLowerCase() === 'id_global');\n  return String(key ? j[key] : j.id_global || '').trim();\n}\nconst existingIds = new Set(sheetRows.map(r => getId(r)));\nconst kept = annonces.filter(a => !existingIds.has(getId(a)));\nreturn kept.map(a => {\n  const j = { ...a.json };\n  delete j._isAnnonce;\n  return { json: j };\n});"
+        "jsCode": "const all = $input.all();\nconst annonces = all.filter(i => i.json._isAnnonce === true);\nconst sheetRows = all.filter(i => i.json._isAnnonce !== true);\nfunction getId(row) {\n  const j = row.json;\n  const key = Object.keys(j).find(k => k.trim().toLowerCase() === 'id_global');\n  return String(key ? j[key] : j.id_global || '').trim();\n}\nconst existingIds = new Set(sheetRows.map(r => getId(r)));\nlet kept = annonces.filter(a => !existingIds.has(getId(a)));\nconst seenId = new Set();\nkept = kept.filter(a => { const id = getId(a); if (seenId.has(id)) return false; seenId.add(id); return true; });\nreturn kept.map(a => {\n  const j = { ...a.json };\n  delete j._isAnnonce;\n  return { json: j };\n});"
       }
     },
     {
@@ -211,19 +200,16 @@
       "typeVersion": 4.2,
       "position": [2180, 340],
       "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "method": "POST",
         "url": "https://api.groq.com/openai/v1/chat/completions",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            { "name": "Authorization", "value": "=Bearer {{ $env.GROQ_API_KEY }}" }
-          ]
-        },
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"Tu rédiges des messages courts pour Telegram à partir d'annonces immobilières.\" },\n    { \"role\": \"user\", \"content\": \"Résumé 3-4 lignes en français. Inclure type (T2/T3), ville/quartier, surface, prix CC et lien.\\nTitre: {{ $json.titre }}\\nVille: {{ $json.ville }} {{ $json.quartier }}\\nSurface: {{ $json.surface_m2 }} m², Loyer: {{ $json.loyer_cc }} €/mois CC\\nURL: {{ $json.url }}\" }\n  ]\n}",
         "options": {}
-      }
+      },
+      "credentials": { "httpHeaderAuth": { "id": "", "name": "Groq_API" } }
     },
     {
       "id": "extract-message-node",
@@ -244,8 +230,11 @@
       "typeVersion": 1.2,
       "position": [2580, 340],
       "parameters": {
-        "chatId": { "__rl": true, "value": "", "mode": "id" },
-        "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}"
+        "chatId": "6558659046",
+        "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "credentials": { "telegramApi": { "id": "", "name": "Telegram" } }
     }
@@ -257,7 +246,8 @@
     "Config critères (défaut)": {
       "main": [[
         { "node": "Bienici - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Autres sites (placeholder)", "type": "main", "index": 0 }
+        { "node": "Autres sites (placeholder)", "type": "main", "index": 0 },
+        { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
     "Bienici - Récup annonces": {
@@ -279,13 +269,7 @@
       "main": [[{ "node": "Construire id_global", "type": "main", "index": 0 }]]
     },
     "Construire id_global": {
-      "main": [
-        [{ "node": "Merge annonces + sheet", "type": "main", "index": 0 }],
-        [{ "node": "Prendre 1 pour GS", "type": "main", "index": 0 }]
-      ]
-    },
-    "Prendre 1 pour GS": {
-      "main": [[{ "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Merge annonces + sheet", "type": "main", "index": 0 }]]
     },
     "GS - Lire toutes les lignes": {
       "main": [[{ "node": "Merge annonces + sheet", "type": "main", "index": 1 }]]

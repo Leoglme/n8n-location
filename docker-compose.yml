@@ -15,22 +15,25 @@ services:
       - N8N_BASIC_AUTH_USER=admin
       - N8N_BASIC_AUTH_PASSWORD=change_me
 
-      # Configuration serveur
+      # Configuration serveur (override via .env en prod pour OAuth / URL publique)
       - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - N8N_HOST=localhost
-      - N8N_EDITOR_BASE_URL=http://localhost:5678
-      - N8N_API_BASE_URL=http://localhost:5678
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_EDITOR_BASE_URL=${N8N_EDITOR_BASE_URL:-http://localhost:5678}
+      - N8N_API_BASE_URL=${N8N_API_BASE_URL:-http://localhost:5678}
 
       # Timezone (pour les Cron)
       - GENERIC_TIMEZONE=Europe/Paris
 
-      # Clé d'encryption (prioritaire sur .env si définie ici)
-      - N8N_ENCRYPTION_KEY=define_une_cle_longue_ici
+      # Autorise {{ $env.VAR }} dans les nodes si besoin
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
 
-      # Injection de la clé Groq dans le credential HTTP Header Auth (nom "Authorization", valeur "Bearer <GROQ_API_KEY>")
-      # Remplace la valeur du credential utilisé par le node "Groq - Générer message" si GROQ_API_KEY est défini dans .env
-      - "CREDENTIALS_OVERWRITE_DATA={\"httpHeaderAuth\":{\"name\":\"Authorization\",\"value\":\"Bearer ${GROQ_API_KEY}\"}}"
+      # Clé d'encryption (valeur depuis .env : N8N_ENCRYPTION_KEY)
+      # Injection des credentials depuis .env :
+      # - Groq : HTTP Header Auth (node "Groq - Générer message")
+      # - Telegram : Access Token du credential "Telegram account" (TELEGRAM_BOT_TOKEN)
+      # - Google Sheets : Client ID / Client Secret OAuth2
+      - "CREDENTIALS_OVERWRITE_DATA={\"httpHeaderAuth\":{\"name\":\"Authorization\",\"value\":\"Bearer ${GROQ_API_KEY}\"},\"telegramApi\":{\"accessToken\":\"${TELEGRAM_BOT_TOKEN}\"},\"googleSheetsOAuth2Api\":{\"clientId\":\"${GOOGLE_OAUTH_CLIENT_ID}\",\"clientSecret\":\"${GOOGLE_OAUTH_CLIENT_SECRET}\"}}"
 
     volumes:
       # Persistance (volume Docker nommé : workflows, credentials, exécutions)

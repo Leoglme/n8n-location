@@ -17,6 +17,20 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
+      - name: 🔐 Create .env from GitHub Secrets
+        run: |
+          cat << 'ENVFILE' > .env
+          N8N_ENCRYPTION_KEY=${{ secrets.N8N_ENCRYPTION_KEY }}
+          TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}
+          GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}
+          GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+          N8N_PROTOCOL=https
+          N8N_HOST=n8n-location.dibodev.fr
+          N8N_EDITOR_BASE_URL=https://n8n-location.dibodev.fr
+          N8N_API_BASE_URL=https://n8n-location.dibodev.fr
+          ENVFILE
+
       - name: 📤 Sync project files to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -24,7 +38,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml,docker-entrypoint.sh,workflows/,.env.example"
+          source: "docker-compose.yml,docker-entrypoint.sh,workflows/,.env"
           target: /var/www/n8n-location.dibodev.fr/html
           overwrite: true
 
@@ -52,11 +66,7 @@ jobs:
               echo "⚠️ docker compose (plugin) non disponible. Vérifie l'installation Docker si ça échoue."
             fi
 
-            # Créer .env si absent (à éditer ensuite sur le VPS)
-            if [ ! -f .env ]; then
-              cp .env.example .env
-              echo "Fichier .env créé à partir de .env.example (pense à le remplir sur le VPS)."
-            fi
+            # .env est créé par la CI à partir des secrets GitHub puis synchronisé ci-dessus
 
             # Mettre à jour l'image et redémarrer n8n
             docker compose pull n8n || true
