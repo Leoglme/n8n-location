@@ -383,6 +383,41 @@
       }
     },
     {
+      "id": "lamotte-http",
+      "name": "Lamotte - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 1940],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&pieces%5B%5D=' + i; return 'https://www.lamotte.fr/annonces/?acquisition=Location&immobilier=Logement&type%5B%5D=Appartement&type%5B%5D=Maison&location%5Bdep%5D%5B%5D=35&price_min=&price_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&surface_min=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 35) + '&surface_max=' + (c.surface_max_m2 != null ? c.surface_max_m2 : 75) + pieces; })() }}",
+        "options": { "timeout": 15000 }
+      }
+    },
+    {
+      "id": "lamotte-transform",
+      "name": "Lamotte - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 1940],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "var item = $input.first();\nvar j = item.json;\nvar html = '';\nif (typeof j.body === 'string' && j.body.length > 500) html = j.body;\nelse if (typeof j.data === 'string' && j.data.length > 500) html = j.data;\nelse if (typeof j === 'string') html = j;\nif (!html && typeof j === 'object') {\n  for (var key in j) { if (j.hasOwnProperty(key) && typeof j[key] === 'string' && j[key].length > 2000 && (j[key].indexOf('data-trk-produit') !== -1 || j[key].indexOf('bien__wrapper') !== -1 || j[key].indexOf('lamotte.fr') !== -1)) { html = j[key]; break; } }\n}\nif (!html || html.length < 500) return [];\nvar out = [];\nvar start = 0;\nvar needle1 = \"data-trk-produit='\";\nvar needle2 = 'data-trk-produit=\"';\nwhile (true) {\n  var idx1 = html.indexOf(needle1, start);\n  var idx2 = html.indexOf(needle2, start);\n  var idx = -1;\n  var useSingle = true;\n  if (idx1 !== -1 && (idx2 === -1 || idx1 < idx2)) { idx = idx1; useSingle = true; }\n  else if (idx2 !== -1) { idx = idx2; useSingle = false; }\n  if (idx === -1) break;\n  var needle = useSingle ? needle1 : needle2;\n  start = idx + needle.length;\n  var jsonStr = '';\n  var pos = start;\n  if (useSingle) {\n    while (pos < html.length && html[pos] !== \"'\") { jsonStr += html[pos]; pos++; }\n  } else {\n    while (pos < html.length) {\n      if (html.substring(pos, pos + 6) === '&quot;') { jsonStr += '\"'; pos += 6; }\n      else if (html[pos] === '\"') break;\n      else { jsonStr += html[pos]; pos++; }\n    }\n  }\n  var data = null;\n  try { data = JSON.parse(jsonStr); } catch (e) { start = pos; continue; }\n  var rest = html.substring(pos, pos + 8000);\n  var hrefMatch = rest.match(/href=\"(https?:\\/\\/www\\.lamotte\\.fr\\/annonces\\/[^\"]+)\"/);\n  var url = (hrefMatch && hrefMatch[1]) ? hrefMatch[1] : '';\n  var titleMatch = rest.match(/programme__title\"[^>]*>\\s*<i[^>]*><\\/i>([^<]+)</);\n  var titre = (titleMatch && titleMatch[1]) ? titleMatch[1].replace(/\\s+/g, ' ').trim() : (data && data.produitNom ? data.produitNom.replace(/-/g, ' ') : 'Annonce ' + (data && data.produitId ? data.produitId : ''));\n  var villeSlug = (data && data.produitLocalisationVille) ? data.produitLocalisationVille : '';\n  var ville = villeSlug ? villeSlug.charAt(0).toUpperCase() + villeSlug.slice(1).replace(/-/g, ' ') : '';\n  var quartier = '';\n  if (titre.indexOf(' - ') !== -1) { var parts = titre.split(' - '); quartier = parts.length > 1 ? parts[1].trim() : ''; }\n  var prixStr = (data && data.produitPrix) ? String(data.produitPrix).replace(/[^0-9,.]/g, '').replace(',', '.') : '';\n  var loyer = prixStr ? parseFloat(prixStr) : null;\n  var pieces = (data && data.produitNombrePiece) != null ? (typeof data.produitNombrePiece === 'number' ? data.produitNombrePiece : parseInt(data.produitNombrePiece, 10)) : null;\n  var surface = (data && data.produitSuperficie) != null ? (typeof data.produitSuperficie === 'number' ? data.produitSuperficie : parseInt(data.produitSuperficie, 10)) : null;\n  out.push({\n    json: {\n      source: 'lamotte',\n      id_site: (data && data.produitId) != null ? String(data.produitId) : '',\n      titre: titre,\n      description: '',\n      ville: ville,\n      quartier: quartier,\n      adresse: '',\n      pieces: isNaN(pieces) ? null : pieces,\n      surface_m2: isNaN(surface) ? null : surface,\n      loyer_cc: (loyer != null && !isNaN(loyer)) ? loyer : null,\n      charges: null,\n      meuble: null,\n      url: url,\n      date_publication: null\n    }\n  });\n  start = pos;\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-9",
+      "name": "Fusionner branches 9",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [2955, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
@@ -550,6 +585,7 @@
         { "node": "Foncia - Récup annonces", "type": "main", "index": 0 },
         { "node": "La Française Immobilière - Récup annonces", "type": "main", "index": 0 },
         { "node": "Guenno - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Lamotte - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -607,6 +643,12 @@
     "Guenno - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 8", "type": "main", "index": 1 }]]
     },
+    "Lamotte - Récup annonces": {
+      "main": [[{ "node": "Lamotte - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Lamotte - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 9", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -629,6 +671,9 @@
       "main": [[{ "node": "Fusionner branches 8", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 8": {
+      "main": [[{ "node": "Fusionner branches 9", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 9": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
