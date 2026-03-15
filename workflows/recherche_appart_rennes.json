@@ -418,6 +418,41 @@
       }
     },
     {
+      "id": "kermarrec-http",
+      "name": "Kermarrec - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 2140],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&nb_pieces%5B%5D=' + i; return 'https://www.kermarrec-habitation.fr/location/?post_type=location&false-select=on&ville%5B%5D=rennes-35000&typebien%5B%5D=appartement&typebien%5B%5D=maison' + pieces + '&budget_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&reference=&rayon=20&avec_carte=false&tri=pertinence'; })() }}",
+        "options": { "timeout": 15000 }
+      }
+    },
+    {
+      "id": "kermarrec-transform",
+      "name": "Kermarrec - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 2140],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "var item = $input.first();\nvar j = item.json;\nvar html = '';\nif (typeof j.body === 'string' && j.body.length > 500) html = j.body;\nelse if (typeof j.data === 'string' && j.data.length > 500) html = j.data;\nelse if (typeof j === 'string') html = j;\nif (!html && typeof j === 'object') { for (var key in j) { if (j.hasOwnProperty(key) && typeof j[key] === 'string' && j[key].length > 2000 && (j[key].indexOf('list-bien') !== -1 || j[key].indexOf('card-bien') !== -1 || j[key].indexOf('kermarrec-habitation') !== -1)) { html = j[key]; break; } } }\nif (!html || html.length < 500) return [];\nvar out = [];\nvar re = /<article[^>]*class=\"[^\"]*list-bien[^\"]*\"[^>]*>([\\s\\S]*?)<\\/article>/gi;\nvar block;\nwhile ((block = re.exec(html)) !== null) {\n  var b = block[1] || '';\n  var hrefM = b.match(/href=\"(https?:\\/\\/www\\.kermarrec-habitation\\.fr\\/location\\/[^\"]+)\"/);\n  var url = (hrefM && hrefM[1]) ? hrefM[1] : '';\n  var idMatch = url.match(/bien-(\\d+)/);\n  var id_site = (idMatch && idMatch[1]) ? idMatch[1] : '';\n  var priceM = b.match(/<span class=\"entry-price\"[^>]*>([\\s\\S]*?)<\\/span>/);\n  var prixRaw = (priceM && priceM[1]) ? priceM[1].replace(/<[^>]+>/g, '').replace(/\\s+/g, ' ').replace(/&nbsp;/g, ' ').trim() : '';\n  var numM = prixRaw.match(/\\d+/);\n  var loyer = numM ? parseInt(numM[0], 10) : null;\n  var villeM = b.match(/<span class=\"entry-ville\"[^>]*>(?:<[^>]+>)*([^<]+)<\\/span>/);\n  var villeStr = (villeM && villeM[1]) ? villeM[1].trim() : '';\n  var ville = villeStr;\n  var quartier = '';\n  if (villeStr.indexOf(' ') !== -1) { var parts = villeStr.split(' '); ville = parts[0] || villeStr; quartier = parts.slice(1).join(' ').trim(); }\n  var piecesM = b.match(/<span class=\"entry-pieces\"[^>]*>[\\s\\S]*?(\\d+)\\s*pièces/);\n  var pieces = (piecesM && piecesM[1]) ? parseInt(piecesM[1], 10) : null;\n  var surfaceM = b.match(/<span class=\"entry-surface\"[^>]*>[\\s\\S]*?(\\d+)\\s*m²/);\n  var surface = (surfaceM && surfaceM[1]) ? parseInt(surfaceM[1], 10) : null;\n  var bienM = b.match(/<span class=\"entry-bien\"[^>]*>([^<]+)<\\/span>/);\n  var typeBien = (bienM && bienM[1]) ? bienM[1].trim() : 'Bien';\n  var titre = typeBien + (villeStr ? ' - ' + villeStr : '');\n  out.push({\n    json: {\n      source: 'kermarrec',\n      id_site: id_site,\n      titre: titre,\n      description: '',\n      ville: ville,\n      quartier: quartier,\n      adresse: '',\n      pieces: pieces,\n      surface_m2: surface,\n      loyer_cc: loyer,\n      charges: null,\n      meuble: null,\n      url: url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-10",
+      "name": "Fusionner branches 10",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [2980, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
@@ -586,6 +621,7 @@
         { "node": "La Française Immobilière - Récup annonces", "type": "main", "index": 0 },
         { "node": "Guenno - Récup annonces", "type": "main", "index": 0 },
         { "node": "Lamotte - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Kermarrec - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -649,6 +685,12 @@
     "Lamotte - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 9", "type": "main", "index": 1 }]]
     },
+    "Kermarrec - Récup annonces": {
+      "main": [[{ "node": "Kermarrec - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Kermarrec - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 10", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -674,6 +716,9 @@
       "main": [[{ "node": "Fusionner branches 9", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 9": {
+      "main": [[{ "node": "Fusionner branches 10", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 10": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
