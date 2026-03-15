@@ -12,8 +12,8 @@
         "rule": {
           "interval": [
             {
-              "field": "seconds",
-              "secondsBetweenTriggers": 30
+              "field": "minutes",
+              "minutesBetweenTriggers": 5
             }
           ]
         }
@@ -341,11 +341,53 @@
       }
     },
     {
+      "id": "guenno-http",
+      "name": "Guenno - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 1740],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minP = c.pieces_min || 2; const maxP = c.pieces_max || 3; let rooms = ''; for (let i = minP; i <= maxP; i++) rooms += '&number_room%5B%5D=' + i; return 'https://www.guenno.com/biens/recherche?mandate_type=2&realty_type%5B%5D=1' + rooms + '&min_surface=' + (c.surface_min_m2 || '') + '&town=RENNES&price_max=' + (c.prix_max_cc || 700) + '&east=-1.353481131054688&west=-2.229640799023438&north=48.47728162287364&south=47.67813899953636'; })() }}",
+        "options": { "timeout": 15000 },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" },
+            { "name": "X-Requested-With", "value": "XMLHttpRequest" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "guenno-transform",
+      "name": "Guenno - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 1740],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.guenno.com';\nconst item = $input.first();\nconst results = item.json && item.json.results;\nconst data = (results && results.data) != null ? results.data : [];\nif (!Array.isArray(data)) return [];\nreturn data.map(a => {\n  const slugTown = (a.slug_town || (a.town && a.town.toLowerCase()) || '').trim();\n  const path = slugTown ? '/biens/location/appartement/' + slugTown + '/T' + (a.number_room || 2) + '/' + (a.id || '') : '';\n  const url = path ? BASE + path : '';\n  const ville = (a.town || '').trim();\n  return {\n    json: {\n      source: 'guenno',\n      id_site: String(a.id != null ? a.id : ''),\n      titre: [ville, (a.sector || '')].filter(Boolean).join(' / ') || ('Annonce ' + (a.id != null ? a.id : '')),\n      description: (a.description || '').replace(/\\s+/g, ' ').trim().slice(0, 500),\n      ville: ville,\n      quartier: (a.sector || '').trim(),\n      adresse: '',\n      pieces: a.number_room != null ? a.number_room : null,\n      surface_m2: a.surface != null ? a.surface : null,\n      loyer_cc: a.price != null ? (typeof a.price === 'number' ? a.price : parseFloat(a.price)) : null,\n      charges: a.provisions_feed != null ? (typeof a.provisions_feed === 'number' ? a.provisions_feed : parseFloat(a.provisions_feed)) : null,\n      meuble: null,\n      url: url,\n      date_publication: a.release_date || a.created_at_realty || null\n    }\n  };\n});"
+      }
+    },
+    {
+      "id": "merge-branches-8",
+      "name": "Fusionner branches 8",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [2900, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [2900, 400],
+      "position": [3010, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -507,6 +549,7 @@
         { "node": "Ouest France Immo - Récup annonces", "type": "main", "index": 0 },
         { "node": "Foncia - Récup annonces", "type": "main", "index": 0 },
         { "node": "La Française Immobilière - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Guenno - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -558,6 +601,12 @@
     "La Française Immobilière - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 7", "type": "main", "index": 1 }]]
     },
+    "Guenno - Récup annonces": {
+      "main": [[{ "node": "Guenno - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Guenno - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 8", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -577,6 +626,9 @@
       "main": [[{ "node": "Fusionner branches 7", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 7": {
+      "main": [[{ "node": "Fusionner branches 8", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 8": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
