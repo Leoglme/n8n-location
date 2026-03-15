@@ -35,7 +35,7 @@
             { "id": "prix_max_cc", "name": "prix_max_cc", "value": 700, "type": "number" },
             { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
             { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
-            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\"]", "type": "string" },
+            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\", \"Mordelles\"]", "type": "string" },
             { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
             { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze,St Jacques,Arsenal", "type": "string" },
             { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
@@ -488,11 +488,56 @@
       }
     },
     {
+      "id": "squarehabitat-http",
+      "name": "Square Habitat - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 2540],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.ca-immobilier.fr/arts/bien/v2/api/fo/bien",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Accept", "value": "application/json" },
+            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var codes = []; for (var i = minP; i <= maxP; i++) codes.push(i + 'PIECES'); return JSON.stringify({ localisations: { codesCommunes: ['35238'] }, codesTypesBiens: ['4','5'], isLocation: true, nbKilometresRecherche: 20, codesNbPieces: codes, budgetMax: c.prix_max_cc != null ? c.prix_max_cc : 700, surfaceMin: c.surface_min_m2 != null ? c.surface_min_m2 : 35, surfaceMax: c.surface_max_m2 != null ? c.surface_max_m2 : 75, pagination: { itemsPerPage: 18, currentPage: 1 } }); })() }}"
+      }
+    },
+    {
+      "id": "squarehabitat-transform",
+      "name": "Square Habitat - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 2540],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "var BASE = 'https://www.squarehabitat.fr/square-habitat-bretagne/annonces/biens/location/';\nfunction villeSlug(ville) {\n  if (!ville || typeof ville !== 'string') return '';\n  var s = ville.toLowerCase().trim().replace(/\\s+s\\/\\s+/gi, '-sur-').replace(/\\s+/g, '-').replace(/[^a-z0-9-]/g, '');\n  return s;\n}\nvar item = $input.first();\nvar biens = (item.json && item.json.biens) != null ? item.json.biens : [];\nif (!Array.isArray(biens)) return [];\nvar out = [];\nfor (var i = 0; i < biens.length; i++) {\n  var b = biens[i];\n  var codeRef = (b.codeRef != null) ? String(b.codeRef) : '';\n  var typeBien = (b.typeBien != null) ? String(b.typeBien).toLowerCase() : 'appartement';\n  var ville = (b.ville != null) ? String(b.ville).trim() : '';\n  var slug = villeSlug(ville);\n  var path = typeBien + '/' + slug + '/' + codeRef;\n  var url = (slug && codeRef) ? BASE + path : '';\n  var desc = (b.texteAnnonce != null) ? String(b.texteAnnonce).replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500) : '';\n  var titre = [typeBien.charAt(0).toUpperCase() + typeBien.slice(1), ville].filter(Boolean).join(' - ') || ('Annonce ' + codeRef);\n  out.push({\n    json: {\n      source: 'square_habitat',\n      id_site: codeRef,\n      titre: titre,\n      description: desc,\n      ville: ville,\n      quartier: '',\n      adresse: '',\n      pieces: (b.nbPieces != null) ? (typeof b.nbPieces === 'number' ? b.nbPieces : parseInt(b.nbPieces, 10)) : null,\n      surface_m2: (b.surfaceHabitable != null) ? (typeof b.surfaceHabitable === 'number' ? b.surfaceHabitable : parseFloat(b.surfaceHabitable)) : null,\n      loyer_cc: (b.prix != null) ? (typeof b.prix === 'number' ? b.prix : parseFloat(b.prix)) : null,\n      charges: null,\n      meuble: null,\n      url: url,\n      date_publication: (b.dateCreation != null) ? b.dateCreation : null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-12",
+      "name": "Fusionner branches 12",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [3680, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3740, 400],
+      "position": [3860, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -508,7 +553,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\u0300-\u036f]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\u0300-\u036f]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+s\\/\\s+/gi, ' sur ')\n    .replace(/\\bseich\\b/gi, 'seiche')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
       }
     },
     {
@@ -658,6 +703,7 @@
         { "node": "Lamotte - Récup annonces", "type": "main", "index": 0 },
         { "node": "Kermarrec - Récup annonces", "type": "main", "index": 0 },
         { "node": "Nestenn - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Square Habitat - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -733,6 +779,12 @@
     "Nestenn - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 11", "type": "main", "index": 1 }]]
     },
+    "Square Habitat - Récup annonces": {
+      "main": [[{ "node": "Square Habitat - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Square Habitat - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 12", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -764,6 +816,9 @@
       "main": [[{ "node": "Fusionner branches 11", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 11": {
+      "main": [[{ "node": "Fusionner branches 12", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 12": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
