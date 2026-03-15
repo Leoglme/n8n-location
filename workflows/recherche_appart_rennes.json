@@ -171,7 +171,7 @@
       "name": "Fusionner branches",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [1580, 400],
+      "position": [1760, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -182,7 +182,7 @@
       "name": "Fusionner branches 2",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [1800, 400],
+      "position": [1940, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -193,7 +193,7 @@
       "name": "Fusionner branches 3",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2020, 400],
+      "position": [2120, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -204,7 +204,7 @@
       "name": "Fusionner branches 4",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2240, 400],
+      "position": [2300, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -246,7 +246,7 @@
       "name": "Fusionner branches 5",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2460, 400],
+      "position": [2480, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -334,7 +334,7 @@
       "name": "Fusionner branches 7",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2790, 400],
+      "position": [2840, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -376,7 +376,7 @@
       "name": "Fusionner branches 8",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2900, 400],
+      "position": [3020, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -411,7 +411,7 @@
       "name": "Fusionner branches 9",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2955, 400],
+      "position": [3200, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -446,7 +446,42 @@
       "name": "Fusionner branches 10",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2980, 400],
+      "position": [3380, 400],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "nestenn-http",
+      "name": "Nestenn - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [940, 2340],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var pieces = c.pieces_min != null ? c.pieces_min : 2; return 'https://nestenn.com/listing?sort=&typeTransaction=louer&type_bien=Maison,Appartement&villes=35%20Ille-et-Vilaine%20(D%C3%A9partement)&prix_min=&prix_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&surface_min=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 35) + '&chambres=&pieces=' + pieces + '&ref=&dpe='; })() }}",
+        "options": { "timeout": 15000 }
+      }
+    },
+    {
+      "id": "nestenn-transform",
+      "name": "Nestenn - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 2340],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "var item = $input.first();\nvar j = item.json;\nvar html = '';\nif (typeof j.body === 'string' && j.body.length > 500) html = j.body;\nelse if (typeof j.data === 'string' && j.data.length > 500) html = j.data;\nelse if (typeof j === 'string') html = j;\nif (!html && typeof j === 'object') { for (var key in j) { if (j.hasOwnProperty(key) && typeof j[key] === 'string' && j[key].length > 2000 && (j[key].indexOf('bien_item') !== -1 || j[key].indexOf('listing_bien') !== -1 || j[key].indexOf('nestenn.com') !== -1)) { html = j[key]; break; } } }\nif (!html || html.length < 500) return [];\nvar BASE = 'https://nestenn.com/listing';\nvar out = [];\nvar re = /<div class=\"bien_item[^\"]*\"[^>]*>([\\s\\S]*?)<\\/div>\\s*<\\/div>\\s*<\\/div>/gi;\nvar blocks = html.split(/<div class=\"bien_item\\s/);\nfor (var i = 1; i < blocks.length; i++) {\n  var b = blocks[i];\n  var hrefM = b.match(/<a href=\"([^\"?][^\"]*)\"[^>]*title=/);\n  var href = (hrefM && hrefM[1]) ? hrefM[1].trim() : '';\n  var url = href ? (href.indexOf('http') === 0 ? href : BASE + (href.indexOf('/') === 0 ? '' : '/') + href) : '';\n  var idM = href.match(/ref-(\\d+)/);\n  var id_site = (idM && idM[1]) ? idM[1] : '';\n  var villeM = b.match(/<p class=\"fs_0-8rem[^\"]*\"[^>]*>\\s*([^<]+)</);\n  var villeStr = (villeM && villeM[1]) ? villeM[1].replace(/\\s+/g, ' ').trim() : '';\n  var ville = villeStr.replace(/^\\d{5}\\s*/, '').trim() || villeStr;\n  var typeM = b.match(/<h3 class=\"bold blue_color[^\"]*\"[^>]*>([\\s\\S]*?)<\\/h3>/);\n  var typeStr = (typeM && typeM[1]) ? typeM[1].replace(/<[^>]+>/g, '').replace(/\\s+/g, ' ').trim() : '';\n  var titre = (typeStr && ville) ? typeStr + ' - ' + ville : (typeStr || ville || 'Annonce ' + id_site);\n  var surfaceM = b.match(/(\\d+)\\s*m²/);\n  var surface = (surfaceM && surfaceM[1]) ? parseInt(surfaceM[1], 10) : null;\n  var piecesM = b.match(/(\\d+)\\s*pièces/);\n  var pieces = (piecesM && piecesM[1]) ? parseInt(piecesM[1], 10) : null;\n  var priceM = b.match(/<p class=\"[^\"]*price\"[^>]*>([\\s\\S]*?)<\\/p>/);\n  var prixRaw = (priceM && priceM[1]) ? priceM[1].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\\s+/g, ' ').trim() : '';\n  var numM = prixRaw.match(/\\d+/);\n  var loyer = (numM && numM[0]) ? parseInt(numM[0], 10) : null;\n  out.push({\n    json: {\n      source: 'nestenn',\n      id_site: id_site,\n      titre: titre,\n      description: '',\n      ville: ville,\n      quartier: '',\n      adresse: '',\n      pieces: pieces,\n      surface_m2: surface,\n      loyer_cc: loyer,\n      charges: null,\n      meuble: null,\n      url: url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-11",
+      "name": "Fusionner branches 11",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [3560, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -457,7 +492,7 @@
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3010, 400],
+      "position": [3740, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -469,7 +504,7 @@
       "name": "Filtrer selon critères",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3120, 400],
+      "position": [3920, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -481,7 +516,7 @@
       "name": "Construire id_global",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3340, 400],
+      "position": [4100, 400],
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
@@ -493,7 +528,7 @@
       "name": "GS - Lire toutes les lignes",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [3560, 620],
+      "position": [4280, 620],
       "parameters": {
         "operation": "read",
         "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
@@ -506,7 +541,7 @@
       "name": "Merge annonces + sheet",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [3560, 400],
+      "position": [4280, 400],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -517,7 +552,7 @@
       "name": "Filtrer doublons",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3780, 400],
+      "position": [4460, 400],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -529,7 +564,7 @@
       "name": "GS - Enregistrer annonces",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [4080, 200],
+      "position": [4640, 200],
       "parameters": {
         "operation": "append",
         "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
@@ -564,7 +599,7 @@
       "name": "Groq - Générer message",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [4220, 400],
+      "position": [4700, 400],
       "parameters": {
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
@@ -582,7 +617,7 @@
       "name": "Extraire texte Groq",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [4400, 400],
+      "position": [4880, 400],
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
@@ -594,7 +629,7 @@
       "name": "Telegram - Envoyer message",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [4660, 400],
+      "position": [5060, 400],
       "parameters": {
         "chatId": "6558659046",
         "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}",
@@ -622,6 +657,7 @@
         { "node": "Guenno - Récup annonces", "type": "main", "index": 0 },
         { "node": "Lamotte - Récup annonces", "type": "main", "index": 0 },
         { "node": "Kermarrec - Récup annonces", "type": "main", "index": 0 },
+        { "node": "Nestenn - Récup annonces", "type": "main", "index": 0 },
         { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
       ]]
     },
@@ -691,6 +727,12 @@
     "Kermarrec - Vers format annonces": {
       "main": [[{ "node": "Fusionner branches 10", "type": "main", "index": 1 }]]
     },
+    "Nestenn - Récup annonces": {
+      "main": [[{ "node": "Nestenn - Vers format annonces", "type": "main", "index": 0 }]]
+    },
+    "Nestenn - Vers format annonces": {
+      "main": [[{ "node": "Fusionner branches 11", "type": "main", "index": 1 }]]
+    },
     "Fusionner branches": {
       "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
     },
@@ -719,6 +761,9 @@
       "main": [[{ "node": "Fusionner branches 10", "type": "main", "index": 0 }]]
     },
     "Fusionner branches 10": {
+      "main": [[{ "node": "Fusionner branches 11", "type": "main", "index": 0 }]]
+    },
+    "Fusionner branches 11": {
       "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
     },
     "Normaliser annonces": {
