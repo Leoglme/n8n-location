@@ -7,7 +7,10 @@
       "name": "Cron - Vérif annonces",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [300, 400],
+      "position": [
+        -640,
+        224
+      ],
       "parameters": {
         "rule": {
           "interval": [
@@ -24,21 +27,69 @@
       "name": "Config critères (défaut)",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [620, 400],
+      "position": [
+        -320,
+        224
+      ],
       "parameters": {
         "mode": "manual",
         "duplicateItem": false,
         "assignments": {
           "assignments": [
-            { "id": "surface_min_m2", "name": "surface_min_m2", "value": 35, "type": "number" },
-            { "id": "surface_max_m2", "name": "surface_max_m2", "value": 75, "type": "number" },
-            { "id": "prix_max_cc", "name": "prix_max_cc", "value": 700, "type": "number" },
-            { "id": "pieces_min", "name": "pieces_min", "value": 2, "type": "number" },
-            { "id": "pieces_max", "name": "pieces_max", "value": 3, "type": "number" },
-            { "id": "villes_cibles", "name": "villes_cibles", "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\", \"Mordelles\"]", "type": "string" },
-            { "id": "ville_speciale", "name": "ville_speciale", "value": "Rennes", "type": "string" },
-            { "id": "quartier_rennes", "name": "quartiers_rennes_seulement", "value": "Cleunay,La Courrouze,St Jacques,Arsenal", "type": "string" },
-            { "id": "zone_ids_bienici", "name": "zone_ids_bienici", "value": "-145996,-29339,-78150,-75588,-54517", "type": "string" }
+            {
+              "id": "surface_min_m2",
+              "name": "surface_min_m2",
+              "value": 35,
+              "type": "number"
+            },
+            {
+              "id": "surface_max_m2",
+              "name": "surface_max_m2",
+              "value": 75,
+              "type": "number"
+            },
+            {
+              "id": "prix_max_cc",
+              "name": "prix_max_cc",
+              "value": 700,
+              "type": "number"
+            },
+            {
+              "id": "pieces_min",
+              "name": "pieces_min",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "pieces_max",
+              "name": "pieces_max",
+              "value": 3,
+              "type": "number"
+            },
+            {
+              "id": "villes_cibles",
+              "name": "villes_cibles",
+              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\", \"Mordelles\"]",
+              "type": "string"
+            },
+            {
+              "id": "ville_speciale",
+              "name": "ville_speciale",
+              "value": "Rennes",
+              "type": "string"
+            },
+            {
+              "id": "quartier_rennes",
+              "name": "quartiers_rennes_seulement",
+              "value": "Cleunay,La Courrouze,St Jacques,Arsenal",
+              "type": "string"
+            },
+            {
+              "id": "zone_ids_bienici",
+              "name": "zone_ids_bienici",
+              "value": "-145996,-29339,-78150,-75588,-54517",
+              "type": "string"
+            }
           ]
         }
       }
@@ -48,7 +99,10 @@
       "name": "Bienici - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 180],
+      "position": [
+        0,
+        0
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ 'https://www.bienici.com/realEstateAds.json?filters=' + encodeURIComponent(JSON.stringify({ size: 24, from: 0, filterType: 'rent', propertyType: ['house','flat'], maxPrice: $('Config critères (défaut)').first().json.prix_max_cc, minRooms: $('Config critères (défaut)').first().json.pieces_min, maxRooms: $('Config critères (défaut)').first().json.pieces_max, minArea: $('Config critères (défaut)').first().json.surface_min_m2, maxArea: $('Config critères (défaut)').first().json.surface_max_m2, page: 1, sortBy: 'relevance', sortOrder: 'desc', onTheMarket: [true], mapMode: 'enabled', newProperty: false, blurInfoType: ['disk','exact'], zoneIdsByTypes: { zoneIds: ($('Config critères (défaut)').first().json.zone_ids_bienici || '-145996,-29339,-78150,-75588,-54517').split(',').map(z => z.trim()).filter(Boolean) } })) + '&extensionType=extendedIfNoResult&enableGoogleStructuredDataAggregates=true&leadingCount=2&id=69ac364ff3e55c00b4185c9f' }}",
@@ -60,7 +114,10 @@
       "name": "Bienici - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 180],
+      "position": [
+        320,
+        0
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -72,11 +129,16 @@
       "name": "Trente Cinq Notaires - Récup HTML",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 400],
+      "position": [
+        0,
+        224
+      ],
       "parameters": {
         "method": "GET",
         "url": "https://www.trente-cinq-notaires.fr/recherche-annonces-immobilieres-notaires-bruz.html",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       }
     },
     {
@@ -84,7 +146,10 @@
       "name": "Trente Cinq Notaires - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 400],
+      "position": [
+        320,
+        224
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -96,7 +161,10 @@
       "name": "Action Logement - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 620],
+      "position": [
+        0,
+        448
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://api.logement-actionlogement.fr/api/v1/demands/public/offers-overview?size=20&page=0",
@@ -111,7 +179,10 @@
       "name": "Action Logement - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 620],
+      "position": [
+        320,
+        448
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -123,11 +194,16 @@
       "name": "Giboire - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 840],
+      "position": [
+        0,
+        672
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minB = Math.max(0, (c.pieces_min || 2) - 1); const maxB = Math.max(0, (c.pieces_max || 3) - 1); let beds = ''; for (let i = minB; i <= maxB; i++) beds += '&nbBedrooms%5B%5D=' + i; return 'https://www.giboire.com/recherche-location/appartement_maison/?searchBy=default&address%5B%5D=35&priceMax=' + (c.prix_max_cc || 700) + '&livingSurfaceMin=' + (c.surface_min_m2 || 35) + '&livingSurfaceMax=' + (c.surface_max_m2 || 75) + beds + '&transactionType%5B%5D=Location&searchBy=default'; })() }}",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       }
     },
     {
@@ -135,7 +211,10 @@
       "name": "Giboire - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 840],
+      "position": [
+        320,
+        672
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -147,11 +226,16 @@
       "name": "Afedim - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 1020],
+      "position": [
+        0,
+        848
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ 'https://www.afedim.fr/fr/location/annonces/Appartement-Maison/Ille-et-Vilaine-France/' + ($('Config critères (défaut)').first().json.pieces_min || 2) + '-' + ($('Config critères (défaut)').first().json.pieces_max || 3) + '-pieces/surface-' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '-' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '-m2/budget-0-' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '-euros/rayon-0-km/disponible-False/options-NonMeuble/exclusPlafondRess-False/Resultats' }}",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       }
     },
     {
@@ -159,7 +243,10 @@
       "name": "Afedim - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 1020],
+      "position": [
+        320,
+        848
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -168,10 +255,13 @@
     },
     {
       "id": "merge-branches",
-      "name": "Fusionner branches",
+      "name": "Fusion Bienici + TCN",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [1760, 400],
+      "position": [
+        624,
+        208
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -179,10 +269,13 @@
     },
     {
       "id": "merge-branches-2",
-      "name": "Fusionner branches 2",
+      "name": "Fusion + Action Logement",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [1940, 400],
+      "position": [
+        624,
+        432
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -190,10 +283,13 @@
     },
     {
       "id": "merge-branches-3",
-      "name": "Fusionner branches 3",
+      "name": "Fusion + Giboire",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2120, 400],
+      "position": [
+        624,
+        656
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -201,10 +297,13 @@
     },
     {
       "id": "merge-branches-4",
-      "name": "Fusionner branches 4",
+      "name": "Fusion + Afedim",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2300, 400],
+      "position": [
+        624,
+        832
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -215,7 +314,10 @@
       "name": "Ouest France Immo - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 1200],
+      "position": [
+        0,
+        1024
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ 'https://www.ouestfrance-immo.com/api/annonces/?url=%2Flouer%2Frennes-35-35000%2F&search_key=list-search&limit=24&pieces_min=' + $('Config critères (défaut)').first().json.pieces_min + '&prix_max=' + $('Config critères (défaut)').first().json.prix_max_cc + '&surface_min=' + $('Config critères (défaut)').first().json.surface_min_m2 + '&surface_max=' + $('Config critères (défaut)').first().json.surface_max_m2 + '&meuble=0&colocation=0&rayon=20&idslieu=15818&tra=L&typIds=214%2C216&classifIds=6201%2C6202&tri=date_desc' }}",
@@ -223,8 +325,14 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Accept", "value": "application/json, text/plain, */*" },
-            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" }
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            }
           ]
         }
       }
@@ -234,7 +342,10 @@
       "name": "Ouest France Immo - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 1200],
+      "position": [
+        320,
+        1024
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -243,10 +354,13 @@
     },
     {
       "id": "merge-branches-5",
-      "name": "Fusionner branches 5",
+      "name": "Fusion + Ouest France Immo",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2480, 400],
+      "position": [
+        624,
+        1008
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -257,17 +371,32 @@
       "name": "Foncia - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 1380],
+      "position": [
+        0,
+        1200
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://fnc-api.prod.fonciatech.net/annonces/annonces/search",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Accept", "value": "application/json, text/plain, */*" },
-            { "name": "Content-Type", "value": "application/json" },
-            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" },
-            { "name": "Referer", "value": "https://fr.foncia.com/" }
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Referer",
+              "value": "https://fr.foncia.com/"
+            }
           ]
         },
         "sendBody": true,
@@ -280,7 +409,10 @@
       "name": "Foncia - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 1380],
+      "position": [
+        320,
+        1200
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -289,10 +421,13 @@
     },
     {
       "id": "merge-branches-6",
-      "name": "Fusionner branches 6",
+      "name": "Fusion + Foncia",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2680, 400],
+      "position": [
+        624,
+        1184
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -303,16 +438,27 @@
       "name": "La Française Immobilière - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 1560],
+      "position": [
+        0,
+        1392
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ 'https://www.la-francaise-immobiliere.fr/location/?post_types=location&categorie%5B%5D=27&categorie%5B%5D=23&nb_chambres_min=' + Math.max(0, ($('Config critères (défaut)').first().json.pieces_min || 2) - 1) + '&nb_chambres_max=' + Math.max(0, ($('Config critères (défaut)').first().json.pieces_max || 3) - 1) + '&prix_min=0&prix_max=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&submitted=1&o=date-desc&action=load_search_results&wia_6_type=&searchOnMap=0&searchNeighbor=true&wia_1_reference=' }}",
-        "options": { "timeout": 15000 },
+        "options": {
+          "timeout": 15000
+        },
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" },
-            { "name": "Accept", "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" }
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
           ]
         }
       }
@@ -322,7 +468,10 @@
       "name": "La Française Immobilière - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 1560],
+      "position": [
+        320,
+        1392
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -331,10 +480,13 @@
     },
     {
       "id": "merge-branches-7",
-      "name": "Fusionner branches 7",
+      "name": "Fusion + La Française Immobilière",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2840, 400],
+      "position": [
+        624,
+        1376
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -345,16 +497,27 @@
       "name": "Guenno - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 1740],
+      "position": [
+        0,
+        1568
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minP = c.pieces_min || 2; const maxP = c.pieces_max || 3; let rooms = ''; for (let i = minP; i <= maxP; i++) rooms += '&number_room%5B%5D=' + i; return 'https://www.guenno.com/biens/recherche?mandate_type=2&realty_type%5B%5D=1' + rooms + '&min_surface=' + (c.surface_min_m2 || '') + '&town=RENNES&price_max=' + (c.prix_max_cc || 700) + '&east=-1.353481131054688&west=-2.229640799023438&north=48.47728162287364&south=47.67813899953636'; })() }}",
-        "options": { "timeout": 15000 },
+        "options": {
+          "timeout": 15000
+        },
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" },
-            { "name": "X-Requested-With", "value": "XMLHttpRequest" }
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            }
           ]
         }
       }
@@ -364,7 +527,10 @@
       "name": "Guenno - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 1740],
+      "position": [
+        320,
+        1568
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -373,10 +539,13 @@
     },
     {
       "id": "merge-branches-8",
-      "name": "Fusionner branches 8",
+      "name": "Fusion + Guenno",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [3020, 400],
+      "position": [
+        624,
+        1552
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -387,11 +556,16 @@
       "name": "Lamotte - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 1940],
+      "position": [
+        0,
+        1760
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&pieces%5B%5D=' + i; return 'https://www.lamotte.fr/annonces/?acquisition=Location&immobilier=Logement&type%5B%5D=Appartement&type%5B%5D=Maison&location%5Bdep%5D%5B%5D=35&price_min=&price_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&surface_min=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 35) + '&surface_max=' + (c.surface_max_m2 != null ? c.surface_max_m2 : 75) + pieces; })() }}",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       }
     },
     {
@@ -399,7 +573,10 @@
       "name": "Lamotte - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 1940],
+      "position": [
+        320,
+        1760
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -408,10 +585,13 @@
     },
     {
       "id": "merge-branches-9",
-      "name": "Fusionner branches 9",
+      "name": "Fusion + Lamotte",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [3200, 400],
+      "position": [
+        624,
+        1744
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -422,11 +602,16 @@
       "name": "Kermarrec - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 2140],
+      "position": [
+        0,
+        1968
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&nb_pieces%5B%5D=' + i; return 'https://www.kermarrec-habitation.fr/location/?post_type=location&false-select=on&ville%5B%5D=rennes-35000&typebien%5B%5D=appartement&typebien%5B%5D=maison' + pieces + '&budget_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&reference=&rayon=20&avec_carte=false&tri=pertinence'; })() }}",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       }
     },
     {
@@ -434,7 +619,10 @@
       "name": "Kermarrec - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 2140],
+      "position": [
+        320,
+        1968
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -443,10 +631,13 @@
     },
     {
       "id": "merge-branches-10",
-      "name": "Fusionner branches 10",
+      "name": "Fusion + Kermarrec",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [3380, 400],
+      "position": [
+        624,
+        1952
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -457,11 +648,16 @@
       "name": "Nestenn - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 2340],
+      "position": [
+        0,
+        2160
+      ],
       "parameters": {
         "method": "GET",
         "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var pieces = c.pieces_min != null ? c.pieces_min : 2; return 'https://nestenn.com/listing?sort=&typeTransaction=louer&type_bien=Maison,Appartement&villes=35%20Ille-et-Vilaine%20(D%C3%A9partement)&prix_min=&prix_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&surface_min=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 35) + '&chambres=&pieces=' + pieces + '&ref=&dpe='; })() }}",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       }
     },
     {
@@ -469,7 +665,10 @@
       "name": "Nestenn - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 2340],
+      "position": [
+        320,
+        2160
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -478,10 +677,13 @@
     },
     {
       "id": "merge-branches-11",
-      "name": "Fusionner branches 11",
+      "name": "Fusion + Nestenn",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [3560, 400],
+      "position": [
+        624,
+        2144
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -492,16 +694,28 @@
       "name": "Square Habitat - Récup annonces",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [940, 2540],
+      "position": [
+        0,
+        2368
+      ],
       "parameters": {
         "method": "POST",
         "url": "https://api.ca-immobilier.fr/arts/bien/v2/api/fo/bien",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Content-Type", "value": "application/json" },
-            { "name": "Accept", "value": "application/json" },
-            { "name": "User-Agent", "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" }
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            }
           ]
         },
         "sendBody": true,
@@ -514,7 +728,10 @@
       "name": "Square Habitat - Vers format annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1260, 2540],
+      "position": [
+        320,
+        2368
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -523,10 +740,13 @@
     },
     {
       "id": "merge-branches-12",
-      "name": "Fusionner branches 12",
+      "name": "Fusion + Square Habitat",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [3680, 400],
+      "position": [
+        624,
+        2352
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -537,7 +757,10 @@
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3860, 400],
+      "position": [
+        1088,
+        224
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -549,11 +772,14 @@
       "name": "Filtrer selon critères",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3920, 400],
+      "position": [
+        1344,
+        224
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\u0300-\u036f]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+s\\/\\s+/gi, ' sur ')\n    .replace(/\\bseich\\b/gi, 'seiche')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+s\\/\\s+/gi, ' sur ')\n    .replace(/\\bseich\\b/gi, 'seiche')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
       }
     },
     {
@@ -561,7 +787,10 @@
       "name": "Construire id_global",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [4100, 400],
+      "position": [
+        1616,
+        224
+      ],
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
@@ -573,20 +802,39 @@
       "name": "GS - Lire toutes les lignes",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [4280, 620],
+      "position": [
+        1920,
+        528
+      ],
       "parameters": {
         "operation": "read",
-        "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
-        "sheetName": { "__rl": true, "value": "Feuille 1", "mode": "name" }
+        "documentId": {
+          "__rl": true,
+          "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Feuille 1",
+          "mode": "name"
+        }
       },
-      "credentials": { "googleSheetsOAuth2Api": { "id": "", "name": "Google Sheets" } }
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets"
+        }
+      }
     },
     {
       "id": "merge-doublons",
       "name": "Merge annonces + sheet",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [4280, 400],
+      "position": [
+        1904,
+        240
+      ],
       "parameters": {
         "mode": "append",
         "options": {}
@@ -597,7 +845,10 @@
       "name": "Filtrer doublons",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [4460, 400],
+      "position": [
+        2144,
+        240
+      ],
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
@@ -609,11 +860,22 @@
       "name": "GS - Enregistrer annonces",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [4640, 200],
+      "position": [
+        2400,
+        16
+      ],
       "parameters": {
         "operation": "append",
-        "documentId": { "__rl": true, "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c", "mode": "id" },
-        "sheetName": { "__rl": true, "value": "Feuille 1", "mode": "name" },
+        "documentId": {
+          "__rl": true,
+          "value": "1iPINAVHymzg7lN4DIi3YJyFYXIwpVvy7C0zPNGMcL3c",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Feuille 1",
+          "mode": "name"
+        },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
@@ -637,14 +899,22 @@
           }
         }
       },
-      "credentials": { "googleSheetsOAuth2Api": { "id": "", "name": "Google Sheets" } }
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets"
+        }
+      }
     },
     {
       "id": "groq-http",
       "name": "Groq - Générer message",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [4700, 400],
+      "position": [
+        2432,
+        384
+      ],
       "parameters": {
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
@@ -655,14 +925,22 @@
         "jsonBody": "={\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"Tu rédiges des messages courts pour Telegram à partir d'annonces immobilières.\" },\n    { \"role\": \"user\", \"content\": \"Résumé 3-4 lignes en français. Inclure type (T2/T3), ville/quartier, surface, prix CC et lien.\\nTitre: {{ $json.titre }}\\nVille: {{ $json.ville }} {{ $json.quartier }}\\nSurface: {{ $json.surface_m2 }} m², Loyer: {{ $json.loyer_cc }} €/mois CC\\nURL: {{ $json.url }}\" }\n  ]\n}",
         "options": {}
       },
-      "credentials": { "httpHeaderAuth": { "id": "", "name": "Groq_API" } }
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Groq_API"
+        }
+      }
     },
     {
       "id": "extract-message-node",
       "name": "Extraire texte Groq",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [4880, 400],
+      "position": [
+        2688,
+        384
+      ],
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
@@ -674,7 +952,10 @@
       "name": "Telegram - Envoyer message",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [5060, 400],
+      "position": [
+        2928,
+        384
+      ],
       "parameters": {
         "chatId": "6558659046",
         "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}",
@@ -682,173 +963,618 @@
           "appendAttribution": false
         }
       },
-      "credentials": { "telegramApi": { "id": "", "name": "Telegram" } }
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram"
+        }
+      }
     }
   ],
   "connections": {
     "Cron - Vérif annonces": {
-      "main": [[{ "node": "Config critères (défaut)", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Config critères (défaut)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Config critères (défaut)": {
-      "main": [[
-        { "node": "Bienici - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Trente Cinq Notaires - Récup HTML", "type": "main", "index": 0 },
-        { "node": "Action Logement - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Giboire - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Afedim - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Ouest France Immo - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Foncia - Récup annonces", "type": "main", "index": 0 },
-        { "node": "La Française Immobilière - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Guenno - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Lamotte - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Kermarrec - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Nestenn - Récup annonces", "type": "main", "index": 0 },
-        { "node": "Square Habitat - Récup annonces", "type": "main", "index": 0 },
-        { "node": "GS - Lire toutes les lignes", "type": "main", "index": 0 }
-      ]]
+      "main": [
+        [
+          {
+            "node": "Bienici - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trente Cinq Notaires - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Action Logement - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Giboire - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Afedim - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Ouest France Immo - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Foncia - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "La Française Immobilière - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Guenno - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Lamotte - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Kermarrec - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nestenn - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Square Habitat - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GS - Lire toutes les lignes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Bienici - Récup annonces": {
-      "main": [[{ "node": "Bienici - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Bienici - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Bienici - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion Bienici + TCN",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Trente Cinq Notaires - Récup HTML": {
-      "main": [[{ "node": "Trente Cinq Notaires - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Trente Cinq Notaires - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Trente Cinq Notaires - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion Bienici + TCN",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Action Logement - Récup annonces": {
-      "main": [[{ "node": "Action Logement - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Action Logement - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Action Logement - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Action Logement",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Giboire - Récup annonces": {
-      "main": [[{ "node": "Giboire - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Giboire - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Giboire - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 3", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Giboire",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Afedim - Récup annonces": {
-      "main": [[{ "node": "Afedim - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Afedim - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Afedim - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 4", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Afedim",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Ouest France Immo - Récup annonces": {
-      "main": [[{ "node": "Ouest France Immo - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Ouest France Immo - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Ouest France Immo - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 5", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Ouest France Immo",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Foncia - Récup annonces": {
-      "main": [[{ "node": "Foncia - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Foncia - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Foncia - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 6", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Foncia",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "La Française Immobilière - Récup annonces": {
-      "main": [[{ "node": "La Française Immobilière - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "La Française Immobilière - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "La Française Immobilière - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 7", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + La Française Immobilière",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Guenno - Récup annonces": {
-      "main": [[{ "node": "Guenno - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Guenno - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Guenno - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 8", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Guenno",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Lamotte - Récup annonces": {
-      "main": [[{ "node": "Lamotte - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Lamotte - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Lamotte - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 9", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Lamotte",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Kermarrec - Récup annonces": {
-      "main": [[{ "node": "Kermarrec - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Kermarrec - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Kermarrec - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 10", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Kermarrec",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Nestenn - Récup annonces": {
-      "main": [[{ "node": "Nestenn - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Nestenn - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Nestenn - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 11", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Nestenn",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Square Habitat - Récup annonces": {
-      "main": [[{ "node": "Square Habitat - Vers format annonces", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Square Habitat - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Square Habitat - Vers format annonces": {
-      "main": [[{ "node": "Fusionner branches 12", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Fusion + Square Habitat",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
-    "Fusionner branches": {
-      "main": [[{ "node": "Fusionner branches 2", "type": "main", "index": 0 }]]
+    "Fusion Bienici + TCN": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Action Logement",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 2": {
-      "main": [[{ "node": "Fusionner branches 3", "type": "main", "index": 0 }]]
+    "Fusion + Action Logement": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Giboire",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 3": {
-      "main": [[{ "node": "Fusionner branches 4", "type": "main", "index": 0 }]]
+    "Fusion + Giboire": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Afedim",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 4": {
-      "main": [[{ "node": "Fusionner branches 5", "type": "main", "index": 0 }]]
+    "Fusion + Afedim": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Ouest France Immo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 5": {
-      "main": [[{ "node": "Fusionner branches 6", "type": "main", "index": 0 }]]
+    "Fusion + Ouest France Immo": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Foncia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 6": {
-      "main": [[{ "node": "Fusionner branches 7", "type": "main", "index": 0 }]]
+    "Fusion + Foncia": {
+      "main": [
+        [
+          {
+            "node": "Fusion + La Française Immobilière",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 7": {
-      "main": [[{ "node": "Fusionner branches 8", "type": "main", "index": 0 }]]
+    "Fusion + La Française Immobilière": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Guenno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 8": {
-      "main": [[{ "node": "Fusionner branches 9", "type": "main", "index": 0 }]]
+    "Fusion + Lamotte": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Kermarrec",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 9": {
-      "main": [[{ "node": "Fusionner branches 10", "type": "main", "index": 0 }]]
+    "Fusion + Kermarrec": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Nestenn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 10": {
-      "main": [[{ "node": "Fusionner branches 11", "type": "main", "index": 0 }]]
+    "Fusion + Nestenn": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Square Habitat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
-    "Fusionner branches 11": {
-      "main": [[{ "node": "Fusionner branches 12", "type": "main", "index": 0 }]]
-    },
-    "Fusionner branches 12": {
-      "main": [[{ "node": "Normaliser annonces", "type": "main", "index": 0 }]]
+    "Fusion + Square Habitat": {
+      "main": [
+        [
+          {
+            "node": "Normaliser annonces",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Normaliser annonces": {
-      "main": [[{ "node": "Filtrer selon critères", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Filtrer selon critères",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Filtrer selon critères": {
-      "main": [[{ "node": "Construire id_global", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Construire id_global",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Construire id_global": {
-      "main": [[{ "node": "Merge annonces + sheet", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Merge annonces + sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "GS - Lire toutes les lignes": {
-      "main": [[{ "node": "Merge annonces + sheet", "type": "main", "index": 1 }]]
+      "main": [
+        [
+          {
+            "node": "Merge annonces + sheet",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     },
     "Merge annonces + sheet": {
-      "main": [[{ "node": "Filtrer doublons", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Filtrer doublons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Filtrer doublons": {
-      "main": [[
-        { "node": "GS - Enregistrer annonces", "type": "main", "index": 0 },
-        { "node": "Groq - Générer message", "type": "main", "index": 0 }
-      ]]
+      "main": [
+        [
+          {
+            "node": "GS - Enregistrer annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Groq - Générer message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Groq - Générer message": {
-      "main": [[{ "node": "Extraire texte Groq", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Extraire texte Groq",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Extraire texte Groq": {
-      "main": [[{ "node": "Telegram - Envoyer message", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Telegram - Envoyer message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + Guenno": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Lamotte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "settings": { "timezone": "Europe/Paris" },
-  "meta": { "templateCredsSetupCompleted": false }
+  "settings": {
+    "timezone": "Europe/Paris"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
 }
