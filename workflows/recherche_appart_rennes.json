@@ -107,7 +107,8 @@
         "method": "GET",
         "url": "={{ 'https://www.bienici.com/realEstateAds.json?filters=' + encodeURIComponent(JSON.stringify({ size: 24, from: 0, filterType: 'rent', propertyType: ['house','flat'], maxPrice: $('Config critères (défaut)').first().json.prix_max_cc, minRooms: $('Config critères (défaut)').first().json.pieces_min, maxRooms: $('Config critères (défaut)').first().json.pieces_max, minArea: $('Config critères (défaut)').first().json.surface_min_m2, maxArea: $('Config critères (défaut)').first().json.surface_max_m2, page: 1, sortBy: 'relevance', sortOrder: 'desc', onTheMarket: [true], mapMode: 'enabled', newProperty: false, blurInfoType: ['disk','exact'], zoneIdsByTypes: { zoneIds: ($('Config critères (défaut)').first().json.zone_ids_bienici || '-145996,-29339,-78150,-75588,-54517').split(',').map(z => z.trim()).filter(Boolean) } })) + '&extensionType=extendedIfNoResult&enableGoogleStructuredDataAggregates=true&leadingCount=2&id=69ac364ff3e55c00b4185c9f' }}",
         "options": {}
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "bienici-transform",
@@ -139,7 +140,8 @@
         "options": {
           "timeout": 15000
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "trentecinq-transform",
@@ -172,7 +174,8 @@
         "specifyBody": "json",
         "jsonBody": "={{ { municipalities: [{ code: '35238', postcode: '35000' }], searchRadiusInKm: 50, maxRent: $('Config critères (défaut)').first().json.prix_max_cc, typologyCodes: ['T2','T3'], productGuids: ['712f4424-7590-4912-8ed8-f192b26557f8'] } }}",
         "options": {}
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "actionlogement-transform",
@@ -204,7 +207,8 @@
         "options": {
           "timeout": 15000
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "giboire-transform",
@@ -236,7 +240,8 @@
         "options": {
           "timeout": 15000
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "afedim-transform",
@@ -335,7 +340,8 @@
             }
           ]
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "ouestfrance-transform",
@@ -402,7 +408,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ type: 'location', filters: { localities: { slugs: ['rennes-35'], radiusKm: 20 }, typesBien: ['appartement','maison'], surface: { min: $('Config critères (défaut)').first().json.surface_min_m2, max: $('Config critères (défaut)').first().json.surface_max_m2 }, prix: { max: $('Config critères (défaut)').first().json.prix_max_cc }, nbPiece: { min: $('Config critères (défaut)').first().json.pieces_min, max: $('Config critères (défaut)').first().json.pieces_max } }, expandNearby: true, size: 24 }) }}"
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "foncia-transform",
@@ -461,7 +468,8 @@
             }
           ]
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "lafrancaise-transform",
@@ -520,7 +528,8 @@
             }
           ]
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "guenno-transform",
@@ -566,7 +575,8 @@
         "options": {
           "timeout": 15000
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "lamotte-transform",
@@ -612,7 +622,8 @@
         "options": {
           "timeout": 15000
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "kermarrec-transform",
@@ -658,7 +669,8 @@
         "options": {
           "timeout": 15000
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "nestenn-transform",
@@ -721,7 +733,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var codes = []; for (var i = minP; i <= maxP; i++) codes.push(i + 'PIECES'); return JSON.stringify({ localisations: { codesCommunes: ['35238'] }, codesTypesBiens: ['4','5'], isLocation: true, nbKilometresRecherche: 20, codesNbPieces: codes, budgetMax: c.prix_max_cc != null ? c.prix_max_cc : 700, surfaceMin: c.surface_min_m2 != null ? c.surface_min_m2 : 35, surfaceMax: c.surface_max_m2 != null ? c.surface_max_m2 : 75, pagination: { itemsPerPage: 18, currentPage: 1 } }); })() }}"
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "id": "squarehabitat-transform",
@@ -969,6 +982,29 @@
           "name": "Telegram"
         }
       }
+    },
+    {
+      "id": "telegram-alerte-erreur",
+      "name": "Telegram - Alerte erreur agence",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2928,
+        600
+      ],
+      "parameters": {
+        "chatId": "6558659046",
+        "text": "=⚠️ Erreur agence (récup annonces)\n\nNœud : {{ $prevNode.name }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": "Telegram"
+        }
+      }
     }
   ],
   "connections": {
@@ -1067,6 +1103,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1086,6 +1129,13 @@
         [
           {
             "node": "Trente Cinq Notaires - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
             "type": "main",
             "index": 0
           }
@@ -1111,6 +1161,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1130,6 +1187,13 @@
         [
           {
             "node": "Giboire - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
             "type": "main",
             "index": 0
           }
@@ -1155,6 +1219,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1174,6 +1245,13 @@
         [
           {
             "node": "Ouest France Immo - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
             "type": "main",
             "index": 0
           }
@@ -1199,6 +1277,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1218,6 +1303,13 @@
         [
           {
             "node": "La Française Immobilière - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
             "type": "main",
             "index": 0
           }
@@ -1243,6 +1335,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1262,6 +1361,13 @@
         [
           {
             "node": "Lamotte - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
             "type": "main",
             "index": 0
           }
@@ -1287,6 +1393,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1309,6 +1422,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -1328,6 +1448,13 @@
         [
           {
             "node": "Square Habitat - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
             "type": "main",
             "index": 0
           }
