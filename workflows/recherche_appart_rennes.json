@@ -69,7 +69,7 @@
             {
               "id": "villes_cibles",
               "name": "villes_cibles",
-              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Fougères\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\", \"Mordelles\"]",
+              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\", \"Mordelles\", \"Gévezé\"]",
               "type": "string"
             },
             {
@@ -766,6 +766,516 @@
       }
     },
     {
+      "id": "caimmo-http",
+      "name": "CA Immobilier - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        2576
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.ca-immobilier.fr/louer/recherche/resultat",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/javascript, */*; q=0.01"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            {
+              "name": "Referer",
+              "value": "https://www.ca-immobilier.fr/louer/recherche"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "from",
+              "value": "0"
+            },
+            {
+              "name": "minarea",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_min_m2 || 35 }}"
+            },
+            {
+              "name": "maxarea",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_max_m2 || 75 }}"
+            },
+            {
+              "name": "maxprice",
+              "value": "={{ $('Config critères (défaut)').first().json.prix_max_cc || 700 }}"
+            },
+            {
+              "name": "sortby",
+              "value": "price_asc"
+            },
+            {
+              "name": "codes[]",
+              "value": "35000:rennes:35238"
+            },
+            {
+              "name": "sections[]",
+              "value": "location"
+            },
+            {
+              "name": "types[]",
+              "value": "appartment"
+            },
+            {
+              "name": "zones[]",
+              "value": "2"
+            },
+            {
+              "name": "zones[]",
+              "value": "3"
+            },
+            {
+              "name": "distance",
+              "value": "30"
+            },
+            {
+              "name": "displayMode",
+              "value": "mosaic"
+            },
+            {
+              "name": "size",
+              "value": "20"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "caimmo-transform",
+      "name": "CA Immobilier - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        2576
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.ca-immobilier.fr';\nconst item = $input.first();\nconst hitsRoot = item.json && item.json.hits;\nconst hits = hitsRoot && Array.isArray(hitsRoot.hits) ? hitsRoot.hits : [];\nif (!Array.isArray(hits) || hits.length === 0) return [];\nreturn hits.map(h => {\n  const id = h.reference != null ? String(h.reference) : (h.id != null ? String(h.id) : '');\n  const ville = (h.city || '').trim();\n  const typeBien = (h.kind || '').trim() || 'appartement';\n  const surface = h.characteristic_area != null ? Number(h.characteristic_area) : null;\n  const pieces = h.characteristic_number_part != null ? Number(h.characteristic_number_part) : null;\n  const loyerCc = h.characteristic_price != null ? Number(h.characteristic_price) : null;\n  const loyerHt = h.rent_rent_ht != null ? Number(h.rent_rent_ht) : null;\n  let charges = null;\n  if (!Number.isNaN(loyerCc) && !Number.isNaN(loyerHt) && loyerCc != null && loyerHt != null) {\n    charges = loyerCc - loyerHt;\n  }\n  const baseOrigin = (h.base_origin || '').trim() || 'C3A';\n  const ref = h.reference != null ? String(h.reference) : '';\n  const url = (baseOrigin && ref) ? `${BASE}/biens/location/${baseOrigin}/${ref}` : '';\n  const titre = (h.name && String(h.name).trim()) || `${typeBien} - ${ville}` || `Annonce ${id}`;\n  return {\n    json: {\n      source: 'ca_immobilier',\n      id_site: id,\n      titre,\n      description: '',\n      ville,\n      quartier: (h.Program && h.Program.name) ? String(h.Program.name).trim() : '',\n      adresse: '',\n      pieces: Number.isNaN(pieces) ? null : pieces,\n      surface_m2: Number.isNaN(surface) ? null : surface,\n      loyer_cc: Number.isNaN(loyerCc) ? null : loyerCc,\n      charges: Number.isNaN(charges) ? null : charges,\n      meuble: null,\n      url,\n      date_publication: h.rent_free_date || null\n    }\n  };\n});"
+      }
+    },
+    {
+      "id": "merge-branches-13",
+      "name": "Fusion + CA Immobilier",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        2544
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "cogir-http",
+      "name": "Cogir Immobilier - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        2784
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.cogir.fr/fr/data_listing_formrecherche.html",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/javascript, */*; q=0.01"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded; charset=UTF-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "loc",
+              "value": "location"
+            },
+            {
+              "name": "type[]",
+              "value": "maison"
+            },
+            {
+              "name": "type[]",
+              "value": "appartement"
+            },
+            {
+              "name": "surfacemin",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_min_m2 || 35 }}"
+            },
+            {
+              "name": "prixmax",
+              "value": "={{ $('Config critères (défaut)').first().json.prix_max_cc || 700 }}"
+            },
+            {
+              "name": "tri",
+              "value": "prix-asc"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "coordonnees",
+              "value": ""
+            },
+            {
+              "name": "supplementaires",
+              "value": ""
+            },
+            {
+              "name": "prixmin",
+              "value": ""
+            },
+            {
+              "name": "piece[]",
+              "value": "2"
+            },
+            {
+              "name": "piece[]",
+              "value": "3"
+            },
+            {
+              "name": "surfacemax",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_max_m2 || '' }}"
+            },
+            {
+              "name": "terrain",
+              "value": ""
+            },
+            {
+              "name": "numero",
+              "value": ""
+            },
+            {
+              "name": "idpers",
+              "value": ""
+            },
+            {
+              "name": "options",
+              "value": ""
+            },
+            {
+              "name": "telhab",
+              "value": ""
+            },
+            {
+              "name": "piecemin",
+              "value": ""
+            },
+            {
+              "name": "route",
+              "value": "listing"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "cogir-transform",
+      "name": "Cogir Immobilier - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        2784
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.cogir.fr';\nconst item = $input.first();\nconst body = (item.json && item.json.data) ? item.json.data : item.json;\nconst annonces =\n  (body && body.annonces && body.annonces.data) ||\n  (body && body.resultats && body.resultats.data) ||\n  [];\n\nif (!Array.isArray(annonces) || annonces.length === 0) {\n  return [];\n}\n\nfunction stripHtml(html) {\n  if (!html || typeof html !== 'string') return '';\n  return html\n    .replace(/<br\\s*\\/?/gi, '\\n')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n    .slice(0, 500);\n}\n\nreturn annonces.map(function (a) {\n  var id_site = a.numero || String(a.idhabit || '');\n  var ville = (a.ville || '').toUpperCase();\n  var url = '';\n\n  if (a.idhabit) {\n    url = BASE + '/fr/appartement-location-rennes-35-' + a.idhabit + '.html';\n  }\n\n  return {\n    json: {\n      source: 'cogir',\n      id_site: id_site,\n      titre: a.titre || ('Annonce ' + id_site),\n      description: stripHtml(a.descriptif),\n      ville: ville,\n      quartier: a.quartier || '',\n      adresse: a.adresse_bien || '',\n      pieces: a.piece != null ? a.piece : null,\n      surface_m2: a.surface != null ? a.surface : null,\n      loyer_cc: a.prix != null ? a.prix : null,\n      charges: a.charges != null ? a.charges : null,\n      meuble: null,\n      url: url,\n      date_publication: a.date1 || null\n    }\n  };\n});"
+      }
+    },
+    {
+      "id": "merge-branches-14",
+      "name": "Fusion + Cogir Immobilier",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        2768
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "neotoa-http",
+      "name": "Neotoa - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        3008
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.neotoa.fr/recherche/?projet=louer&typeBien%5B%5D=PAV&typeBien%5B%5D=APP&nombrePieces%5B%5D=T2&nombrePieces%5B%5D=T3&budget=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) }}",
+        "options": {
+          "timeout": 15000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "neotoa-transform",
+      "name": "Neotoa - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        3008
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.neotoa.fr';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') {\n  return [];\n}\n// On travaille directement sur tout le HTML\nconst parts = html.split(/<div class=\"card__wrapper[^\"]*card__wrapper--bien[^\"]*\"[^>]*>/i).slice(1);\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500);\n}\nconst out = [];\nfor (const c of parts) {\n  const aMatch = c.match(/<a\\s+href=\"([^\"]+)\"\\s+class=\"card card--bien\">/i);\n  if (!aMatch) continue;\n  const href = aMatch[1].trim();\n  const url = href.startsWith('http') ? href : BASE + href;\n  const titleMatch = c.match(/<h2 class=\"card__title\">([\\s\\S]*?)<\\/h2>/i);\n  const rawTitle = titleMatch ? stripHtml(titleMatch[1]) : '';\n  const cityMatch = c.match(/<p class=\"card__city\">([\\s\\S]*?)<\\/p>/i);\n  const rawCity = cityMatch ? stripHtml(cityMatch[1]) : '';\n  let ville = rawCity.replace(/\\(\\d+\\)\\s*$/, '').trim();\n  let quartier = '';\n  const priceMatch = c.match(/<p class=\"card__price\">([\\s\\S]*?)<\\/p>/i);\n  let loyer_cc = null;\n  if (priceMatch) {\n    const num = priceMatch[1].replace(/[^\\d]/g, '');\n    if (num) loyer_cc = parseInt(num, 10);\n  }\n  const roomsMatch = c.match(/<p class=\"card__rooms\">([\\s\\S]*?)<\\/p>/i);\n  let pieces = null;\n  if (roomsMatch) {\n    const num = roomsMatch[1].replace(/[^\\d]/g, '');\n    if (num) pieces = parseInt(num, 10);\n  }\n  const areaMatch = c.match(/<p class=\"card__area\">([\\s\\S]*?)<\\/p>/i);\n  let surface_m2 = null;\n  if (areaMatch) {\n    const num = areaMatch[1].replace(/[^\\d,\\.]/g, '').replace(',', '.');\n    if (num) surface_m2 = parseFloat(num);\n  }\n  let id_site = '';\n  const idMatch = url.match(/\\/([^\\/]+)\\/?$/);\n  if (idMatch) id_site = idMatch[1];\n  const titre = rawTitle || `Annonce ${id_site}`;\n  out.push({\n    json: {\n      source: 'neotoa',\n      id_site,\n      titre,\n      description: '',\n      ville,\n      quartier,\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\n// Dédoublonnage par id_site\nconst seen = new Set();\nconst uniques = out.filter(item => {\n  const id = item.json.id_site || '';\n  if (seen.has(id)) return false;\n  seen.add(id);\n  return true;\n});\nreturn uniques;"
+      }
+    },
+    {
+      "id": "cdchabitat-http",
+      "name": "CDC Habitat - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        3232
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.cdc-habitat.fr/recherche/location/bretagne/ille-et-vilaine?nbLoyerMax=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&nbPiece[]=2&nbPiece[]=3&cdTypeBien[]=Appartement&cdTypeBien[]=Maison' }}",
+        "options": {
+          "timeout": 15000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "cdchabitat-transform",
+      "name": "CDC Habitat - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        3232
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.cdc-habitat.fr';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') {\n  return [];\n}\nconst listMatch = html.match(/<div class=\"resultsList\" id=\"listeResultats\">([\\s\\S]*?)<div class=\"mobile-only\">/i);\nconst block = listMatch ? listMatch[1] : html;\nconst parts = block.split(/<article class=\"residenceCard\">/i).slice(1);\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500);\n}\nconst out = [];\nfor (const c of parts) {\n  const hrefMatch = c.match(/<a href=\"([^\"]+)\"[^>]*>\\s*<h3 class=\"h4\">/i);\n  if (!hrefMatch) continue;\n  const href = hrefMatch[1].trim();\n  const url = href.startsWith('http') ? href : BASE + href;\n  let id_site = '';\n  const idMatch = url.match(/\\/(\\d+)(?:\\/)?$/);\n  if (idMatch) id_site = idMatch[1];\n  const typeMatch = c.match(/<div class=\"type small\">([^<]+)<\\/div>/i);\n  const typeStr = typeMatch ? stripHtml(typeMatch[1]) : '';\n  const h3Match = c.match(/<h3 class=\"h4\">([\\s\\S]*?)<\\/h3>/i);\n  const h3Text = h3Match ? stripHtml(h3Match[1]) : '';\n  let pieces = null;\n  const piecesMatch = h3Text.match(/(\\d+)\\s+pièces?/i);\n  if (piecesMatch) pieces = parseInt(piecesMatch[1], 10);\n  let surface_m2 = null;\n  const surfMatch = h3Text.match(/(\\d+[\\.,]?\\d*)\\s*m²/i);\n  if (surfMatch) surface_m2 = parseFloat(surfMatch[1].replace(',', '.'));\n  const locMatch = c.match(/<div class=\"location small\">([\\s\\S]*?)<\\/div>/i);\n  let ville = '';\n  if (locMatch) {\n    const locText = stripHtml(locMatch[1]);\n    ville = locText.replace(/\\(\\d+\\)\\s*$/, '').trim();\n  }\n  let loyer_cc = null;\n  const priceMatch = c.match(/<div class=\"price\">([\\s\\S]*?)<\\/div>/i);\n  if (priceMatch) {\n    const num = priceMatch[1].replace(/[^0-9,\\.]/g, '').replace(',', '.');\n    if (num) loyer_cc = parseFloat(num);\n  }\n  const notesMatch = c.match(/<div class=\"notes small\">([\\s\\S]*?)<\\/div>/i);\n  const notes = notesMatch ? stripHtml(notesMatch[1]) : '';\n  const titre = ((typeStr ? typeStr + ' ' : '') + h3Text).trim() || `Annonce ${id_site}`;\n  out.push({\n    json: {\n      source: 'cdc_habitat',\n      id_site,\n      titre,\n      description: notes,\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nconst uniques = out.filter(item => {\n  const id = item.json.id_site || '';\n  if (seen.has(id)) return false;\n  seen.add(id);\n  return true;\n});\nreturn uniques;"
+      }
+    },
+    {
+      "id": "merge-branches-16",
+      "name": "Fusion + CDC Habitat",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        3216
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "oqoro-http",
+      "name": "Oqoro - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        3456
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.oqoro.com/recherche?bbox=48.59123995022556%2C-2.2538504632400618%2C47.66379024691885%2C-1.1124783922239287&query=&city=&filters%5Bsingle_lot%5D%5B%5D=location&filters%5Bfurnished%5D%5B%5D=false&filters%5Bloyer%5D%5Bfrom%5D=&filters%5Bloyer%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&filters%5Btype%5D%5B%5D=t2&filters%5Btype%5D%5B%5D=t3&filters%5Barea%5D%5Bfrom%5D=' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '&filters%5Barea%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '&filters%5Brooms%5D=0&filters%5Bpromotion%5D=0' }}",
+        "options": {
+          "timeout": 15000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "oqoro-transform",
+      "name": "Oqoro - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        3456
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.oqoro.com';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') {\n  return [];\n}\nconst lotsMatch = html.match(/id=\"data-lots\"[^>]+data-lots=\"([^\"]+)\"/i);\nif (!lotsMatch) {\n  return [];\n}\nlet rawJson = lotsMatch[1];\nrawJson = rawJson.replace(/&quot;/g, '\"');\nlet lots;\ntry {\n  lots = JSON.parse(rawJson);\n} catch (e) {\n  return [];\n}\nif (!Array.isArray(lots) || lots.length === 0) {\n  return [];\n}\nconst out = [];\nfor (const lot of lots) {\n  const id_site = lot.public_uid || String(lot.lot_id || lot.model_id || '');\n  const slug = lot.slug || '';\n  const url = slug ? (slug.startsWith('http') ? slug : BASE + slug) : '';\n  const ville = lot.city || '';\n  const surface_m2 = lot.property_area != null ? parseFloat(String(lot.property_area).replace(',', '.')) : null;\n  const loyer_cc = lot.loyer_cc != null ? Number(lot.loyer_cc) : null;\n  let pieces = null;\n  if (typeof lot.property_type === 'string' && /^t(\\d+)/i.test(lot.property_type)) {\n    pieces = parseInt(RegExp.$1, 10);\n  } else if (typeof lot.nb_bedrooms === 'number') {\n    pieces = lot.nb_bedrooms + 1;\n  }\n  const equipments = Array.isArray(lot.equipments) ? lot.equipments : [];\n  const extras = Array.isArray(lot.additional_spaces) ? lot.additional_spaces : [];\n  const descParts = [];\n  if (equipments.length) descParts.push('Équipements: ' + equipments.join(', '));\n  if (extras.length) descParts.push('Espaces: ' + extras.join(', '));\n  const description = descParts.join(' | ');\n  let typeLabel = 'Appartement';\n  if (typeof lot.property_type === 'string') {\n    const lower = lot.property_type.toLowerCase();\n    if (lower.startsWith('t2')) typeLabel = 'Appartement T2';\n    else if (lower.startsWith('t3')) typeLabel = 'Appartement T3';\n  }\n  const titre = `${typeLabel} - location nue`.trim();\n  out.push({\n    json: {\n      source: 'oqoro',\n      id_site,\n      titre,\n      description,\n      ville,\n      quartier: '',\n      adresse: lot.address_street || '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: lot.is_furnished === true ? 'oui' : 'non',\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nconst uniques = out.filter(item => {\n  const id = item.json.id_site || '';\n  if (seen.has(id)) return false;\n  seen.add(id);\n  return true;\n});\nreturn uniques;"
+      }
+    },
+    {
+      "id": "century21-http",
+      "name": "Century 21 - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        3680
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.century21.fr/annonces/f/location-maison-appartement/d-35_ille_et_vilaine/s-' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '-' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '/st-0-/b-0-' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '/p-' + ($('Config critères (défaut)').first().json.pieces_min || 2) + '-' + ($('Config critères (défaut)').first().json.pieces_max || 3) + '/' }}",
+        "options": {
+          "timeout": 15000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "century21-transform",
+      "name": "Century 21 - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        3680
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.century21.fr';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nconst blocks = html.split(/<div class=\"tw-grid js-the-list-of-properties-list-property/).slice(1);\nconst out = [];\nfor (const block of blocks) {\n  const blockNorm = block.replace(/&nbsp;/g, ' ').replace(/&#8364;|&#x20AC;/gi, '\u20AC');\n  const uidMatch = block.match(/data-uid=\"(\\d+)\"/);\n  const id_site = uidMatch ? uidMatch[1] : '';\n  if (!id_site) continue;\n  const url = BASE + '/trouver_logement/detail/' + id_site + '/';\n  const heading4Match = blockNorm.match(/c-text-theme-heading-4[^>]*>([\\s\\S]*?)<br/i);\n  let ville = '';\n  if (heading4Match) {\n    const raw = heading4Match[1].replace(/<[^>]+>/g, ' ').trim();\n    ville = raw.replace(/\\s+\\d{2,5}\\s*$/, '').trim();\n  }\n  const surfaceMatch = blockNorm.match(/(\\d+(?:,\\d+)?)\\s*m\\s*(?:²|<sup>2<\\/sup>)/i);\n  const surface_m2 = surfaceMatch ? parseFloat(surfaceMatch[1].replace(',', '.')) : null;\n  const piecesMatch = blockNorm.match(/(\\d+)\\s*pièces?/i);\n  const pieces = piecesMatch ? parseInt(piecesMatch[1], 10) : null;\n  const priceMatch = blockNorm.match(/(\\d+)\\s*(?:&nbsp;)?(?:€|&euro;)/i);\n  const loyer_cc = priceMatch ? parseInt(priceMatch[1], 10) : null;\n  const titreMatch = blockNorm.match(/c-theme-heading-3[^>]*>([\\s\\S]*?)<\\/div>/i);\n  const titre = titreMatch ? titreMatch[1].replace(/<[^>]+>/g, ' ').trim().slice(0, 200) : ('Annonce ' + id_site);\n  const descMatch = blockNorm.match(/tw-truncate-safe[\\s\\S]*?>([\\s\\S]*?)<\\/div>/i);\n  const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500) : '';\n  out.push({\n    json: {\n      source: 'century21',\n      id_site,\n      titre,\n      description,\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-17",
+      "name": "Fusion + Oqoro",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        3440
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "merge-branches-18",
+      "name": "Fusion + Century 21",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        3664
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "merge-branches-15",
+      "name": "Fusion + Neotoa",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        2992
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "normalize-node",
       "name": "Normaliser annonces",
       "type": "n8n-nodes-base.code",
@@ -1084,6 +1594,36 @@
           },
           {
             "node": "Square Habitat - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CA Immobilier - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cogir Immobilier - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Neotoa - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CDC Habitat - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Oqoro - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Century 21 - Récup HTML",
             "type": "main",
             "index": 0
           },
@@ -1472,6 +2012,151 @@
         ]
       ]
     },
+    "CA Immobilier - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "CA Immobilier - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CA Immobilier - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + CA Immobilier",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Cogir Immobilier - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "Cogir Immobilier - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cogir Immobilier - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Cogir Immobilier",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Neotoa - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "Neotoa - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Neotoa - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Neotoa",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "CDC Habitat - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "CDC Habitat - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CDC Habitat - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + CDC Habitat",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Oqoro - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "Oqoro - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Oqoro - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Oqoro",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
     "Fusion Bienici + TCN": {
       "main": [
         [
@@ -1583,6 +2268,101 @@
       ]
     },
     "Fusion + Square Habitat": {
+      "main": [
+        [
+          {
+            "node": "Fusion + CA Immobilier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + CA Immobilier": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Cogir Immobilier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + Cogir Immobilier": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Neotoa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + Neotoa": {
+      "main": [
+        [
+          {
+            "node": "Fusion + CDC Habitat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + CDC Habitat": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Oqoro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + Oqoro": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Century 21",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Century 21 - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "Century 21 - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Century 21 - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Century 21",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Century 21": {
       "main": [
         [
           {
