@@ -69,7 +69,7 @@
             {
               "id": "villes_cibles",
               "name": "villes_cibles",
-              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\", \"Bruz\", \"Thorigné-Fouillard\", \"Noyal-Châtillon-sur-Seiche\", \"Montgermont\", \"Betton\", \"Le Rheu\", \"Saint-Jacques-de-la-Lande\", \"Chartres-de-Bretagne\", \"Mordelles\", \"Gévezé\"]",
+              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\",\"Bruz\",\"Thorigné-Fouillard\",\"Noyal-Châtillon-sur-Seiche\",\"Montgermont\",\"Betton\",\"Le Rheu\",\"Saint-Jacques-de-la-Lande\",\"Chartres-de-Bretagne\",\"Mordelles\",\"Gévezé\",\"Bédée\",\"Romillé\",\"Breteil\",\"Clayes\",\"La Nouaye\",\"Montfort-sur-Meu\",\"Iffendic\",\"Talensac\",\"Saint-Gonlay\",\"Parthenay-de-Bretagne\",\"Langan\",\"Irodouer\",\"Saint-Gilles\",\"L'Hermitage\",\"La Chapelle-Thouarault\",\"Cintré\",\"La Chapelle-du-Lou-du-Lac\",\"Saint-Uniac\",\"Landujan\",\"Montauban-de-Bretagne\",\"Langouet\",\"Vezin-le-Coquet\",\"Saint-M'Hervon\",\"Pleumeleuc\"]",
               "type": "string"
             },
             {
