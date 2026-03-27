@@ -13,6 +13,8 @@ Automated rental listing monitoring with [n8n](https://n8n.io). The workflow che
 - **CDC Habitat** (cdc-habitat.fr, page de recherche HTML Ille-et-Vilaine ; location appartement/maison T2–T3, filtres depuis Config: loyer max via `nbLoyerMax`)
 - **Oqoro** (oqoro.com, page de recherche HTML avec `data-lots` JSON ; Ille-et-Vilaine via bbox, location non meublée T2–T3, filtres depuis Config: loyer max et surface min/max)
 - **Century 21** (century21.fr, page annonces HTML ; Ille-et-Vilaine d-35_ille_et_vilaine ; filtres depuis Config: surface min/max, prix max, pièces min/max via URL s-/b-/p-)
+- **Blot Immobilier** (blot-immobilier.fr, POST `admin-ajax.php` : `search_form_validate` pour les IDs puis `view_result` pour le HTML des cartes ; Ille-et-Vilaine 35, location maison + appartement ; filtres depuis Config : `estate_rentmax`, surfaces, `estate_nb_rooms`, même structure de formulaire que le site)
+- **Citya Immobilier** (citya.com, GET liste location appartement + maison Ille-et-Vilaine ; paramètres d’URL `prixMax`, `surfaceMin`, `nbrePiecesMin` depuis Config ; parsing JSON-LD `application/ld+json`, repli sur le DOM `#list_results`)
 - **Ouest France Immo** (API, louer Rennes 35 ; filtres depuis Config: pièces min, surface min/max, prix max ; tri date_desc, pas de pagination)
 - **Foncia** (API fnc-api.prod.fonciatech.net ; Rennes 35, rayon 20 km ; filtres depuis Config: pièces min/max, surface min/max, prix max)
 - **La Française Immobilière** (scraped from HTML ; toutes annonces, pas de filtre ville côté site ; Config: nb_chambres min/max = pièces−1, prix max ; tri date-desc)
@@ -27,7 +29,7 @@ Automated rental listing monitoring with [n8n](https://n8n.io). The workflow che
 ## What it does
 
 1. **Runs on a schedule** (e.g. every 30 seconds for testing; you can change this in the workflow).
-2. **Fetches listings** from Bienici, Trente Cinq Notaires, Action Logement, Giboire, Afedim, Ouest France Immo, Foncia, La Française Immobilière, Guenno Immobilier, Lamotte, Kermarrec Habitation, Nestenn, Square Habitat, Cogir Immobilier, Néotoa, CDC Habitat, Oqoro and Century 21 (configurable filters for Bienici; Trente Cinq Notaires: page 1, locations only; Action Logement: API, 50 km Rennes, T2/T3, max rent from Config; Giboire: Ille-et-Vilaine 35, price/surface/rooms from Config; Afedim: Ille-et-Vilaine, pièces/surface/budget from Config; Ouest France Immo: API louer Rennes 35, pièces/surface/prix from Config, tri date_desc; Foncia: API Rennes 35 rayon 20 km, pièces/surface/prix from Config; La Française Immobilière: HTML, nb_chambres/prix from Config, tri date-desc; Guenno: API Rennes + bbox, pièces min/max, prix max, surface min from Config; Lamotte: HTML dép. 35, pièces/surface/prix from Config; Kermarrec: HTML Rennes 20 km, pièces/prix from Config; Nestenn: HTML 35 Ille-et-Vilaine, pièces/prix/surface from Config; Square Habitat: API Rennes 35238 + 20 km, pièces/surface/prix from Config; Cogir: API form-urlencoded avec surface/prix depuis Config; Néotoa: HTML avec budget max depuis Config; CDC Habitat: HTML Ille-et-Vilaine avec budget max depuis Config; Oqoro: HTML avec `data-lots` JSON, bbox Ille-et-Vilaine, loyer/surface depuis Config; Century 21: HTML annonces Ille-et-Vilaine, surface/prix/pièces depuis Config via URL).
+2. **Fetches listings** from Bienici, Trente Cinq Notaires, Action Logement, Giboire, Afedim, Ouest France Immo, Foncia, La Française Immobilière, Guenno Immobilier, Lamotte, Kermarrec Habitation, Nestenn, Square Habitat, Cogir Immobilier, Néotoa, CDC Habitat, Oqoro, Century 21, Blot Immobilier and Citya Immobilier (configurable filters for Bienici; Trente Cinq Notaires: page 1, locations only; Action Logement: API, 50 km Rennes, T2/T3, max rent from Config; Giboire: Ille-et-Vilaine 35, price/surface/rooms from Config; Afedim: Ille-et-Vilaine, pièces/surface/budget from Config; Ouest France Immo: API louer Rennes 35, pièces/surface/prix from Config, tri date_desc; Foncia: API Rennes 35 rayon 20 km, pièces/surface/prix from Config; La Française Immobilière: HTML, nb_chambres/prix from Config, tri date-desc; Guenno: API Rennes + bbox, pièces min/max, prix max, surface min from Config; Lamotte: HTML dép. 35, pièces/surface/prix from Config; Kermarrec: HTML Rennes 20 km, pièces/prix from Config; Nestenn: HTML 35 Ille-et-Vilaine, pièces/prix/surface from Config; Square Habitat: API Rennes 35238 + 20 km, pièces/surface/prix from Config; Cogir: API form-urlencoded avec surface/prix depuis Config; Néotoa: HTML avec budget max depuis Config; CDC Habitat: HTML Ille-et-Vilaine avec budget max depuis Config; Oqoro: HTML avec `data-lots` JSON, bbox Ille-et-Vilaine, loyer/surface depuis Config; Century 21: HTML annonces Ille-et-Vilaine, surface/prix/pièces depuis Config via URL; Blot: deux requêtes AJAX `search_form_validate` + `view_result`, loyer max et critères alignés sur le formulaire location; Citya: GET catalogue Ille-et-Vilaine avec `prixMax` / `surfaceMin` / `nbrePiecesMin` depuis Config, extractions JSON-LD puis liste HTML).
 3. **Filters** results by your criteria (cities, neighbourhoods, min/max price, surface, etc.).
 4. **Deduplicates** against a Google Sheet: only listings not already in the sheet are processed.
 5. **Saves** new listings to the sheet and **sends a Telegram message** with a short summary generated by Groq (LLM).
@@ -92,7 +94,7 @@ n8n-location/
 ├── .env.example          # Template for required env vars
 ├── .env                  # Your secrets (not committed)
 ├── workflows/
-│   └── recherche_appart_rennes.json   # Main workflow (Bienici + Trente Cinq Notaires + Action Logement + Giboire + Afedim + Ouest France Immo + Foncia + La Française Immobilière + Guenno + Lamotte + Kermarrec + Nestenn + Square Habitat + Century 21 + Cogir + Néotoa + CDC Habitat + Oqoro + Sheet + Groq + Telegram)
+│   └── recherche_appart_rennes.json   # Main workflow (Bienici + Trente Cinq Notaires + Action Logement + Giboire + Afedim + Ouest France Immo + Foncia + La Française Immobilière + Guenno + Lamotte + Kermarrec + Nestenn + Square Habitat + Century 21 + Blot + Citya + Cogir + Néotoa + CDC Habitat + Oqoro + Sheet + Groq + Telegram)
 ├── .github/workflows/
 │   └── deploy-n8n.yml    # Optional: deploy to VPS on push
 └── README.md
@@ -128,11 +130,13 @@ The workflow already has merge nodes that combine:
 - **Fusionner branches 16:** above + CDC Habitat (cdc-habitat.fr recherche HTML Ille-et-Vilaine ; location appartement/maison T2–T3, budget max depuis Config).
 - **Fusionner branches 17:** above + Oqoro (oqoro.com recherche HTML ; Ille-et-Vilaine via bbox, location non meublée T2–T3, budget/surface depuis Config, données extraites depuis `data-lots` JSON).
 - **Fusionner branches 18:** above + Century 21 (century21.fr annonces HTML ; Ille-et-Vilaine d-35_ille_et_vilaine ; surface min/max, prix max, pièces min/max depuis Config).
+- **Fusion + Blot:** above + Blot Immobilier (`wp-admin/admin-ajax.php` : `search_form_validate` pour les IDs, puis `view_result` pour le HTML ; Ille-et-Vilaine 35, location ; loyer max / surfaces / pièces depuis Config, comme le formulaire web).
+- **Fusion + Citya:** above + Citya (GET liste location Ille-et-Vilaine ; `prixMax`, `surfaceMin`, `nbrePiecesMin` depuis Config ; JSON-LD + fallback `#list_results`). **Dernière fusion avant Normaliser annonces** dans la branche Century 21 → Blot → Citya.
 
 To add another agency or site:
 
 1. Duplicate or mirror the Bienici branch: a trigger/config → HTTP or scrape node → transform to the same format (e.g. `titre`, `ville`, `quartier`, `surface_m2`, `loyer_cc`, `url`, etc.).
-2. Connect that branch to **Fusion + Century 21** (or create a new merge and wire Fusion + Century 21 → new merge, new source → new merge, new merge → Normaliser annonces).
+2. Connect that branch into the merge chain (e.g. before **Fusion + Citya**, or insert a new merge between **Fusion + Citya** and **Normaliser annonces**) so every source still reaches **Normaliser annonces**.
 3. The rest of the pipeline (normalize → filter → id_global → sheet + dedup → Groq → Telegram) stays the same.
 
 Keeping a common schema (fields used in the workflow) makes it easy to add more sources without changing the rest of the logic.

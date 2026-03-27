@@ -138,7 +138,7 @@
         "method": "GET",
         "url": "https://www.trente-cinq-notaires.fr/recherche-annonces-immobilieres-notaires-bruz.html",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "onError": "continueErrorOutput"
@@ -205,7 +205,7 @@
         "method": "GET",
         "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minB = Math.max(0, (c.pieces_min || 2) - 1); const maxB = Math.max(0, (c.pieces_max || 3) - 1); let beds = ''; for (let i = minB; i <= maxB; i++) beds += '&nbBedrooms%5B%5D=' + i; return 'https://www.giboire.com/recherche-location/appartement_maison/?searchBy=default&address%5B%5D=35&priceMax=' + (c.prix_max_cc || 700) + '&livingSurfaceMin=' + (c.surface_min_m2 || 35) + '&livingSurfaceMax=' + (c.surface_max_m2 || 75) + beds + '&transactionType%5B%5D=Location&searchBy=default'; })() }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "onError": "continueErrorOutput"
@@ -238,7 +238,7 @@
         "method": "GET",
         "url": "={{ 'https://www.afedim.fr/fr/location/annonces/Appartement-Maison/Ille-et-Vilaine-France/' + ($('Config critères (défaut)').first().json.pieces_min || 2) + '-' + ($('Config critères (défaut)').first().json.pieces_max || 3) + '-pieces/surface-' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '-' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '-m2/budget-0-' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '-euros/rayon-0-km/disponible-False/options-NonMeuble/exclusPlafondRess-False/Resultats' }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "onError": "continueErrorOutput"
@@ -453,7 +453,7 @@
         "method": "GET",
         "url": "={{ 'https://www.la-francaise-immobiliere.fr/location/?post_types=location&categorie%5B%5D=27&categorie%5B%5D=23&nb_chambres_min=' + Math.max(0, ($('Config critères (défaut)').first().json.pieces_min || 2) - 1) + '&nb_chambres_max=' + Math.max(0, ($('Config critères (défaut)').first().json.pieces_max || 3) - 1) + '&prix_min=0&prix_max=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&submitted=1&o=date-desc&action=load_search_results&wia_6_type=&searchOnMap=0&searchNeighbor=true&wia_1_reference=' }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         },
         "sendHeaders": true,
         "headerParameters": {
@@ -513,7 +513,7 @@
         "method": "GET",
         "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minP = c.pieces_min || 2; const maxP = c.pieces_max || 3; let rooms = ''; for (let i = minP; i <= maxP; i++) rooms += '&number_room%5B%5D=' + i; return 'https://www.guenno.com/biens/recherche?mandate_type=2&realty_type%5B%5D=1' + rooms + '&min_surface=' + (c.surface_min_m2 || '') + '&town=RENNES&price_max=' + (c.prix_max_cc || 700) + '&east=-1.353481131054688&west=-2.229640799023438&north=48.47728162287364&south=47.67813899953636'; })() }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         },
         "sendHeaders": true,
         "headerParameters": {
@@ -573,7 +573,7 @@
         "method": "GET",
         "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&pieces%5B%5D=' + i; return 'https://www.lamotte.fr/annonces/?acquisition=Location&immobilier=Logement&type%5B%5D=Appartement&type%5B%5D=Maison&location%5Bdep%5D%5B%5D=35&price_min=&price_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&surface_min=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 35) + '&surface_max=' + (c.surface_max_m2 != null ? c.surface_max_m2 : 75) + pieces; })() }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "onError": "continueErrorOutput"
@@ -620,7 +620,7 @@
         "method": "GET",
         "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&nb_pieces%5B%5D=' + i; return 'https://www.kermarrec-habitation.fr/location/?post_type=location&false-select=on&ville%5B%5D=rennes-35000&typebien%5B%5D=appartement&typebien%5B%5D=maison' + pieces + '&budget_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&reference=&rayon=20&avec_carte=false&tri=pertinence'; })() }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "onError": "continueErrorOutput"
@@ -667,7 +667,7 @@
         "method": "GET",
         "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var pieces = c.pieces_min != null ? c.pieces_min : 2; return 'https://nestenn.com/listing?sort=&typeTransaction=louer&type_bien=Maison,Appartement&villes=35%20Ille-et-Vilaine%20(D%C3%A9partement)&prix_min=&prix_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&surface_min=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 35) + '&chambres=&pieces=' + pieces + '&ref=&dpe='; })() }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         }
       },
       "onError": "continueErrorOutput"
@@ -1048,7 +1048,7 @@
         "method": "GET",
         "url": "={{ 'https://www.neotoa.fr/recherche/?projet=louer&typeBien%5B%5D=PAV&typeBien%5B%5D=APP&nombrePieces%5B%5D=T2&nombrePieces%5B%5D=T3&budget=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         },
         "sendHeaders": true,
         "headerParameters": {
@@ -1094,7 +1094,7 @@
         "method": "GET",
         "url": "={{ 'https://www.cdc-habitat.fr/recherche/location/bretagne/ille-et-vilaine?nbLoyerMax=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&nbPiece[]=2&nbPiece[]=3&cdTypeBien[]=Appartement&cdTypeBien[]=Maison' }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         },
         "sendHeaders": true,
         "headerParameters": {
@@ -1154,7 +1154,7 @@
         "method": "GET",
         "url": "={{ 'https://www.oqoro.com/recherche?bbox=48.59123995022556%2C-2.2538504632400618%2C47.66379024691885%2C-1.1124783922239287&query=&city=&filters%5Bsingle_lot%5D%5B%5D=location&filters%5Bfurnished%5D%5B%5D=false&filters%5Bloyer%5D%5Bfrom%5D=&filters%5Bloyer%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&filters%5Btype%5D%5B%5D=t2&filters%5Btype%5D%5B%5D=t3&filters%5Barea%5D%5Bfrom%5D=' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '&filters%5Barea%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '&filters%5Brooms%5D=0&filters%5Bpromotion%5D=0' }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         },
         "sendHeaders": true,
         "headerParameters": {
@@ -1200,7 +1200,7 @@
         "method": "GET",
         "url": "={{ 'https://www.century21.fr/annonces/f/location-maison-appartement/d-35_ille_et_vilaine/s-' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '-' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '/st-0-/b-0-' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '/p-' + ($('Config critères (défaut)').first().json.pieces_min || 2) + '-' + ($('Config critères (défaut)').first().json.pieces_max || 3) + '/' }}",
         "options": {
-          "timeout": 15000
+          "timeout": 30000
         },
         "sendHeaders": true,
         "headerParameters": {
@@ -1234,6 +1234,277 @@
       }
     },
     {
+      "id": "blot-ids-http",
+      "name": "Blot - Récup IDs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        3904
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.blot-immobilier.fr/wp-admin/admin-ajax.php",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/javascript, */*; q=0.01"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded; charset=UTF-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "action",
+              "value": "search_form_validate"
+            },
+            {
+              "name": "form[0][name]",
+              "value": "action"
+            },
+            {
+              "name": "form[0][value]",
+              "value": "blot_search"
+            },
+            {
+              "name": "form[1][name]",
+              "value": "transaction_principale"
+            },
+            {
+              "name": "form[1][value]",
+              "value": "Louer"
+            },
+            {
+              "name": "form[2][name]",
+              "value": "estate_transaction_type"
+            },
+            {
+              "name": "form[2][value]",
+              "value": "Location"
+            },
+            {
+              "name": "form[3][name]",
+              "value": "estate_type"
+            },
+            {
+              "name": "form[3][value]",
+              "value": "maison"
+            },
+            {
+              "name": "form[4][name]",
+              "value": "estate_type"
+            },
+            {
+              "name": "form[4][value]",
+              "value": "appartement"
+            },
+            {
+              "name": "form[5][name]",
+              "value": "estate_description_crm"
+            },
+            {
+              "name": "form[5][value]",
+              "value": ""
+            },
+            {
+              "name": "form[6][name]",
+              "value": "estate_reference"
+            },
+            {
+              "name": "form[6][value]",
+              "value": ""
+            },
+            {
+              "name": "form[7][name]",
+              "value": "city"
+            },
+            {
+              "name": "form[7][value]",
+              "value": ""
+            },
+            {
+              "name": "form[8][name]",
+              "value": "estate_state"
+            },
+            {
+              "name": "form[8][value]",
+              "value": "35"
+            },
+            {
+              "name": "form[9][name]",
+              "value": "estate_personalized_radius"
+            },
+            {
+              "name": "form[9][value]",
+              "value": ""
+            },
+            {
+              "name": "form[10][name]",
+              "value": "estate_personalized_lat"
+            },
+            {
+              "name": "form[10][value]",
+              "value": ""
+            },
+            {
+              "name": "form[11][name]",
+              "value": "estate_personalized_lon"
+            },
+            {
+              "name": "form[11][value]",
+              "value": ""
+            },
+            {
+              "name": "form[12][name]",
+              "value": "estate_rentmax"
+            },
+            {
+              "name": "form[12][value]",
+              "value": "={{ $('Config critères (défaut)').first().json.prix_max_cc || 700 }}"
+            },
+            {
+              "name": "form[13][name]",
+              "value": "estate_living_surfacemin"
+            },
+            {
+              "name": "form[13][value]",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_min_m2 || 35 }}"
+            },
+            {
+              "name": "form[14][name]",
+              "value": "estate_living_surfacemax"
+            },
+            {
+              "name": "form[14][value]",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_max_m2 || 75 }}"
+            },
+            {
+              "name": "form[15][name]",
+              "value": "estate_surface_globalmin"
+            },
+            {
+              "name": "form[15][value]",
+              "value": ""
+            },
+            {
+              "name": "form[16][name]",
+              "value": "estate_surface_globalmax"
+            },
+            {
+              "name": "form[16][value]",
+              "value": ""
+            },
+            {
+              "name": "form[17][name]",
+              "value": "estate_nb_rooms"
+            },
+            {
+              "name": "form[17][value]",
+              "value": "={{ $('Config critères (défaut)').first().json.pieces_min || 2 }}"
+            },
+            {
+              "name": "form[18][name]",
+              "value": "estate_field_surface"
+            },
+            {
+              "name": "form[18][value]",
+              "value": ""
+            },
+            {
+              "name": "form[19][name]",
+              "value": "estate_type_import"
+            },
+            {
+              "name": "form[19][value]",
+              "value": "Habitations vendus"
+            },
+            {
+              "name": "only_saled_estate",
+              "value": "false"
+            },
+            {
+              "name": "clean_vendu",
+              "value": "false"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "blot-transform",
+      "name": "Blot - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        3904
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const ids = $input.first().json?.data?.results;\nif (!Array.isArray(ids) || ids.length === 0) return [];\nconst bodyParts = ['action=view_result'];\nfor (const id of ids) {\n  bodyParts.push(`data%5B%5D=${encodeURIComponent(String(id))}`);\n}\nbodyParts.push('transaction=Location');\nconst response = await this.helpers.httpRequest({\n  method: 'POST',\n  url: 'https://www.blot-immobilier.fr/wp-admin/admin-ajax.php',\n  headers: {\n    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0',\n    'Accept': 'application/json, text/javascript, */*; q=0.01',\n    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'\n  },\n  body: bodyParts.join('&')\n});\nconst htmlCards = response?.data?.html;\nif (!Array.isArray(htmlCards) || htmlCards.length === 0) return [];\nfunction cleanText(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#039;/g, \"'\").replace(/\\s+/g, ' ').trim();\n}\nconst out = [];\nfor (const card of htmlCards) {\n  if (!card || typeof card !== 'string') continue;\n  const idMatch = card.match(/id=\"estate-id\"\\s+value=\"([^\"]+)\"/i);\n  const id_site = idMatch ? String(idMatch[1]).trim() : '';\n  const hrefMatch = card.match(/<a\\s+href=\"([^\"]+)\"[^>]*title=\"Cliquer pour voir/i);\n  const href = hrefMatch ? hrefMatch[1].trim() : '';\n  const url = href ? (href.startsWith('http') ? href : `https://www.blot-immobilier.fr${href}`) : '';\n  const titleMatch = card.match(/<h2 class=\"estate-card__title\">([\\s\\S]*?)<\\/h2>/i);\n  const titre = titleMatch ? cleanText(titleMatch[1]) : (id_site ? `Annonce ${id_site}` : 'Annonce Blot');\n  const locMatch = card.match(/<p class=\"estate-card__loc-text\">([\\s\\S]*?)<\\/p>/i);\n  const locText = locMatch ? cleanText(locMatch[1]) : '';\n  const villePart = locText.split(' - ')[0] || '';\n  const ville = villePart.replace(/\\(\\d+\\)\\s*$/, '').trim();\n  const quartier = locText.includes(' - ') ? locText.split(' - ').slice(1).join(' - ').trim() : '';\n  const roomsMatch = card.match(/<p class=\"estate-card__rooms-text\">([\\s\\S]*?)<\\/p>/i);\n  const roomsText = roomsMatch ? cleanText(roomsMatch[1]) : '';\n  const piecesMatch = roomsText.match(/(\\d+)\\s*pi[eè]ces?/i);\n  const pieces = piecesMatch ? parseInt(piecesMatch[1], 10) : null;\n  const surfaceMatch = roomsText.match(/(\\d+[\\.,]?\\d*)\\s*m²/i);\n  const surface_m2 = surfaceMatch ? parseFloat(surfaceMatch[1].replace(',', '.')) : null;\n  const priceMatch = card.match(/<span class=\"main-realty__number\">([\\s\\S]*?)<\\/span>/i);\n  let loyer_cc = null;\n  if (priceMatch) {\n    const n = cleanText(priceMatch[1]).replace(/[^\\d]/g, '');\n    if (n) loyer_cc = parseInt(n, 10);\n  }\n  out.push({\n    json: {\n      source: 'blot_immobilier',\n      id_site,\n      titre,\n      description: '',\n      ville,\n      quartier,\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nreturn out.filter(item => {\n  const key = `${item.json.id_site}|${item.json.url}`;\n  if (seen.has(key)) return false;\n  seen.add(key);\n  return true;\n});"
+      }
+    },
+    {
+      "id": "citya-http",
+      "name": "Citya - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        4128
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.citya.com/annonces/location/appartement,maison/ille-et-vilaine-35?prixMax=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&surfaceMin=' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '&nbrePiecesMin=' + ($('Config critères (défaut)').first().json.pieces_min || 2) }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "citya-transform",
+      "name": "Citya - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        4128
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.citya.com';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#039;/g, \"'\").replace(/\\s+/g, ' ').trim();\n}\nfunction parsePiecesAndSurface(label) {\n  const txt = stripHtml(label);\n  let pieces = null;\n  let surface_m2 = null;\n  const piecesMatch = txt.match(/(\\d+)\\s*pi[eè]ces?/i);\n  if (piecesMatch) pieces = parseInt(piecesMatch[1], 10);\n  const surfMatch = txt.match(/(\\d+(?:[\\.,]\\d+)?)\\s*m(?:²|2)/i);\n  if (surfMatch) surface_m2 = parseFloat(surfMatch[1].replace(',', '.'));\n  return { pieces, surface_m2 };\n}\nfunction absoluteUrl(u) {\n  if (!u) return '';\n  if (u.startsWith('http')) return u;\n  return BASE + u;\n}\n// 1) JSON-LD (le plus stable)\nconst ldMatches = [...html.matchAll(/<script[^>]+type=\"application\\/ld\\+json\"[^>]*>([\\s\\S]*?)<\\/script>/gi)];\nfor (const m of ldMatches) {\n  const raw = (m[1] || '').trim();\n  if (!raw) continue;\n  let json;\n  try { json = JSON.parse(raw); } catch { continue; }\n  const offers = Array.isArray(json?.offers) ? json.offers : [];\n  if (!offers.length) continue;\n  const out = [];\n  for (const off of offers) {\n    const url = absoluteUrl(String(off?.url || '').trim());\n    const loyer_cc = off?.price != null ? Number(off.price) : null;\n    const addr = off?.itemOffered?.address || {};\n    const ville = String(addr?.addressLocality || '').trim();\n    const titreRaw = String(off?.itemOffered?.name || '').trim();\n    const { pieces, surface_m2 } = parsePiecesAndSurface(titreRaw);\n    let id_site = '';\n    const idMatch = url.match(/\\/([^\\/]+)\\/?$/);\n    if (idMatch) id_site = idMatch[1];\n    const titre = titreRaw || (id_site ? `Annonce ${id_site}` : 'Annonce Citya');\n    out.push({\n      json: {\n        source: 'citya',\n        id_site,\n        titre,\n        description: '',\n        ville,\n        quartier: '',\n        adresse: '',\n        pieces,\n        surface_m2,\n        loyer_cc: Number.isFinite(loyer_cc) ? loyer_cc : null,\n        charges: null,\n        meuble: null,\n        url,\n        date_publication: null\n      }\n    });\n  }\n  const seen = new Set();\n  return out.filter(it => {\n    const key = `${it.json.id_site}|${it.json.url}`;\n    if (seen.has(key)) return false;\n    seen.add(key);\n    return true;\n  });\n}\n// 2) Fallback DOM (si JSON-LD absent)\nconst listMatch = html.match(/<ul[^>]*id=\"list_results\"[^>]*>([\\s\\S]*?)<\\/ul>/i);\nconst block = listMatch ? listMatch[1] : '';\nif (!block) return [];\nconst parts = block.split(/<li\\b/).slice(1);\nconst out = [];\nfor (const p of parts) {\n  const li = '<li' + p;\n  const idMatch = li.match(/data-itemId=\"([^\"]+)\"/i);\n  const id_site = idMatch ? idMatch[1].trim() : '';\n  const nameMatch = li.match(/data-itemName=\"([^\"]+)\"/i);\n  const itemName = nameMatch ? nameMatch[1] : '';\n  const { pieces, surface_m2 } = parsePiecesAndSurface(itemName);\n  const priceMatch = li.match(/data-price=\"(\\d+)\"/i);\n  const loyer_cc = priceMatch ? parseInt(priceMatch[1], 10) : null;\n  const hrefMatch = li.match(/<a[^>]+href=\"(https?:\\/\\/[^\"]+|\\/[^\"]+)\"/i);\n  const url = hrefMatch ? absoluteUrl(hrefMatch[1].trim()) : '';\n  const cityMatch = li.match(/<p[^>]*class=\"text-neutral-600 text-sm\"[^>]*>([^<]+\\(\\d+\\))<\\/p>/i);\n  let ville = '';\n  if (cityMatch) {\n    ville = stripHtml(cityMatch[1]).replace(/\\s*\\(\\d+\\)\\s*$/, '').trim();\n  }\n  const titre = stripHtml(itemName) || (id_site ? `Annonce ${id_site}` : 'Annonce Citya');\n  out.push({\n    json: {\n      source: 'citya',\n      id_site,\n      titre,\n      description: '',\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc: Number.isFinite(loyer_cc) ? loyer_cc : null,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nreturn out.filter(it => {\n  const key = `${it.json.id_site}|${it.json.url}`;\n  if (seen.has(key)) return false;\n  seen.add(key);\n  return true;\n});"
+      }
+    },
+    {
       "id": "merge-branches-17",
       "name": "Fusion + Oqoro",
       "type": "n8n-nodes-base.merge",
@@ -1255,6 +1526,34 @@
       "position": [
         624,
         3664
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "merge-branches-19",
+      "name": "Fusion + Blot",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        3888
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "merge-branches-20",
+      "name": "Fusion + Citya",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        4112
       ],
       "parameters": {
         "mode": "append",
@@ -1504,7 +1803,7 @@
       ],
       "parameters": {
         "chatId": "6558659046",
-        "text": "=⚠️ Erreur agence (récup annonces)\n\nNœud : {{ $prevNode.name }}",
+        "text": "=⚠️ Erreur agence (récup annonces)\n\nNœud : {{ $prevNode.name }}\n\nError: {{ $json.error }}",
         "additionalFields": {
           "appendAttribution": false
         }
@@ -1624,6 +1923,16 @@
           },
           {
             "node": "Century 21 - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Blot - Récup IDs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Citya - Récup HTML",
             "type": "main",
             "index": 0
           },
@@ -2362,7 +2671,87 @@
         ]
       ]
     },
+    "Blot - Récup IDs": {
+      "main": [
+        [
+          {
+            "node": "Blot - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blot - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Blot",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Citya - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "Citya - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Citya - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Citya",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
     "Fusion + Century 21": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Blot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + Blot": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Citya",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fusion + Citya": {
       "main": [
         [
           {
