@@ -39,7 +39,7 @@
             {
               "id": "surface_min_m2",
               "name": "surface_min_m2",
-              "value": 35,
+              "value": 40,
               "type": "number"
             },
             {
@@ -51,7 +51,7 @@
             {
               "id": "prix_max_cc",
               "name": "prix_max_cc",
-              "value": 700,
+              "value": 680,
               "type": "number"
             },
             {
@@ -69,7 +69,7 @@
             {
               "id": "villes_cibles",
               "name": "villes_cibles",
-              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\",\"Bruz\",\"Thorigné-Fouillard\",\"Noyal-Châtillon-sur-Seiche\",\"Montgermont\",\"Betton\",\"Le Rheu\",\"Saint-Jacques-de-la-Lande\",\"Chartres-de-Bretagne\",\"Mordelles\",\"Gévezé\",\"Bédée\",\"Romillé\",\"Breteil\",\"Clayes\",\"La Nouaye\",\"Montfort-sur-Meu\",\"Iffendic\",\"Talensac\",\"Saint-Gonlay\",\"Parthenay-de-Bretagne\",\"Langan\",\"Irodouer\",\"Saint-Gilles\",\"L'Hermitage\",\"La Chapelle-Thouarault\",\"Cintré\",\"La Chapelle-du-Lou-du-Lac\",\"Saint-Uniac\",\"Landujan\",\"Montauban-de-Bretagne\",\"Langouet\",\"Vezin-le-Coquet\",\"Saint-M'Hervon\",\"Pleumeleuc\"]",
+              "value": "[\"Saint-Grégoire\",\"Chantepie\",\"Cesson-Sévigné\",\"Pacé\",\"Bruz\",\"Thorigné-Fouillard\",\"Noyal-Châtillon-sur-Seiche\",\"Montgermont\",\"Betton\",\"Le Rheu\",\"Saint-Jacques-de-la-Lande\",\"Chartres-de-Bretagne\",\"Mordelles\",\"Gévezé\",\"Bédée\",\"Romillé\",\"Breteil\",\"Clayes\",\"La Nouaye\",\"Montfort-sur-Meu\",\"Iffendic\",\"Talensac\",\"Saint-Gonlay\",\"Parthenay-de-Bretagne\",\"Langan\",\"Irodouer\",\"Saint-Gilles\",\"L'Hermitage\",\"La Chapelle-Thouarault\",\"Cintré\",\"La Chapelle-du-Lou-du-Lac\",\"Saint-Uniac\",\"Landujan\",\"Montauban-de-Bretagne\",\"Langouet\",\"Vezin-le-Coquet\",\"Saint-M'Hervon\",\"Pleumeleuc\",\"Acigné\",\"Amanlis\",\"Andouillé-Neuville\",\"Aubigné\",\"Bain-de-Bretagne\",\"Bais\",\"Bléruais\",\"Boisgervilly\",\"Boistrudan\",\"Bourg-des-Comptes\",\"Bourgbarré\",\"Bovel\",\"Brie\",\"Bruc-sur-Aff\",\"Bréal-sous-Montfort\",\"Brécé\",\"Bécherel\",\"Cardroc\",\"Caulnes\",\"Chanteloup\",\"Chasné-sur-Illet\",\"Chavagne\",\"Chevaigné\",\"Châteaubourg\",\"Châteaugiron\",\"Cornillé\",\"Corps-Nuds\",\"Crevin\",\"Domagné\",\"Domloup\",\"Ercé-en-Lamée\",\"Ercé-près-Liffré\",\"Essé\",\"Goven\",\"Grand-Fougeray\",\"Guichen\",\"Guignen\",\"Guipel\",\"Guipry-Messac\",\"Guitté\",\"Hédé-Bazouges\",\"Janzé\",\"La Baussaine\",\"La Bouëxière\",\"La Chapelle-Blanche\",\"La Chapelle-Bouëxic\",\"La Chapelle-Chaussée\",\"La Chapelle-de-Brain\",\"La Chapelle-des-Fougeretz\",\"La Couyère\",\"La Dominelais\",\"La Mézière\",\"La Noë-Blanche\",\"Laillé\",\"Langon\",\"Lassy\",\"Le Crouais\",\"Le Petit-Fougeray\",\"Le Sel-de-Bretagne\",\"Le Theil-de-Bretagne\",\"Le Verger\",\"Les Brulais\",\"Les Iffs\",\"Lieuron\",\"Liffré\",\"Lohéac\",\"Longaulnay\",\"Louvigné-de-Bais\",\"Marcillé-Robert\",\"Marpiré\",\"Massérac\",\"Melesse\",\"Mernel\",\"Miniac-sous-Bécherel\",\"Monterfil\",\"Montgerval\",\"Montreuil-le-Gast\",\"Montreuil-sur-Ille\",\"Mouais\",\"Mouazé\",\"Moulins\",\"Médréac\",\"Nouvoitou\",\"Noyal-sur-Vilaine\",\"Orgères\",\"Pancé\",\"Pierric\",\"Pipriac\",\"Piré-Chancé\",\"Plouasne\",\"Pléchâtel\",\"Poligné\",\"Pont-Péan\",\"Quédillac\",\"Renac\",\"Saint-Armel\",\"Saint-Aubin-d'Aubigné\",\"Saint-Aubin-des-Landes\",\"Saint-Brieuc-des-Iffs\",\"Saint-Didier\",\"Saint-Erblon\",\"Saint-Ganton\",\"Saint-Germain-sur-Ille\",\"Saint-Gondran\",\"Saint-Jean-sur-Vilaine\",\"Saint-Jouan-de-l'Isle\",\"Saint-Just\",\"Saint-Malo-de-Phily\",\"Saint-Malon-sur-Mel\",\"Saint-Maugan\",\"Saint-Médard-sur-Ille\",\"Saint-Méen-le-Grand\",\"Saint-Onen-la-Chapelle\",\"Saint-Pern\",\"Saint-Péran\",\"Saint-Senoux\",\"Saint-Sulpice-des-Landes\",\"Saint-Sulpice-la-Forêt\",\"Saint-Symphorien\",\"Saint-Séglin\",\"Saint-Thual\",\"Saint-Thurial\",\"Sainte-Anne-sur-Vilaine\",\"Sainte-Colombe\",\"Saulnières\",\"Servon-sur-Vilaine\",\"Sixt-sur-Aff\",\"Tinténiac\",\"Torcé\",\"Treffendel\",\"Tresbœuf\",\"Trimer\",\"Val d'Anast\",\"Vern-sur-Seiche\",\"Vignoc\",\"Visseiche\"]",
               "type": "string"
             },
             {
@@ -1230,7 +1230,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const BASE = 'https://www.century21.fr';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nconst blocks = html.split(/<div class=\"tw-grid js-the-list-of-properties-list-property/).slice(1);\nconst out = [];\nfor (const block of blocks) {\n  const blockNorm = block.replace(/&nbsp;/g, ' ').replace(/&#8364;|&#x20AC;/gi, '\u20AC');\n  const uidMatch = block.match(/data-uid=\"(\\d+)\"/);\n  const id_site = uidMatch ? uidMatch[1] : '';\n  if (!id_site) continue;\n  const url = BASE + '/trouver_logement/detail/' + id_site + '/';\n  const heading4Match = blockNorm.match(/c-text-theme-heading-4[^>]*>([\\s\\S]*?)<br/i);\n  let ville = '';\n  if (heading4Match) {\n    const raw = heading4Match[1].replace(/<[^>]+>/g, ' ').trim();\n    ville = raw.replace(/\\s+\\d{2,5}\\s*$/, '').trim();\n  }\n  const surfaceMatch = blockNorm.match(/(\\d+(?:,\\d+)?)\\s*m\\s*(?:²|<sup>2<\\/sup>)/i);\n  const surface_m2 = surfaceMatch ? parseFloat(surfaceMatch[1].replace(',', '.')) : null;\n  const piecesMatch = blockNorm.match(/(\\d+)\\s*pièces?/i);\n  const pieces = piecesMatch ? parseInt(piecesMatch[1], 10) : null;\n  const priceMatch = blockNorm.match(/(\\d+)\\s*(?:&nbsp;)?(?:€|&euro;)/i);\n  const loyer_cc = priceMatch ? parseInt(priceMatch[1], 10) : null;\n  const titreMatch = blockNorm.match(/c-theme-heading-3[^>]*>([\\s\\S]*?)<\\/div>/i);\n  const titre = titreMatch ? titreMatch[1].replace(/<[^>]+>/g, ' ').trim().slice(0, 200) : ('Annonce ' + id_site);\n  const descMatch = blockNorm.match(/tw-truncate-safe[\\s\\S]*?>([\\s\\S]*?)<\\/div>/i);\n  const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500) : '';\n  out.push({\n    json: {\n      source: 'century21',\n      id_site,\n      titre,\n      description,\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+        "jsCode": "const BASE = 'https://www.century21.fr';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nconst blocks = html.split(/<div class=\"tw-grid js-the-list-of-properties-list-property/).slice(1);\nconst out = [];\nfor (const block of blocks) {\n  const blockNorm = block.replace(/&nbsp;/g, ' ').replace(/&#8364;|&#x20AC;/gi, '€');\n  const uidMatch = block.match(/data-uid=\"(\\d+)\"/);\n  const id_site = uidMatch ? uidMatch[1] : '';\n  if (!id_site) continue;\n  const url = BASE + '/trouver_logement/detail/' + id_site + '/';\n  const heading4Match = blockNorm.match(/c-text-theme-heading-4[^>]*>([\\s\\S]*?)<br/i);\n  let ville = '';\n  if (heading4Match) {\n    const raw = heading4Match[1].replace(/<[^>]+>/g, ' ').trim();\n    ville = raw.replace(/\\s+\\d{2,5}\\s*$/, '').trim();\n  }\n  const surfaceMatch = blockNorm.match(/(\\d+(?:,\\d+)?)\\s*m\\s*(?:²|<sup>2<\\/sup>)/i);\n  const surface_m2 = surfaceMatch ? parseFloat(surfaceMatch[1].replace(',', '.')) : null;\n  const piecesMatch = blockNorm.match(/(\\d+)\\s*pièces?/i);\n  const pieces = piecesMatch ? parseInt(piecesMatch[1], 10) : null;\n  const priceMatch = blockNorm.match(/(\\d+)\\s*(?:&nbsp;)?(?:€|&euro;)/i);\n  const loyer_cc = priceMatch ? parseInt(priceMatch[1], 10) : null;\n  const titreMatch = blockNorm.match(/c-theme-heading-3[^>]*>([\\s\\S]*?)<\\/div>/i);\n  const titre = titreMatch ? titreMatch[1].replace(/<[^>]+>/g, ' ').trim().slice(0, 200) : ('Annonce ' + id_site);\n  const descMatch = blockNorm.match(/tw-truncate-safe[\\s\\S]*?>([\\s\\S]*?)<\\/div>/i);\n  const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim().slice(0, 500) : '';\n  out.push({\n    json: {\n      source: 'century21',\n      id_site,\n      titre,\n      description,\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
       }
     },
     {
@@ -1561,6 +1561,244 @@
       }
     },
     {
+      "id": "immonot-code",
+      "name": "Immonot - Récup annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5024
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const c = $('Config critères (défaut)').first().json;\nconst BASE = 'https://www.immonot.com';\nconst UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\nfunction encForm(fields) {\n  const parts = [];\n  for (let i = 0; i < fields.length; i++) {\n    const k = fields[i][0];\n    const v = fields[i][1];\n    parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(v == null ? '' : String(v)));\n  }\n  return parts.join('&');\n}\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&#8364;/g, '€')\n    .replace(/&amp;/g, '&')\n    .replace(/&#039;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction parseListing(htmlPage) {\n  const out = [];\n  const chunks = htmlPage.split(/<div class=\"il-card il-card--LOCA[^\"]*\"[^>]*id=\"/);\n  for (let i = 1; i < chunks.length; i++) {\n    const head = chunks[i].match(/^([^\"]+)\">([\\s\\S]*)$/);\n    if (!head) continue;\n    const id_site = head[1];\n    const block = head[2];\n    const hrefM = block.match(/href=\"(\\/annonce-immobiliere\\/[^\"]+\\.html)\"/);\n    const path = hrefM ? hrefM[1] : '';\n    const url = path ? BASE + path : '';\n    const typeM = block.match(/<span class=\"il-card-type\">([^<]*)<\\/span>/);\n    const locM = block.match(/<strong class=\"il-card-locale\">([^<]*)<\\/strong>/);\n    const typeBien = typeM ? stripHtml(typeM[1]) : '';\n    const locRaw = locM ? stripHtml(locM[1]) : '';\n    let ville = locRaw;\n    const cpM = locRaw.match(/^(.+?)\\s*-\\s*(\\d{5})\\s*$/);\n    if (cpM) ville = stripHtml(cpM[1]);\n    const priceBlock = block.match(/class=\"il-card-price[^\"]*\"[^>]*>[\\s\\S]*?<strong>([\\s\\S]*?)<\\/strong>/i);\n    let loyer_cc = null;\n    if (priceBlock) {\n      const digits = priceBlock[1].replace(/[^0-9]/g, '');\n      if (digits) loyer_cc = parseInt(digits, 10);\n    }\n    let pieces = null;\n    const pieM = block.match(/<span>Pi[^<]*<\\/span>\\s*<br\\s*\\/?>\\s*<strong>([0-9]+)<\\/strong>/i);\n    if (pieM) pieces = parseInt(pieM[1], 10);\n    let surface_m2 = null;\n    const surfM = block.match(\n      /Int[^<]*rieur<\\/span>\\s*<br\\s*\\/?>\\s*<strong>([0-9]+(?:,[0-9]+)?)<small>m<sup>2<\\/sup><\\/small><\\/strong>/i\n    );\n    if (surfM) surface_m2 = parseFloat(surfM[1].replace(',', '.'));\n    const titre = [typeBien || 'Location', locRaw || ville].filter(Boolean).join(' — ') || 'Immonot ' + id_site;\n    const excerptM = block.match(/class=\"il-card-excerpt\"[^>]*>([\\s\\S]*?)<\\/p>/i);\n    const description = excerptM ? stripHtml(excerptM[1]).slice(0, 500) : '';\n    const meuble = /\\bmeublé\\b/i.test(block) ? 'oui' : null;\n    out.push({\n      json: {\n        source: 'immonot',\n        id_site,\n        titre,\n        description,\n        ville,\n        quartier: '',\n        adresse: '',\n        pieces,\n        surface_m2,\n        loyer_cc,\n        charges: null,\n        meuble,\n        url,\n        date_publication: null,\n      },\n    });\n  }\n  const seen = new Set();\n  return out.filter((it) => {\n    const k = it.json.id_site;\n    if (!k || seen.has(k)) return false;\n    seen.add(k);\n    return true;\n  });\n}\ntry {\n  const getRes = await this.helpers.httpRequest({\n    method: 'GET',\n    url: BASE + '/immobilier.do',\n    headers: {\n      'User-Agent': UA,\n      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n      'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    },\n    timeout: 30000,\n    returnFullResponse: true,\n  });\n  let html0 = getRes.body;\n  if (typeof html0 !== 'string') html0 = html0?.toString?.('utf8') || '';\n  let cookieHeader = '';\n  const setCookie = getRes.headers?.['set-cookie'];\n  if (Array.isArray(setCookie)) {\n    cookieHeader = setCookie.map((x) => String(x).split(';')[0]).join('; ');\n  } else if (typeof setCookie === 'string') {\n    cookieHeader = setCookie.split(';')[0];\n  }\n  const tokenM = html0.match(/name=\"WAEFIK_CSRF_TOKEN\"\\s+value=\"([^\"]+)\"/);\n  if (!tokenM) return [];\n  const token = tokenM[1];\n  const prixMax = c.prix_max_cc != null ? c.prix_max_cc : 700;\n  const sMin = c.surface_min_m2 != null ? c.surface_min_m2 : 35;\n  const sMax = c.surface_max_m2 != null ? c.surface_max_m2 : 75;\n  let pMin = c.pieces_min != null ? c.pieces_min : 2;\n  let pMax = c.pieces_max != null ? c.pieces_max : 3;\n  if (pMax < pMin) {\n    const t = pMin;\n    pMin = pMax;\n    pMax = t;\n  }\n  let nbPieces = '';\n  for (let p = pMin; p <= pMax; p++) nbPieces += p + ',';\n  const body = encForm([\n    ['WAEFIK_CSRF_TOKEN', token],\n    ['action', 'recherche'],\n    ['indexDebut', '0'],\n    ['tri', 'date'],\n    ['sensTri', 'desc'],\n    ['oidNotaire', ''],\n    ['modePresentationListe', 'sm'],\n    ['typesBiens', 'MAIS,APPT'],\n    ['transactions', 'LOCA'],\n    ['reference', ''],\n    ['surfaceInt', sMin + '-' + sMax],\n    ['surfaceExt', '0-0'],\n    ['nbPieces', nbPieces],\n    ['nbChambres', ''],\n    ['notesDPE', ''],\n    ['prix', '0-' + prixMax],\n    ['localite', '35'],\n    ['rayon', '0'],\n  ]);\n  const postHeaders = {\n    'User-Agent': UA,\n    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n    'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    'Content-Type': 'application/x-www-form-urlencoded',\n    Origin: BASE,\n    Referer: BASE + '/immobilier.do',\n  };\n  if (cookieHeader) postHeaders.Cookie = cookieHeader;\n  const html = await this.helpers.httpRequest({\n    method: 'POST',\n    url: BASE + '/immobilier.do',\n    headers: postHeaders,\n    body,\n    timeout: 30000,\n  });\n  const htmlStr = typeof html === 'string' ? html : html?.body?.toString?.('utf8') || '';\n  return parseListing(htmlStr);\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-immonot",
+      "name": "Fusion + Immonot",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        5008
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "cesson-immobilier-code",
+      "name": "Cesson Immobilier - Récup annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5248
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const c = $('Config critères (défaut)').first().json;\nconst BASE = 'https://www.cesson-immobilier.fr';\nconst LIST_URL = BASE + '/louer-a-cesson.php';\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\n\nfunction encForm(fields) {\n  const parts = [];\n  for (let i = 0; i < fields.length; i++) {\n    const k = fields[i][0];\n    const v = fields[i][1];\n    parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(v == null ? '' : String(v)));\n  }\n  return parts.join('&');\n}\n\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&#8364;/g, '€')\n    .replace(/&amp;/g, '&')\n    .replace(/&#039;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction detailField(html, label) {\n  const needle = '<p class=\"label2\">- ' + label + ' <span class=\"detail2\">';\n  const idx = html.indexOf(needle);\n  if (idx === -1) {\n    return '';\n  }\n  const start = idx + needle.length;\n  const end = html.indexOf('</span>', start);\n  if (end === -1) {\n    return '';\n  }\n  return stripHtml(html.slice(start, end));\n}\n\nfunction collectCookies(headers) {\n  const sc = headers && headers['set-cookie'];\n  if (Array.isArray(sc)) {\n    return sc\n      .map(function (x) {\n        return String(x).split(';')[0];\n      })\n      .join('; ');\n  }\n  if (typeof sc === 'string') {\n    return sc.split(';')[0];\n  }\n  return '';\n}\n\ntry {\n  const prixMax = c.prix_max_cc != null ? Number(c.prix_max_cc) : 700;\n  const sMin = c.surface_min_m2 != null ? Number(c.surface_min_m2) : 40;\n  const sMax = c.surface_max_m2 != null ? Number(c.surface_max_m2) : 107;\n  const prixmin = 65;\n  const prixmax = Math.max(prixmin, prixMax);\n  let surfmin = Math.max(0, sMin);\n  let surfmax = Math.max(surfmin, sMax);\n\n  let cookieHeader = '';\n  try {\n    const getRes = await this.helpers.httpRequest({\n      method: 'GET',\n      url: LIST_URL,\n      headers: {\n        'User-Agent': UA,\n        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n        'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n      },\n      timeout: 30000,\n      returnFullResponse: true,\n    });\n    cookieHeader = collectCookies(getRes.headers);\n  } catch (e1) {}\n\n  const postHeaders = {\n    'User-Agent': UA,\n    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n    'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    'Content-Type': 'application/x-www-form-urlencoded',\n    Origin: BASE,\n    Referer: LIST_URL,\n  };\n  if (cookieHeader) {\n    postHeaders.Cookie = cookieHeader;\n  }\n\n  const body = encForm([\n    ['id_type_bien', '0'],\n    ['prix', prixmin + ',' + prixmax],\n    ['surface', surfmin + ',' + surfmax],\n    ['nb_chambre', '0'],\n    ['prixmin', String(prixmin)],\n    ['prixmax', String(prixmax)],\n    ['surfmin', String(surfmin)],\n    ['surfmax', String(surfmax)],\n  ]);\n\n  const listRaw = await this.helpers.httpRequest({\n    method: 'POST',\n    url: LIST_URL,\n    headers: postHeaders,\n    body: body,\n    timeout: 30000,\n  });\n  const listHtml =\n    typeof listRaw === 'string' ? listRaw : listRaw && (listRaw.body || listRaw.data) || '';\n  if (!listHtml || typeof listHtml !== 'string') {\n    return [];\n  }\n\n  const ids = [];\n  const idRe = /detail-du-bien\\.php\\?id_bien=([0-9]+)/gi;\n  let mx;\n  while ((mx = idRe.exec(listHtml)) !== null) {\n    if (ids.indexOf(mx[1]) === -1) {\n      ids.push(mx[1]);\n    }\n  }\n\n  const out = [];\n  for (let i = 0; i < ids.length; i++) {\n    const idNum = ids[i];\n    let detailRaw;\n    try {\n      detailRaw = await this.helpers.httpRequest({\n        method: 'GET',\n        url: BASE + '/detail-du-bien.php?id_bien=' + encodeURIComponent(idNum),\n        headers: {\n          'User-Agent': UA,\n          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n          'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n        },\n        timeout: 30000,\n      });\n    } catch (e2) {\n      continue;\n    }\n    const dhtml =\n      typeof detailRaw === 'string'\n        ? detailRaw\n        : detailRaw && (detailRaw.body || detailRaw.data) || '';\n    if (!dhtml || typeof dhtml !== 'string') {\n      continue;\n    }\n    if (/collocation|colocation/i.test(dhtml)) {\n      continue;\n    }\n\n    const ref = detailField(dhtml, 'Référence :') || idNum;\n    const typeHab = detailField(dhtml, \"Type d'habitation :\");\n    const surfaceTxt = detailField(dhtml, 'Superficie habitable totale :');\n    let surface_m2 = null;\n    const sm = surfaceTxt.match(/([0-9]+(?:,[0-9]+)?)\\s*m/i);\n    if (sm) {\n      surface_m2 = parseFloat(sm[1].replace(',', '.'));\n    }\n\n    const piecesTxt = detailField(dhtml, 'Nombre de pièces :');\n    let pieces = null;\n    if (piecesTxt) {\n      const pn = piecesTxt.replace(/[^0-9]/g, '');\n      if (pn) {\n        pieces = parseInt(pn, 10);\n      }\n    }\n\n    const loyerTxt = detailField(dhtml, 'Loyer :');\n    let rent = null;\n    const lm = loyerTxt.match(/([0-9]+)/);\n    if (lm) {\n      rent = parseInt(lm[1], 10);\n    }\n\n    const chargesTxt = detailField(dhtml, 'Charges mensuelles :');\n    let charges = null;\n    const cm = chargesTxt.match(/([0-9]+)/);\n    if (cm) {\n      charges = parseInt(cm[1], 10);\n    }\n\n    let loyer_cc = rent;\n    if (rent != null && charges != null) {\n      loyer_cc = rent + charges;\n    }\n\n    const smallM = dhtml.match(/<small>\\s*-\\s*([^<]+)<\\/small>/i);\n    let ville = '';\n    if (smallM) {\n      const raw = stripHtml(smallM[1]);\n      const vm = raw.match(/à\\s+(.+)/i);\n      ville = vm ? vm[1].trim() : raw.replace(/^.*à\\s*/i, '').trim();\n    }\n\n    const descM = dhtml.match(/<h3>\\s*Description\\s*<\\/h3>\\s*<p>([\\s\\S]*?)<\\/p>/i);\n    let description = descM ? stripHtml(descM[1]).slice(0, 500) : '';\n    if (/collocation|colocation/i.test(description)) {\n      continue;\n    }\n\n    const titre =\n      [typeHab, ville].filter(Boolean).join(' — ') || 'Cesson Immobilier — ' + ref;\n    const meuble = /\\bmeublé\\b/i.test(dhtml + description) ? 'oui' : null;\n    const url = BASE + '/detail-du-bien.php?id_bien=' + encodeURIComponent(idNum);\n\n    out.push({\n      json: {\n        source: 'cesson_immobilier',\n        id_site: String(ref),\n        titre: titre,\n        description: description,\n        ville: ville,\n        quartier: '',\n        adresse: '',\n        pieces: pieces,\n        surface_m2: surface_m2,\n        loyer_cc: loyer_cc,\n        charges: charges,\n        meuble: meuble,\n        url: url,\n        date_publication: null,\n      },\n    });\n  }\n\n  const seen = new Set();\n  return out.filter(function (it) {\n    const k = it.json.id_site;\n    if (!k || seen.has(k)) {\n      return false;\n    }\n    seen.add(k);\n    return true;\n  });\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-cesson",
+      "name": "Fusion + Cesson Immobilier",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        5232
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "laforet-http",
+      "name": "Laforêt - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        4352
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const max = c.prix_max_cc != null ? c.prix_max_cc : 700; const rooms = c.pieces_min != null ? c.pieces_min : 2; const surface = c.surface_min_m2 != null ? c.surface_min_m2 : 35; return 'https://www.laforet.com/louer/rechercher?filter%5Btypes%5D%5B0%5D=house&filter%5Btypes%5D%5B1%5D=apartment&filter%5Bcities%5D%5B0%5D=&filter%5Bcities%5D%5B1%5D=35238&view=list&sort=&filter%5Btypes%5D%5B%5D=house&filter%5Btypes%5D%5B%5D=apartment&filter%5Bcities%5D%5B%5D=&filter%5Bcities%5D%5B%5D=35238&filter%5Barea%5D=48.1159%2C-1.6884%2C50&filter%5Bmin%5D=&filter%5Bmax%5D=' + encodeURIComponent(String(max)) + '&filter%5Brooms%5D=' + encodeURIComponent(String(rooms)) + '&filter%5Bsurface%5D=' + encodeURIComponent(String(surface)); })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "laforet-transform",
+      "name": "Laforêt - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        4352
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const item = $input.first();\nconst j = item.json;\nlet html = '';\nif (typeof j?.body === 'string' && j.body.trim()) html = j.body;\nelse if (typeof j?.data === 'string' && j.data.trim()) html = j.data;\nelse if (typeof j === 'string') html = j;\nif (!html || typeof html !== 'string') return [];\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&sup2;/gi, '²').replace(/&#178;/g, '²').replace(/&#xB2;/gi, '²').replace(/&amp;/g, '&').replace(/&#039;/g, \"'\").replace(/\\s+/g, ' ').trim();\n}\nconst parts = html.split(/(<article[^>]*\\bclass=\"[^\"]*\\bmin-w-0\\b[^\"]*\"[^>]*>)/gi);\nconst out = [];\nfor (let i = 1; i < parts.length; i += 2) {\n  const openTag = parts[i];\n  const block = parts[i + 1] || '';\n  const fullBlock = openTag + block;\n  if (/animate-pulse/.test(fullBlock.slice(0, 800))) continue;\n  const idM = openTag.match(/data-counter-id-value=[\"'](\\d+)[\"']/);\n  if (!idM) continue;\n  const id_site = idM[1];\n  const hrefM = fullBlock.match(/href=[\"'](https:\\/\\/www\\.laforet\\.com\\/[^\"']+)[\"']/i);\n  const url = hrefM ? hrefM[1].trim() : '';\n  const typeM = fullBlock.match(/<span class=\"text-primary font-semibold\">\\s*([^<]+?)\\s*<\\/span>/i);\n  const typeBien = typeM ? stripHtml(typeM[1]) : '';\n  const priceM = fullBlock.match(/<span[^>]*class=\"[^\"]*text-tertiary[^\"]*font-bold[^\"]*ml-auto[^\"]*text-right[^\"]*\"[^>]*>\\s*([\\d\\s]+)\\s*€\\/mois\\s*<\\/span>/is);\n  let loyer_cc = null;\n  if (priceM) {\n    const n = priceM[1].replace(/[^\\d]/g, '');\n    if (n) loyer_cc = parseInt(n, 10);\n  }\n  if (loyer_cc == null) {\n    const gtmM = fullBlock.match(/data-gtm-item-price-param=\"(\\d+)\"/i);\n    if (gtmM) loyer_cc = parseInt(gtmM[1], 10);\n  }\n  const villeM = fullBlock.match(/<span class=\"font-bold text-gray-600\">\\s*([\\s\\S]*?)\\s*<\\/span>/i);\n  let ville = '';\n  if (villeM) {\n    ville = stripHtml(villeM[1]).replace(/\\(\\s*\\d{5}\\s*\\)\\s*$/i, '').trim();\n  }\n  let surface_m2 = null;\n  const gtmSizeM = fullBlock.match(/data-gtm-item-size-param=\"([0-9.,]+)\"/i);\n  if (gtmSizeM) surface_m2 = parseFloat(gtmSizeM[1].replace(',', '.'));\n  const detailM = fullBlock.match(/<div[^>]*\\bclass=\"[^\"]*\\btext\\b[^\"]*\\bflex-wrap\\b[^\"]*\"[^>]*>\\s*([\\s\\S]*?)\\s*<\\/div>/i);\n  const detailTxt = detailM ? stripHtml(detailM[1]) : '';\n  let pieces = null;\n  const piecesMatch = detailTxt.match(/(\\d+)\\s*pi[eè]ces?/i);\n  if (piecesMatch) pieces = parseInt(piecesMatch[1], 10);\n  if (surface_m2 == null || Number.isNaN(surface_m2)) {\n    const surfMatch = detailTxt.match(/(\\d+(?:[\\.,]\\d+)?)\\s*m(?:²|2)/i);\n    if (surfMatch) surface_m2 = parseFloat(surfMatch[1].replace(',', '.'));\n  }\n  const titre = [typeBien, ville].filter(Boolean).join(' — ') || ('Laforêt ' + id_site);\n  const meuble = /\\bMeublé\\b/i.test(fullBlock) ? 'oui' : null;\n  out.push({\n    json: {\n      source: 'laforet',\n      id_site,\n      titre,\n      description: '',\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble,\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nreturn out.filter(it => {\n  const id = it.json.id_site;\n  if (!id || seen.has(id)) return false;\n  seen.add(id);\n  return true;\n});"
+      }
+    },
+    {
+      "id": "merge-branches-21",
+      "name": "Fusion + Laforêt",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        4336
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "rolland-girot-http",
+      "name": "Rolland Girot - Récup HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        4576
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.cabinet-rolland-girot.com/location/appartement--maison?price=' + encodeURIComponent(String($('Config critères (défaut)').first().json.prix_max_cc != null ? $('Config critères (défaut)').first().json.prix_max_cc : 700)) }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "rolland-girot-transform",
+      "name": "Rolland Girot - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        4576
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.cabinet-rolland-girot.com';\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string') return [];\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#039;/g, \"'\").replace(/\\s+/g, ' ').trim();\n}\nconst re = /<article\\b[^>]*\\bnode--realestate--teaser\\b[^>]*>([\\s\\S]*?)<\\/article>/gi;\nconst out = [];\nlet m;\nwhile ((m = re.exec(html)) !== null) {\n  const block = m[0];\n  const refMatch = block.match(/réf\\.\\s*([A-Za-z0-9]+)/i);\n  if (!refMatch) continue;\n  const id_site = refMatch[1].toUpperCase();\n  const hrefM = block.match(/<a href=\"(\\/location\\/[^\"]+)\"[^>]*class=\"[^\"]*stretched-link/i);\n  const path = hrefM ? hrefM[1].trim() : '';\n  const url = path ? (path.startsWith('http') ? path : BASE + path) : '';\n  const titreM = block.match(/class=\"stretched-link[^\"]*\"[^>]*>\\s*<span>([^<]+)<\\/span>/i);\n  const titre = titreM ? stripHtml(titreM[1]) : ('Annonce ' + id_site);\n  const villeM = block.match(/<div class=\"pb-2 d-flex justify-content-start fs-7\">\\s*([^<]+?)\\s*<\\/div>/i);\n  let ville = '';\n  if (villeM) {\n    ville = stripHtml(villeM[1]).replace(/\\(\\s*\\d{5}\\s*\\)\\s*$/i, '').trim();\n  }\n  let loyer_cc = null;\n  const contentPrice = block.match(/<div\\s+content=\"(\\d+)\"[^>]*\\bfield--price\\b/i) || block.match(/\\bfield--price\\b[^>]*content=\"(\\d+)\"/i);\n  if (contentPrice) loyer_cc = parseInt(contentPrice[1], 10);\n  if (loyer_cc == null) {\n    const priceTxt = block.match(/\\bfield--price\\b[^>]*>([\\d\\s]+)\\s*€/i);\n    if (priceTxt) {\n      const n = priceTxt[1].replace(/[^\\d]/g, '');\n      if (n) loyer_cc = parseInt(n, 10);\n    }\n  }\n  let surface_m2 = null;\n  const surfM = block.match(/\\bfield--surface\\b[^>]*>[\\s\\S]*?<span class=\"value\">([^<]+)<\\/span>/i);\n  if (surfM) {\n    const sm = stripHtml(surfM[1]).match(/(\\d+(?:[\\.,]\\d+)?)\\s*m/);\n    if (sm) surface_m2 = parseFloat(sm[1].replace(',', '.'));\n  }\n  let pieces = null;\n  const roomsM = block.match(/\\bfield--rooms\\b[^>]*>[\\s\\S]*?<span class=\"value\">([^<]+)<\\/span>/i);\n  if (roomsM) {\n    const pm = stripHtml(roomsM[1]).match(/(\\d+)/);\n    if (pm) pieces = parseInt(pm[1], 10);\n  }\n  out.push({\n    json: {\n      source: 'rolland_girot',\n      id_site,\n      titre,\n      description: '',\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nreturn out.filter(it => {\n  const id = it.json.id_site;\n  if (!id || seen.has(id)) return false;\n  seen.add(id);\n  return true;\n});"
+      }
+    },
+    {
+      "id": "merge-branches-22",
+      "name": "Fusion + Rolland Girot",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        4560
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "notaire-breton-http",
+      "name": "Notaire Breton - Récup liste HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        4800
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const max = c.prix_max_cc != null ? c.prix_max_cc : 700; const smin = c.surface_min_m2 != null ? c.surface_min_m2 : 35; return 'https://www.notaireetbreton.bzh/biens/location/appartement%2Cmaison-individuelle/ille-et-vilaine?field_price_value%5Bmax%5D=' + encodeURIComponent(String(max)) + '&field_living_space_value%5Bmin%5D=' + encodeURIComponent(String(smin)) + '&sort_bef_combine=field_price_value_ASC&display-mode=list'; })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "notaire-breton-transform",
+      "name": "Notaire Breton - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        4800
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.notaireetbreton.bzh';\nconst item = $input.first();\nlet listHtml = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!listHtml || typeof listHtml !== 'string') return [];\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#039;/g, \"'\").replace(/\\s+/g, ' ').trim();\n}\nfunction parseIntFromField(html, fieldPart) {\n  const re = new RegExp(fieldPart + '[\\s\\S]*?field__item[^>]*(?:content=\"(\\\\d+)\"[^>]*)?>([^<]*)<', 'i');\n  const m = html.match(re);\n  if (!m) return null;\n  if (m[1]) return parseInt(m[1], 10);\n  const t = stripHtml(m[2] || '').replace(/\\D/g, '');\n  if (t) return parseInt(t, 10);\n  return null;\n}\nfunction parseLivingSpace(html) {\n  const m = html.match(/field--name-field-living-space[\\s\\S]*?<div[^>]*content=\"(\\d+)\"[^>]*class=\"field__item\"/i) || html.match(/field--name-field-living-space[\\s\\S]*?<div[^>]*class=\"field__item\"[^>]*>([^<]+)</i);\n  if (!m) return null;\n  if (m[1] && /^\\d+$/.test(m[1])) return parseInt(m[1], 10);\n  const t = stripHtml(m[1] || m[2] || '').match(/(\\d+(?:[\\.,]\\d+)?)\\s*m/i);\n  return t ? parseFloat(t[1].replace(',', '.')) : null;\n}\nconst artRe = /<article\\b[^>]*data-history-node-id=\"(\\d+)\"[^>]*>([\\s\\S]*?)<\\/article>/gi;\nconst rows = [];\nlet mx;\nwhile ((mx = artRe.exec(listHtml)) !== null) {\n  rows.push({ nid: mx[1], block: mx[2] });\n}\nconst out = [];\nfor (const { nid, block } of rows) {\n  const hrefM = block.match(/<a class=\"image\" href=\"([^\"]+)\"/i) || block.match(/<a class=\"more\" href=\"([^\"]+)\"/i);\n  let path = hrefM ? hrefM[1].trim().replace(/&amp;/g, '&') : '';\n  if (!path) continue;\n  const url = path.startsWith('http') ? path : BASE + path;\n  const titreM = block.match(/field--name-title[^>]*>([^<]+)</i);\n  const titre = titreM ? stripHtml(titreM[1]) : ('Annonce ' + nid);\n  const villeM = block.match(/field--name-field-city[^>]*field__item[^>]*>([^<]+)</i);\n  const ville = villeM ? stripHtml(villeM[1]) : '';\n  let listPrice = null;\n  const priceBlock = block.match(/field--name-field-price[^>]*>([\\s\\S]*?)<\\/div>/i);\n  if (priceBlock) {\n    const n = stripHtml(priceBlock[1]).replace(/\\D/g, '');\n    if (n) listPrice = parseInt(n, 10);\n  }\n  let detailRaw;\n  try {\n    detailRaw = await this.helpers.httpRequest({\n      method: 'GET',\n      url: url,\n      headers: {\n        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0',\n        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'\n      },\n      timeout: 30000\n    });\n  } catch (e) {\n    continue;\n  }\n  const detailHtml = typeof detailRaw === 'string' ? detailRaw : (detailRaw && (detailRaw.body || detailRaw.data)) || '';\n  if (!detailHtml || typeof detailHtml !== 'string') continue;\n  if (/collocation|collacation|colocation/i.test(detailHtml)) continue;\n  const descM = detailHtml.match(/<div class=\"description-content\"[^>]*>([\\s\\S]*?)<\\/div>/i);\n  const descText = descM ? stripHtml(descM[1]) : '';\n  if (/collocation|collacation|colocation/i.test(descText)) continue;\n  const surface_m2 = parseLivingSpace(detailHtml);\n  const pieces = parseIntFromField(detailHtml, 'field--name-field-rooms-number');\n  const rent = parseIntFromField(detailHtml, 'field--name-field-rent');\n  const charges = parseIntFromField(detailHtml, 'field--name-field-charges');\n  let loyer_cc = null;\n  if (rent != null && charges != null) loyer_cc = rent + charges;\n  else if (rent != null) loyer_cc = rent;\n  else if (listPrice != null) loyer_cc = listPrice;\n  let meuble = null;\n  const furnM = detailHtml.match(/field--name-field-furniture[^>]*>[\\s\\S]*?field__item[^>]*>([^<]+)</i);\n  if (furnM) {\n    const t = stripHtml(furnM[1]).toLowerCase();\n    if (t.includes('oui')) meuble = 'oui';\n    else if (t.includes('non')) meuble = 'non';\n  }\n  out.push({\n    json: {\n      source: 'notaire_breton',\n      id_site: nid,\n      titre,\n      description: descText ? descText.slice(0, 500) : '',\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: charges != null ? charges : null,\n      meuble,\n      url,\n      date_publication: null\n    }\n  });\n}\nconst seen = new Set();\nreturn out.filter(it => {\n  const id = it.json.id_site;\n  if (!id || seen.has(id)) return false;\n  seen.add(id);\n  return true;\n});"
+      }
+    },
+    {
+      "id": "merge-branches-23",
+      "name": "Fusion + Notaire Breton",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        4784
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "merge-branches-15",
       "name": "Fusion + Neotoa",
       "type": "n8n-nodes-base.merge",
@@ -1601,7 +1839,7 @@
       "parameters": {
         "mode": "runOnceForAllItems",
         "language": "javaScript",
-        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+s\\/\\s+/gi, ' sur ')\n    .replace(/\\bseich\\b/gi, 'seiche')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const contenu = ((item.quartier || '') + ' ' + (item.description || '') + ' ' + (item.titre || '')).toLowerCase();\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) {\n    const quartiersRennes = (cfg.quartiers_rennes_seulement || '').split(',').map(q => q.trim().toLowerCase()).filter(Boolean);\n    return quartiersRennes.some(q => contenu.includes(q));\n  }\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nfunction normalizeVille(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[̀-ͯ]/g, '')\n    .replace(/-/g, ' ')\n    .replace(/\\s+s\\/\\s+/gi, ' sur ')\n    .replace(/\\bseich\\b/gi, 'seiche')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nfunction matchVille(item) {\n  const villeNorm = normalizeVille(item.ville);\n  const villesCiblesNorm = JSON.parse(cfg.villes_cibles || '[]').map(v => normalizeVille(v));\n  if (villesCiblesNorm.includes(villeNorm)) return true;\n  // Rennes n'est plus limité à certains quartiers: toute annonce Rennes passe.\n  if (villeNorm === normalizeVille(cfg.ville_speciale || '')) return true;\n  return false;\n}\nconst output = [];\nfor (const item of $input.all()) {\n  const a = item.json;\n  const surface = Number(a.surface_m2 || 0);\n  const prix = Number(a.loyer_cc || 0);\n  const pieces = Number(a.pieces || 0);\n  if (surface < cfg.surface_min_m2 || surface > cfg.surface_max_m2) continue;\n  if (prix <= 0 || prix > cfg.prix_max_cc) continue;\n  if (pieces < cfg.pieces_min || pieces > cfg.pieces_max) continue;\n  if (!matchVille(a)) continue;\n  output.push({ json: a });\n}\nreturn output;"
       }
     },
     {
@@ -1933,6 +2171,31 @@
           },
           {
             "node": "Citya - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Laforêt - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rolland Girot - Récup HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notaire Breton - Récup liste HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Immonot - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Cesson Immobilier - Récup annonces",
             "type": "main",
             "index": 0
           },
@@ -2755,7 +3018,127 @@
       "main": [
         [
           {
-            "node": "Normaliser annonces",
+            "node": "Fusion + Laforêt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Laforêt - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "Laforêt - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Laforêt - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Laforêt",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Laforêt": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Rolland Girot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rolland Girot - Récup HTML": {
+      "main": [
+        [
+          {
+            "node": "Rolland Girot - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rolland Girot - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Rolland Girot",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Rolland Girot": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Notaire Breton",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notaire Breton - Récup liste HTML": {
+      "main": [
+        [
+          {
+            "node": "Notaire Breton - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notaire Breton - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Notaire Breton",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Notaire Breton": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Immonot",
             "type": "main",
             "index": 0
           }
@@ -2860,6 +3243,50 @@
         [
           {
             "node": "Fusion + Lamotte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Immonot - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Immonot",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Immonot": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Cesson Immobilier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cesson Immobilier - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Cesson Immobilier",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Cesson Immobilier": {
+      "main": [
+        [
+          {
+            "node": "Normaliser annonces",
             "type": "main",
             "index": 0
           }
