@@ -87,7 +87,13 @@
             {
               "id": "zone_ids_bienici",
               "name": "zone_ids_bienici",
-              "value": "-145996,-29339,-78150,-75588,-54517",
+              "value": "-7465",
+              "type": "string"
+            },
+            {
+              "id": "logic_immo_cookie",
+              "name": "logic_immo_cookie",
+              "value": "",
               "type": "string"
             }
           ]
@@ -105,7 +111,7 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ 'https://www.bienici.com/realEstateAds.json?filters=' + encodeURIComponent(JSON.stringify({ size: 24, from: 0, filterType: 'rent', propertyType: ['house','flat'], maxPrice: $('Config critères (défaut)').first().json.prix_max_cc, minRooms: $('Config critères (défaut)').first().json.pieces_min, maxRooms: $('Config critères (défaut)').first().json.pieces_max, minArea: $('Config critères (défaut)').first().json.surface_min_m2, maxArea: $('Config critères (défaut)').first().json.surface_max_m2, page: 1, sortBy: 'relevance', sortOrder: 'desc', onTheMarket: [true], mapMode: 'enabled', newProperty: false, blurInfoType: ['disk','exact'], zoneIdsByTypes: { zoneIds: ($('Config critères (défaut)').first().json.zone_ids_bienici || '-145996,-29339,-78150,-75588,-54517').split(',').map(z => z.trim()).filter(Boolean) } })) + '&extensionType=extendedIfNoResult&enableGoogleStructuredDataAggregates=true&leadingCount=2&id=69ac364ff3e55c00b4185c9f' }}",
+        "url": "={{ 'https://www.bienici.com/realEstateAds.json?filters=' + encodeURIComponent(JSON.stringify({ size: 24, from: 0, filterType: 'rent', propertyType: ['house','flat'], maxPrice: $('Config critères (défaut)').first().json.prix_max_cc, minRooms: $('Config critères (défaut)').first().json.pieces_min, maxRooms: $('Config critères (défaut)').first().json.pieces_max, minArea: $('Config critères (défaut)').first().json.surface_min_m2, maxArea: $('Config critères (défaut)').first().json.surface_max_m2, page: 1, sortBy: 'relevance', sortOrder: 'desc', onTheMarket: [true], mapMode: 'enabled', newProperty: false, blurInfoType: ['disk','exact'], zoneIdsByTypes: { zoneIds: ($('Config critères (défaut)').first().json.zone_ids_bienici || '-7465').split(',').map(z => z.trim()).filter(Boolean) } })) + '&extensionType=extendedIfNoResult&enableGoogleStructuredDataAggregates=true&leadingCount=2&id=69ac364ff3e55c00b4185c9f' }}",
         "options": {}
       },
       "onError": "continueErrorOutput"
@@ -325,7 +331,7 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ 'https://www.ouestfrance-immo.com/api/annonces/?url=%2Flouer%2Frennes-35-35000%2F&search_key=list-search&limit=24&pieces_min=' + $('Config critères (défaut)').first().json.pieces_min + '&prix_max=' + $('Config critères (défaut)').first().json.prix_max_cc + '&surface_min=' + $('Config critères (défaut)').first().json.surface_min_m2 + '&surface_max=' + $('Config critères (défaut)').first().json.surface_max_m2 + '&meuble=0&colocation=0&rayon=20&idslieu=15818&tra=L&typIds=214%2C216&classifIds=6201%2C6202&tri=date_desc' }}",
+        "url": "={{ 'https://www.ouestfrance-immo.com/api/annonces/?url=%2Flouer%2Fille-et-vilaine-35%2F&search_key=list-search&limit=24&pieces_min=' + $('Config critères (défaut)').first().json.pieces_min + '&prix_max=' + $('Config critères (défaut)').first().json.prix_max_cc + '&surface_min=' + $('Config critères (défaut)').first().json.surface_min_m2 + '&surface_max=' + $('Config critères (défaut)').first().json.surface_max_m2 + '&meuble=0&colocation=0&idslieu=535&tra=L&typIds=214%2C216&classifIds=6201%2C6202&tri=date_desc' }}",
         "options": {},
         "sendHeaders": true,
         "headerParameters": {
@@ -407,7 +413,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ type: 'location', filters: { localities: { slugs: ['rennes-35'], radiusKm: 20 }, typesBien: ['appartement','maison'], surface: { min: $('Config critères (défaut)').first().json.surface_min_m2, max: $('Config critères (défaut)').first().json.surface_max_m2 }, prix: { max: $('Config critères (défaut)').first().json.prix_max_cc }, nbPiece: { min: $('Config critères (défaut)').first().json.pieces_min, max: $('Config critères (défaut)').first().json.pieces_max } }, expandNearby: true, size: 24 }) }}"
+        "jsonBody": "={{ JSON.stringify({ type: 'location', filters: { localities: { slugs: ['ille-et-vilaine-35'] }, typesBien: ['appartement','maison'], surface: { min: $('Config critères (défaut)').first().json.surface_min_m2, max: $('Config critères (défaut)').first().json.surface_max_m2 }, prix: { max: $('Config critères (défaut)').first().json.prix_max_cc }, nbPiece: { min: $('Config critères (défaut)').first().json.pieces_min, max: $('Config critères (défaut)').first().json.pieces_max } }, expandNearby: true, size: 24 }) }}"
       },
       "onError": "continueErrorOutput"
     },
@@ -511,7 +517,7 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minP = c.pieces_min || 2; const maxP = c.pieces_max || 3; let rooms = ''; for (let i = minP; i <= maxP; i++) rooms += '&number_room%5B%5D=' + i; return 'https://www.guenno.com/biens/recherche?mandate_type=2&realty_type%5B%5D=1' + rooms + '&min_surface=' + (c.surface_min_m2 || '') + '&town=RENNES&price_max=' + (c.prix_max_cc || 700) + '&east=-1.353481131054688&west=-2.229640799023438&north=48.47728162287364&south=47.67813899953636'; })() }}",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minP = c.pieces_min || 2; const maxP = c.pieces_max || 3; let rooms = ''; for (let i = minP; i <= maxP; i++) rooms += '&number_room%5B%5D=' + i; return 'https://www.guenno.com/biens/recherche?mandate_type=2&realty_type%5B%5D=1&realty_type%5B%5D=2' + rooms + '&min_surface=' + (c.surface_min_m2 || '') + '&town=RENNES&price_max=' + (c.prix_max_cc || 700) + '&east=0.36623461582029115&west=-3.588843509179689&north=49.40223386520332&south=46.189547260341726'; })() }}",
         "options": {
           "timeout": 30000
         },
@@ -618,7 +624,7 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&nb_pieces%5B%5D=' + i; return 'https://www.kermarrec-habitation.fr/location/?post_type=location&false-select=on&ville%5B%5D=rennes-35000&typebien%5B%5D=appartement&typebien%5B%5D=maison' + pieces + '&budget_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&reference=&rayon=20&avec_carte=false&tri=pertinence'; })() }}",
+        "url": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var pieces = ''; for (var i = minP; i <= maxP; i++) pieces += '&nb_pieces%5B%5D=' + i; return 'https://www.kermarrec-habitation.fr/location/?post_type=location&false-select=on&typebien%5B%5D=appartement&typebien%5B%5D=maison' + pieces + '&budget_max=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&reference=&avec_carte=false&tri=pertinence'; })() }}",
         "options": {
           "timeout": 30000
         }
@@ -732,7 +738,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var codes = []; for (var i = minP; i <= maxP; i++) codes.push(i + 'PIECES'); return JSON.stringify({ localisations: { codesCommunes: ['35238'] }, codesTypesBiens: ['4','5'], isLocation: true, nbKilometresRecherche: 20, codesNbPieces: codes, budgetMax: c.prix_max_cc != null ? c.prix_max_cc : 700, surfaceMin: c.surface_min_m2 != null ? c.surface_min_m2 : 35, surfaceMax: c.surface_max_m2 != null ? c.surface_max_m2 : 75, pagination: { itemsPerPage: 18, currentPage: 1 } }); })() }}"
+        "jsonBody": "={{ (() => { var c = $('Config critères (défaut)').first().json; var minP = c.pieces_min != null ? c.pieces_min : 2; var maxP = c.pieces_max != null ? c.pieces_max : 3; var codes = []; for (var i = minP; i <= maxP; i++) codes.push(i + 'PIECES'); return JSON.stringify({ localisations: { codesArrondissements: [], codesCommunes: [], codesDepartements: ['35'], codesRegions: [] }, hasTempsTrajetCriteria: false, codesTypesBiens: ['4', '5'], isInvestir: false, isAncien: false, isNeuf: false, isLocation: true, codesNbPieces: codes, budgetMin: null, budgetMax: c.prix_max_cc != null ? c.prix_max_cc : 700, surfaceMin: c.surface_min_m2 != null ? c.surface_min_m2 : 35, surfaceMax: c.surface_max_m2 != null ? c.surface_max_m2 : 75, checkAdditionalUrlParams: false, fetchBienSimilaire: false, orderBy: 'DatePublicationDesc', pagination: { itemsPerPage: 18, currentPage: 1 }, rechercheElargie: false, returnGeoData: true }); })() }}"
       },
       "onError": "continueErrorOutput"
     },
@@ -1152,7 +1158,7 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ 'https://www.oqoro.com/recherche?bbox=48.59123995022556%2C-2.2538504632400618%2C47.66379024691885%2C-1.1124783922239287&query=&city=&filters%5Bsingle_lot%5D%5B%5D=location&filters%5Bfurnished%5D%5B%5D=false&filters%5Bloyer%5D%5Bfrom%5D=&filters%5Bloyer%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&filters%5Btype%5D%5B%5D=t2&filters%5Btype%5D%5B%5D=t3&filters%5Barea%5D%5Bfrom%5D=' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '&filters%5Barea%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '&filters%5Brooms%5D=0&filters%5Bpromotion%5D=0' }}",
+        "url": "={{ 'https://www.oqoro.com/recherche?bbox=48.58786148986638%2C-2.2419797610676766%2C47.655591997733815%2C-0.9516275031792872&query=&city=&filters%5Bsingle_lot%5D%5B%5D=location&filters%5Bfurnished%5D%5B%5D=false&filters%5Bloyer%5D%5Bfrom%5D=&filters%5Bloyer%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.prix_max_cc || 700) + '&filters%5Btype%5D%5B%5D=t2&filters%5Btype%5D%5B%5D=t3&filters%5Barea%5D%5Bfrom%5D=' + ($('Config critères (défaut)').first().json.surface_min_m2 || 35) + '&filters%5Barea%5D%5Bto%5D=' + ($('Config critères (défaut)').first().json.surface_max_m2 || 75) + '&filters%5Brooms%5D=0&filters%5Bpromotion%5D=0' }}",
         "options": {
           "timeout": 30000
         },
@@ -1619,6 +1625,64 @@
       }
     },
     {
+      "id": "villejean-beauregard-code",
+      "name": "Villejean Beauregard Immobilier - Récup annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "var c = {};\ntry {\n  c = $('Config critères (défaut)').first().json;\n} catch (eCfg) {\n  try {\n    var _cfgIn = $input.first();\n    if (_cfgIn && _cfgIn.json) c = _cfgIn.json;\n  } catch (eIn) {\n    c = {};\n  }\n}\nif (!c || typeof c !== 'object') c = {};\nconst ORIGIN = 'https://www.villejean-beauregard-immobilier.fr';\nconst LIST_PATH = '/catalog/advanced_search_result.php';\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\n\nfunction encQs(entries) {\n  const parts = [];\n  for (let i = 0; i < entries.length; i++) {\n    parts.push(\n      encodeURIComponent(entries[i][0]) + '=' + encodeURIComponent(String(entries[i][1] ?? ''))\n    );\n  }\n  return parts.join('&');\n}\n\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&#8364;/g, '€')\n    .replace(/&sup2;/gi, '²')\n    .replace(/&#178;/g, '²')\n    .replace(/&amp;/g, '&')\n    .replace(/&#039;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction rowValueAfterLabel(html, label) {\n  const needle = '>' + label + '</div>';\n  const idx = html.indexOf(needle);\n  if (idx === -1) return '';\n  const bStart = html.indexOf('<b>', idx);\n  if (bStart === -1 || bStart > idx + 800) return '';\n  const bEnd = html.indexOf('</b>', bStart);\n  if (bEnd === -1) return '';\n  return html.slice(bStart + 3, bEnd).trim();\n}\n\nfunction parseEuro(s) {\n  const m = String(s).match(/([0-9]+(?:[.,][0-9]+)?)/);\n  if (!m) return null;\n  return parseFloat(m[1].replace(',', '.'));\n}\n\nfunction resolveFicheUrl(hrefRaw) {\n  if (!hrefRaw || typeof hrefRaw !== 'string') return '';\n  let h = hrefRaw.split('?')[0].split('#')[0].trim();\n  if (!h) return '';\n  if (h.indexOf('//') === 0) {\n    h = 'https:' + h;\n  } else if (h.indexOf('/') === 0) {\n    h = ORIGIN + h;\n  } else if (h.indexOf('../') === 0) {\n    h = ORIGIN + '/' + h.replace(/^\\.\\.\\//, '');\n  } else if (h.indexOf('http') !== 0) {\n    h = ORIGIN + '/' + h.replace(/^\\.?\\//, '');\n  }\n  return h;\n}\n\nfunction extractProductId(hrefOrUrl) {\n  const m1 = String(hrefOrUrl).match(/_([0-9]{5,})\\//);\n  if (m1) return m1[1];\n  return '';\n}\n\n\n// Pas de TextDecoder / pas de global Buffer typé (sandbox n8n + TS).\n// Décodage UTF-8 en pur JS + priorité à toString('utf8') sur binaire Node.\nfunction utf8BytesToString(u8) {\n  if (u8 == null) return '';\n  var n = u8.length;\n  if (n == null || n === 0) return '';\n  var out = [];\n  for (var i = 0; i < n; i++) {\n    var b0 = u8[i] & 0xff;\n    if (b0 < 0x80) {\n      out.push(String.fromCharCode(b0));\n    } else if (b0 < 0xc0) {\n      out.push('\\uFFFD');\n    } else if (b0 < 0xe0) {\n      if (i + 1 >= n) break;\n      var c = ((b0 & 0x1f) << 6) | (u8[i + 1] & 0x3f);\n      out.push(String.fromCharCode(c));\n      i += 1;\n    } else if (b0 < 0xf0) {\n      if (i + 2 >= n) break;\n      var c1 = ((b0 & 0x0f) << 12) | ((u8[i + 1] & 0x3f) << 6) | (u8[i + 2] & 0x3f);\n      out.push(String.fromCharCode(c1));\n      i += 2;\n    } else {\n      if (i + 3 >= n) break;\n      var c2 = ((b0 & 0x07) << 18) | ((u8[i + 1] & 0x3f) << 12) | ((u8[i + 2] & 0x3f) << 6) | (u8[i + 3] & 0x3f);\n      i += 3;\n      if (c2 > 0xffff) {\n        c2 -= 0x10000;\n        out.push(String.fromCharCode(0xd800 + (c2 >> 10), 0xdc00 + (c2 & 0x3ff)));\n      } else {\n        out.push(String.fromCharCode(c2));\n      }\n    }\n  }\n  return out.join('');\n}\nfunction u8ViewFromAny(val) {\n  if (val == null) return null;\n  if (typeof Uint8Array !== 'undefined' && val instanceof Uint8Array) return val;\n  if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView && ArrayBuffer.isView(val) && val.buffer) {\n    try {\n      if (typeof Uint8Array !== 'undefined') {\n        return new Uint8Array(val.buffer, val.byteOffset, val.byteLength);\n      }\n    } catch (e) {\n      return null;\n    }\n  }\n  if (val && val.buffer && typeof val.byteOffset === 'number' && typeof val.byteLength === 'number') {\n    try {\n      if (typeof Uint8Array !== 'undefined') {\n        return new Uint8Array(val.buffer, val.byteOffset, val.byteLength);\n      }\n    } catch (e2) {\n      return null;\n    }\n  }\n  return null;\n}\nfunction bufToString(val) {\n  if (val == null) return '';\n  if (typeof val === 'string') return val;\n  if (val && typeof val === 'object' && val.type === 'Buffer' && Array.isArray(val.data)) {\n    return utf8BytesToString(val.data);\n  }\n  if (typeof ArrayBuffer !== 'undefined' && val instanceof ArrayBuffer) {\n    if (typeof Uint8Array === 'undefined') return '';\n    return utf8BytesToString(new Uint8Array(val));\n  }\n  if (\n    val &&\n    typeof val === 'object' &&\n    val.constructor &&\n    val.constructor.name === 'Buffer' &&\n    typeof val.toString === 'function'\n  ) {\n    try {\n      var s0 = val.toString('utf8');\n      if (typeof s0 === 'string' && s0) return s0;\n    } catch (e1) {\n      try {\n        s0 = val.toString('latin1');\n        if (typeof s0 === 'string' && s0) return s0;\n      } catch (e2) {}\n    }\n  }\n  if (val && typeof val === 'object' && typeof val.toString === 'function' && val.length > 0) {\n    var nm = val.constructor && val.constructor.name;\n    if (\n      nm === 'Buffer' ||\n      nm === 'Uint8Array' ||\n      (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView && ArrayBuffer.isView(val))\n    ) {\n      try {\n        var s1 = val.toString('utf8');\n        if (typeof s1 === 'string' && s1) return s1;\n      } catch (e3) {\n        try {\n          s1 = val.toString('binary');\n          if (typeof s1 === 'string' && s1) return s1;\n        } catch (e4) {}\n      }\n    }\n  }\n  var u8 = u8ViewFromAny(val);\n  if (u8 && u8.length) {\n    return utf8BytesToString(u8);\n  }\n  if (val && typeof val === 'object' && typeof val.length === 'number' && val.length > 0) {\n    var la = val.length;\n    var acc = [];\n    for (var j = 0; j < la; j++) {\n      if (typeof val[j] === 'number') acc.push(val[j] & 0xff);\n    }\n    if (acc.length) return utf8BytesToString(acc);\n  }\n  return '';\n}\n\nfunction findLargestHtmlLikeString(node, depth) {\n  if (depth == null) depth = 0;\n  if (depth > 12 || node == null) return '';\n  if (typeof node === 'string') {\n    if (node.length < 500) return '';\n    if (node.indexOf('fiches/') !== -1) return node;\n    if (node.indexOf('cell-product') !== -1) return node;\n    if (node.indexOf('listing_bien') !== -1) return node;\n    if (node.indexOf('DOCTYPE') !== -1) return node;\n    if (node.length > 20000) return node;\n    return '';\n  }\n  if (typeof Uint8Array !== 'undefined' && node instanceof Uint8Array) {\n    return bufToString(node);\n  }\n  if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView && ArrayBuffer.isView(node)) {\n    return bufToString(node);\n  }\n  if (node && typeof node === 'object' && node.constructor && node.constructor.name === 'Buffer') {\n    return bufToString(node);\n  }\n  var best = '';\n  if (Array.isArray(node)) {\n    for (var i = 0; i < node.length; i++) {\n      var s = findLargestHtmlLikeString(node[i], depth + 1);\n      if (s.length > best.length) best = s;\n    }\n  } else if (typeof node === 'object') {\n    for (var k in node) {\n      if (!Object.prototype.hasOwnProperty.call(node, k)) continue;\n      if (\n        k === 'headers' ||\n        k === 'header' ||\n        k === 'req' ||\n        k === 'request' ||\n        k === 'socket' ||\n        k === 'config' ||\n        k === 'configurable'\n      ) {\n        continue;\n      }\n      s = findLargestHtmlLikeString(node[k], depth + 1);\n      if (s.length > best.length) best = s;\n    }\n  }\n  return best;\n}\n\nfunction httpBodyToString(raw) {\n  if (raw == null) return '';\n  if (typeof raw === 'string') {\n    if (raw.charAt(0) === '{') {\n      try {\n        var parsed = JSON.parse(raw);\n        if (parsed && typeof parsed === 'object') {\n          var fromJson = findLargestHtmlLikeString(parsed, 0);\n          if (fromJson) return fromJson;\n        }\n      } catch (e0) {\n        // pas du JSON, garder la chaîne telle quelle\n      }\n    }\n    return raw;\n  }\n  var t = bufToString(raw);\n  if (t && t.length > 500) return t;\n  if (raw && raw.body != null) {\n    t = bufToString(raw.body);\n    if (t && t.length > 200) return t;\n    t = findLargestHtmlLikeString(raw.body, 0);\n    if (t) return t;\n  }\n  if (raw && raw.data != null) {\n    t = bufToString(raw.data);\n    if (t && t.length > 200) return t;\n    t = findLargestHtmlLikeString(raw.data, 0);\n    if (t) return t;\n  }\n  function pickObj(obj, d) {\n    if (obj == null || d > 5) return '';\n    if (typeof obj === 'string' && obj.length > 200) return obj;\n    var inner = bufToString(obj);\n    if (inner && inner.length > 200) return inner;\n    if (typeof obj !== 'object') return '';\n    var keys = [\n      'body',\n      'data',\n      'text',\n      'content',\n      'message',\n      'response',\n      'result',\n      'html',\n      'payload',\n    ];\n    for (var ki = 0; ki < keys.length; ki++) {\n      var got = pickObj(obj[keys[ki]], d + 1);\n      if (got) return got;\n    }\n    if (typeof obj.json === 'string') return obj.json;\n    if (obj != null && obj.json != null) {\n      got = pickObj(obj.json, d + 1);\n      if (got) return got;\n    }\n    if (Array.isArray(obj) && obj[0] != null) {\n      return pickObj(obj[0], d + 1);\n    }\n    return '';\n  }\n  t = pickObj(raw, 0);\n  if (t) return t;\n  t = findLargestHtmlLikeString(raw, 0);\n  return t || '';\n}\n\nfunction collectFichePaths(html) {\n  if (html == null) return [];\n  var s0 = String(html);\n  if (!s0) return [];\n  var seen = new Set();\n  var out = [];\n  var needles = [\n    { prefix: '../fiches/' },\n    { prefix: 'https://www.villejean-beauregard-immobilier.fr/fiches/' },\n    { prefix: 'http://www.villejean-beauregard-immobilier.fr/fiches/' },\n  ];\n  for (var ni = 0; ni < needles.length; ni++) {\n    var needle = needles[ni].prefix;\n    for (var from = 0; from < s0.length; ) {\n      var i = s0.indexOf(needle, from);\n      if (i === -1) break;\n      var j = s0.indexOf('.html', i);\n      if (j === -1) {\n        from = i + needle.length;\n        continue;\n      }\n      var path = s0.slice(i, j + 5);\n      var q = path.indexOf('?');\n      if (q !== -1) path = path.slice(0, q);\n      path = path.split('#')[0].trim();\n      if (path && !seen.has(path)) {\n        seen.add(path);\n        out.push(path);\n      }\n      from = j + 5;\n    }\n    if (out.length) break;\n  }\n  if (out.length) return out;\n  var re = /(fiches\\/3-[0-9-]+_[0-9]+\\/[^?#'\"\\s<]+\\.html)/gi;\n  var m;\n  while ((m = re.exec(s0)) !== null) {\n    var p2 = '../' + m[1];\n    if (!seen.has(p2)) {\n      seen.add(p2);\n      out.push(p2);\n    }\n  }\n  return out;\n}\n\ntry {\n  const prixMax = c.prix_max_cc != null ? Number(c.prix_max_cc) : 800;\n  const sMin = c.surface_min_m2 != null ? Number(c.surface_min_m2) : 40;\n  const sMax = c.surface_max_m2 != null ? Number(c.surface_max_m2) : 75;\n  // Le site ne met pas de cartes/liens fiches dans le HTML si C_30_MAX est trop bas (vérifié: 680 → 0 « fiches », 800+ → ok).\n  const queryPrixList = Math.max(prixMax, 800);\n\n  const baseQs = encQs([\n    ['action', 'update_search'],\n    ['map_polygone', ''],\n    ['C_28_search', 'EGAL'],\n    ['C_28_type', 'UNIQUE'],\n    ['C_28', 'Location'],\n    ['C_27_search', 'EGAL'],\n    ['C_27_type', 'TEXT'],\n    ['C_27', '2,1'],\n    ['C_27_tmp', '2'],\n    ['C_27_tmp', '1'],\n    ['C_34_MIN', String(sMin)],\n    ['C_34_search', 'COMPRIS'],\n    ['C_34_type', 'NUMBER'],\n    ['C_65_search', 'CONTIENT'],\n    ['C_65_type', 'TEXT'],\n    ['C_65', ''],\n    ['C_30_search', 'COMPRIS'],\n    ['C_30_type', 'NUMBER'],\n    ['C_30_MAX', String(queryPrixList)],\n    ['C_34_MAX', String(sMax)],\n    ['C_30_MIN', ''],\n    ['C_36_MAX', ''],\n    ['C_36_MIN', ''],\n    ['C_36_search', 'COMPRIS'],\n    ['C_36_type', 'NUMBER'],\n    ['keywords', ''],\n  ]);\n\n  const headers = {\n    'User-Agent': UA,\n    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n    'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    Referer: ORIGIN + '/catalog/',\n  };\n\n  const seenIds = new Set();\n  const cards = [];\n  const listUrl = ORIGIN + LIST_PATH + '?' + baseQs;\n  let listRaw;\n  try {\n    listRaw = await this.helpers.httpRequest({\n      method: 'GET',\n      url: listUrl,\n      headers: headers,\n      timeout: 30000,\n    });\n  } catch (e0) {\n    try {\n      listRaw = await this.helpers.httpRequest({\n        method: 'GET',\n        url: listUrl,\n        headers: headers,\n        timeout: 30000,\n        returnFullResponse: true,\n      });\n    } catch (e1) {\n      return [];\n    }\n  }\n  const listHtml = httpBodyToString(listRaw);\n  if (!listHtml) return [];\n\n  const fichePaths = collectFichePaths(listHtml);\n  for (let fi = 0; fi < fichePaths.length; fi++) {\n    const hrefAttr = fichePaths[fi];\n    const id = extractProductId(hrefAttr + '/');\n    if (!id || seenIds.has(id)) continue;\n    seenIds.add(id);\n    cards.push({ href: hrefAttr, id: id });\n  }\n\n  const out = [];\n  for (let i = 0; i < cards.length; i++) {\n    const card = cards[i];\n    const ficheUrl = resolveFicheUrl(card.href);\n    if (!ficheUrl) continue;\n\n    let detailRaw;\n    try {\n      detailRaw = await this.helpers.httpRequest({\n        method: 'GET',\n        url: ficheUrl,\n        headers: headers,\n        timeout: 30000,\n      });\n    } catch (e2) {\n      try {\n        detailRaw = await this.helpers.httpRequest({\n          method: 'GET',\n          url: ficheUrl,\n          headers: headers,\n          timeout: 30000,\n          returnFullResponse: true,\n        });\n      } catch (e2b) {\n        continue;\n      }\n    }\n    const html = httpBodyToString(detailRaw);\n    if (!html) continue;\n\n    const transTxt = rowValueAfterLabel(html, 'Type de transaction');\n    if (/^vente$/i.test(stripHtml(transTxt))) continue;\n\n    const titreM = html.match(/<h1>([^<]+)<\\/h1>/i);\n    const titre = titreM ? stripHtml(titreM[1]) : '';\n\n    const loyerCcTxt = rowValueAfterLabel(html, 'Loyer charges comprises');\n    let loyer_cc = parseEuro(loyerCcTxt);\n    const chargesTxt = rowValueAfterLabel(html, 'Provision sur charges');\n    let charges = parseEuro(chargesTxt);\n\n    if (loyer_cc == null) {\n      const headM = html.match(/class=\"alur_loyer_price\"[^>]*>[^0-9]*([0-9]+)/i);\n      if (headM) loyer_cc = parseFloat(headM[1]);\n    }\n    if (loyer_cc != null && loyer_cc > prixMax) continue;\n\n    const surfTxt = rowValueAfterLabel(html, 'Surface');\n    let surface_m2 = null;\n    const sm = surfTxt.match(/([0-9]+(?:[.,][0-9]+)?)\\s*m/i);\n    if (sm) surface_m2 = parseFloat(sm[1].replace(',', '.'));\n\n    const piecesTxt = rowValueAfterLabel(html, 'Nombre pièces');\n    let pieces = null;\n    if (piecesTxt) {\n      const pn = piecesTxt.replace(/[^0-9]/g, '');\n      if (pn) pieces = parseInt(pn, 10);\n    }\n\n    const meubleTxt = rowValueAfterLabel(html, 'Meublé');\n    let meuble = null;\n    const meubleNorm = stripHtml(meubleTxt);\n    if (/^oui$/i.test(meubleNorm)) meuble = 'oui';\n    else if (/^non$/i.test(meubleNorm)) meuble = 'non';\n\n    const cp = rowValueAfterLabel(html, 'Code postal');\n    const villeNom = rowValueAfterLabel(html, 'Ville');\n    const ville = (villeNom || '').trim();\n\n    const descM = html.match(\n      /<div class=\"desc-text\">([\\s\\S]*?)<\\/div>\\s*<div class=\"mentions_bareme/i\n    );\n    let description = descM ? stripHtml(descM[1]).slice(0, 650) : '';\n\n    const blob = (titre + ' ' + description).toLowerCase();\n    if (blob.indexOf('colocation') !== -1 || blob.indexOf('collocation') !== -1) continue;\n\n    if (surface_m2 == null && titre) {\n      const tm = titre.match(/([0-9]+(?:[.,][0-9]+)?)\\s*m(?:²|2)/i);\n      if (tm) surface_m2 = parseFloat(tm[1].replace(',', '.'));\n    }\n    if (pieces == null && titre) {\n      const tpm = titre.match(/\\bT\\s*([0-9]+)\\b/i);\n      if (tpm) pieces = parseInt(tpm[1], 10);\n      else {\n        const pm2 = titre.match(/([0-9]+)\\s*pi[eè]ce/i);\n        if (pm2) pieces = parseInt(pm2[1], 10);\n      }\n    }\n\n    if (loyer_cc == null || surface_m2 == null) continue;\n\n    out.push({\n      json: {\n        source: 'villejean_beauregard',\n        id_site: String(card.id),\n        titre: titre || 'Villejean Beauregard — ' + card.id,\n        description: description,\n        ville: ville,\n        quartier: '',\n        adresse: '',\n        pieces: pieces,\n        surface_m2: surface_m2,\n        loyer_cc: loyer_cc,\n        charges: charges,\n        meuble: meuble,\n        url: ficheUrl,\n        date_publication: null,\n      },\n    });\n  }\n\n  const seenOut = new Set();\n  return out.filter(function (it) {\n    const k = it.json.id_site;\n    if (!k || seenOut.has(k)) return false;\n    seenOut.add(k);\n    return true;\n  });\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-vbi",
+      "name": "Fusion + Villejean Beauregard",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        5400
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "logic-immo-pipeline",
+      "name": "Logic-Immo - Récup + format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        5600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const c = $('Config critères (défaut)').first().json;\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\nconst SERP_URL = 'https://www.logic-immo.com/serp-bff/search';\nconst LI_COOKIE = c.logic_immo_cookie != null ? String(c.logic_immo_cookie).trim() : '';\n\n// Polygone ~50 km autour de Rennes (inchangé)\nconst RENNES_50KM_POLY =\n  '{olgH`~cIlu@lzX``DxyWldG~yUn~Ip}RvjLlhOhfNn_K|nOfhF`cPvhAdbPyvAflOetFjbNmgK`fLikOvyIwzRl`G_rUl}C{mWnt@klXot@klXm}C{mWm`G_rUwyIwzRafLgkOkbNogKglOetFebPyvAacPvhA}nOfhFifNn_KwjLnhOo~Ip}RmdG|yUa`DxyWmu@lzX';\n\nfunction n(x, fallback) {\n  if (x == null) return fallback;\n  if (typeof x === 'string' && x.trim() === '') return fallback;\n  const v = Number(x);\n  return Number.isFinite(v) ? v : fallback;\n}\n\nconst piecesMin = n(c.pieces_min, 2);\nconst piecesMax = n(c.pieces_max, 4);\nconst prixMax = n(c.prix_max_cc, 800);\nconst sMin = n(c.surface_min_m2, 40);\nconst sMax = n(c.surface_max_m2, 75);\n// Chambres : min 1 ; max (pièces−1) plafonné à 3 ; si pieces_max absent (config) → 2\nlet bedMax = Math.max(1, Math.min(3, Math.floor(piecesMax) - 1));\nif (c.pieces_max == null) {\n  bedMax = 2;\n}\n\nconst serpBody = {\n  criteria: {\n    distributionTypes: ['Rent'],\n    estateTypes: ['House', 'Apartment'],\n    numberOfRoomsMin: Math.floor(piecesMin),\n    numberOfRoomsMax: Math.floor(piecesMax),\n    numberOfBedroomsMin: 1,\n    numberOfBedroomsMax: bedMax,\n    priceMax: Math.round(prixMax),\n    spaceMin: Math.round(sMin),\n    spaceMax: Math.round(sMax),\n    projectTypes: ['Stock'],\n    location: { polylines: [RENNES_50KM_POLY] },\n  },\n  paging: { page: 1, size: 25, order: 'DateDesc' },\n};\n\nconst COL_RE = /colocation|collocation|collacation|chambre chez|location de chambre|\\bcolloc\\b/i;\n\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n    .slice(0, 500);\n}\n\nfunction isDataDomeBlock(x) {\n  if (!x || typeof x !== 'object') return false;\n  if (x.url && String(x.url).indexOf('captcha-delivery.com') >= 0) return true;\n  if (x.body && x.body.url && String(x.body.url).indexOf('captcha-delivery.com') >= 0) return true;\n  return false;\n}\n\nfunction getHttpStatus(resp) {\n  if (resp == null) return null;\n  if (typeof resp === 'object' && resp.statusCode != null) return Number(resp.statusCode);\n  if (typeof resp === 'object' && resp.status != null) return Number(resp.status);\n  return null;\n}\n\nfunction getHttpBody(resp) {\n  if (resp == null) return null;\n  if (typeof resp === 'object' && Object.prototype.hasOwnProperty.call(resp, 'body')) {\n    return resp.body;\n  }\n  return resp;\n}\n\nfunction unwrapHttpBody(raw) {\n  if (raw == null) return null;\n  if (typeof raw === 'string') {\n    const t = raw.trim();\n    if (t && (t[0] === '{' || t[0] === '[')) {\n      try {\n        return JSON.parse(t);\n      } catch (e) {\n        return null;\n      }\n    }\n    if (t.indexOf('<!DOCTYPE') === 0 || t.toLowerCase().indexOf('<html') >= 0) return { _html: true, _rawHead: t.slice(0, 200) };\n    return null;\n  }\n  if (typeof raw === 'object') {\n    if (isDataDomeBlock(raw)) return { _blocked: true, _captcha: true };\n    if (raw.data && typeof raw.data === 'object' && !raw.classifieds && raw.id == null) {\n      const inner = raw.data;\n      if (inner && (inner.classifieds || Array.isArray(inner) || (inner.hits && inner.hits.length))) {\n        return raw.data;\n      }\n    }\n    if (raw.body && typeof raw.body === 'string') return unwrapHttpBody(raw.body);\n    if (raw.json) return raw.json;\n    if (raw.type === 'Buffer' && Array.isArray(raw.data)) {\n      const s = String.fromCharCode.apply(null, raw.data);\n      return unwrapHttpBody(s);\n    }\n    return raw;\n  }\n  return null;\n}\n\nfunction idFromItem(x) {\n  if (!x) return '';\n  if (x.id != null) return String(x.id);\n  if (x.cps != null) return String(x.cps);\n  if (x.classifiedId != null) return String(x.classifiedId);\n  if (x.adId != null) return String(x.adId);\n  if (x.uniqueId != null) return String(x.uniqueId);\n  return '';\n}\n\nfunction extractIdList(serp) {\n  if (!serp) return [];\n  if (isDataDomeBlock(serp) || serp._blocked) return [];\n  if (serp._html) return [];\n  const candidates = [\n    serp.classifieds,\n    serp.hits,\n    serp.data && serp.data.classifieds,\n    serp.data && serp.data.hits,\n    serp.data && (Array.isArray(serp.data) ? serp.data : null),\n    serp.searchClassifieds,\n    serp.results,\n    serp.data && serp.data.results,\n    serp.data && serp.data.items,\n    serp.data && serp.data.searchClassifieds,\n    serp.items,\n    serp.data && serp.data.content,\n  ];\n  for (const arr of candidates) {\n    if (Array.isArray(arr) && arr.length) {\n      return arr\n        .map((x) => idFromItem(x))\n        .filter(Boolean)\n        .slice(0, 25);\n    }\n  }\n  if (serp && typeof serp === 'object') {\n    for (const k in serp) {\n      if (!serp.hasOwnProperty(k)) continue;\n      const v = serp[k];\n      if (\n        Array.isArray(v) &&\n        v[0] &&\n        (idFromItem(v[0]) !== '' || (v[0] && (v[0].headline != null || v[0].mainDescription != null)))\n      ) {\n        return v\n          .map((x) => idFromItem(x))\n          .filter(Boolean)\n          .slice(0, 25);\n      }\n    }\n  }\n  return [];\n}\n\nfunction extractClassifieds(body) {\n  if (Array.isArray(body)) return body;\n  if (body && isDataDomeBlock(body)) return [];\n  if (body && Array.isArray(body.classifieds)) return body.classifieds;\n  if (body && Array.isArray(body.hits)) return body.hits;\n  if (body && body.data) {\n    if (Array.isArray(body.data)) return body.data;\n    if (Array.isArray(body.data.classifieds)) return body.data.classifieds;\n    if (Array.isArray(body.data.hits)) return body.data.hits;\n  }\n  if (body && Array.isArray(body.results)) return body.results;\n  if (body && body.data && Array.isArray(body.data.searchClassifieds))\n    return body.data.searchClassifieds;\n  if (body && body.data && Array.isArray(body.data.content)) return body.data.content;\n  return [];\n}\n\nfunction numberFromPriceLike(v) {\n  if (v == null) return null;\n  if (typeof v === 'number' && Number.isFinite(v)) return v;\n  if (v.value != null) return n(v.value, null);\n  if (v.includingCharges != null) return n(v.includingCharges, null);\n  if (v.rent != null) return n(v.rent, null);\n  if (v.amount != null) return n(v.amount, null);\n  return null;\n}\n\nfunction factByType(a, type) {\n  const hf = a.hardFacts;\n  if (!hf || !Array.isArray(hf.facts)) return null;\n  const f = hf.facts.find((x) => x && x.type === type);\n  if (!f || f.splitValue == null) return null;\n  const sv = String(f.splitValue).replace(',', '.');\n  if (type === 'livingSpace') {\n    const num = parseFloat(sv);\n    return Number.isFinite(num) ? num : null;\n  }\n  if (type === 'numberOfRooms' || type === 'numberOfBedrooms') {\n    const num = parseInt(sv, 10);\n    return Number.isFinite(num) ? num : null;\n  }\n  return null;\n}\n\nfunction getMainDescBlock(a) {\n  const m = a.mainDescription;\n  if (m && typeof m === 'object' && m !== null && ('headline' in m || 'description' in m)) {\n    return {\n      headline: m.headline != null ? String(m.headline) : '',\n      text: m.description != null ? String(m.description) : '',\n    };\n  }\n  if (typeof m === 'string') {\n    return { headline: a.headline != null ? String(a.headline) : '', text: m };\n  }\n  const t =\n    a.description != null\n      ? String(a.description)\n      : a.htmlDescription != null\n        ? String(a.htmlDescription)\n        : a.text != null\n          ? String(a.text)\n          : '';\n  return {\n    headline: a.headline != null ? String(a.headline) : a.title != null ? String(a.title) : '',\n    text: t,\n  };\n}\n\nfunction pickQuartier(a) {\n  const l = a.location;\n  if (l && l.address && l.address.district) return String(l.address.district);\n  if (l && l.districtName) return String(l.districtName);\n  return '';\n}\n\nfunction pickMeubleHeuristic(main, a) {\n  if (a.furnished === true) return 'oui';\n  if (a.furnished === false) return 'non';\n  if (a.rawData && a.rawData.furnished != null) {\n    return a.rawData.furnished ? 'oui' : 'non';\n  }\n  const t = (main.text + ' ' + main.headline).toLowerCase();\n  if (/non meubl|sauf meubl|vide|nu\\b/i.test(t) && !/\\bmeubl/i.test(t)) return 'non';\n  if (/\\bmeubl/i.test(t)) return 'oui';\n  return null;\n}\n\nfunction pickCity(a) {\n  const l = a.location;\n  if (l && l.address) {\n    if (l.address.city) return String(l.address.city);\n    if (l.address.town) return String(l.address.town);\n  }\n  if (a.tracking && a.tracking.city) return String(a.tracking.city);\n  if (l && l.addressLabel) return String(l.addressLabel);\n  if (a.city) return String(a.city);\n  if (a.municipality) return String(a.municipality);\n  if (a.address && a.address.city) return String(a.address.city);\n  if (a.rawData) {\n    if (a.rawData.providercity) return String(a.rawData.providercity);\n    if (a.rawData.city) return String(a.rawData.city);\n  }\n  return '';\n}\n\nfunction pickUrl(a) {\n  if (a.url && String(a.url).indexOf('http') === 0) return String(a.url);\n  if (a.permalink) return String(a.permalink);\n  if (a.link) return String(a.link);\n  const leg = a.metadata && a.metadata.legacyId != null ? a.metadata.legacyId : a.legacyTracking && a.legacyTracking.id;\n  if (leg != null) {\n    return 'https://www.logic-immo.com/detail-location-' + String(leg) + '.htm';\n  }\n  if (a.cps) return 'https://www.logic-immo.com/location-' + String(a.cps) + '.html';\n  if (a.id != null) return 'https://www.logic-immo.com/location-' + String(a.id) + '.html';\n  return '';\n}\n\nfunction pickLoyer(a) {\n  if (a.tracking && a.tracking.price != null) return n(a.tracking.price, null);\n  if (a.legacyTracking && a.legacyTracking.price != null) return n(a.legacyTracking.price, null);\n  if (a.rawData && a.rawData.price != null) return n(a.rawData.price, null);\n  if (a.rent != null) {\n    if (typeof a.rent === 'object') return numberFromPriceLike(a.rent);\n    return n(a.rent, null);\n  }\n  if (a.price) {\n    if (typeof a.price === 'object') {\n      const r = numberFromPriceLike(a.price);\n      if (r != null) return r;\n    }\n    return n(a.price, null);\n  }\n  if (a.hardFacts && a.hardFacts.price && typeof a.hardFacts.price === 'object') {\n    const hp = a.hardFacts.price;\n    if (hp.ariaLabel) {\n      const t = String(hp.ariaLabel).replace(/[\\s\\u00A0€]/g, '').replace(',', '.');\n      const m = t.match(/[\\d.]+/);\n      if (m) {\n        const v = parseFloat(m[0]);\n        if (Number.isFinite(v)) return v;\n      }\n    }\n  }\n  if (a.legacyTracking && a.legacyTracking.includingCharges != null) {\n    return n(a.legacyTracking.includingCharges, null);\n  }\n  if (a.tracking && a.tracking.includingCharges != null) return n(a.tracking.includingCharges, null);\n  return null;\n}\n\nfunction pickSurface(a) {\n  if (a.rawData && a.rawData.surface && a.rawData.surface.main != null) {\n    return n(a.rawData.surface.main, null);\n  }\n  if (a.legacyTracking && a.legacyTracking.space != null) {\n    return n(a.legacyTracking.space, null);\n  }\n  const f = factByType(a, 'livingSpace');\n  if (f != null) return f;\n  var surface_m2 = a.surface;\n  if (a.livingSpace != null) surface_m2 = a.livingSpace;\n  if (a.area != null) surface_m2 = a.area;\n  if (a.legacyTracking && a.legacyTracking.livingSpace != null) {\n    surface_m2 = a.legacyTracking.livingSpace;\n  }\n  if (a.hardFacts) {\n    const h = a.hardFacts;\n    if (h.surface) surface_m2 = h.surface;\n    if (h.livingSpace) surface_m2 = h.livingSpace;\n  }\n  if (Array.isArray(a.criteria)) {\n    for (var i = 0; i < a.criteria.length; i++) {\n      const cr = a.criteria[i];\n      if (cr && /surface|m²|m2/i.test(String((cr.label || cr.name) + '')) && cr.value) {\n        const m = String(cr.value).match(/([0-9]+)/);\n        if (m) {\n          surface_m2 = parseInt(m[1], 10);\n          break;\n        }\n      }\n    }\n  }\n  if (typeof surface_m2 === 'object' && surface_m2 && surface_m2.value != null) {\n    surface_m2 = surface_m2.value;\n  }\n  return surface_m2 != null && surface_m2 !== '' ? n(surface_m2, null) : null;\n}\n\nfunction pickPieces(a) {\n  if (a.rawData && a.rawData.nbroom != null) return n(a.rawData.nbroom, null);\n  if (a.legacyTracking && a.legacyTracking.nb_rooms != null) {\n    return n(a.legacyTracking.nb_rooms, null);\n  }\n  const f = factByType(a, 'numberOfRooms');\n  if (f != null) return f;\n  if (a.numberOfRooms != null) return n(a.numberOfRooms, null);\n  if (a.numberOfPieces != null) return n(a.numberOfPieces, null);\n  if (a.rooms != null) return n(a.rooms, null);\n  if (a.hardFacts && a.hardFacts.rooms != null) return n(a.hardFacts.rooms, null);\n  return null;\n}\n\nfunction mapOne(a) {\n  const main = getMainDescBlock(a);\n  const headline = main.headline;\n  const mainD = main.text;\n  if (COL_RE.test((headline + ' ' + mainD).toLowerCase())) return null;\n\n  const idKey = idFromItem(a);\n  if (!idKey) return null;\n\n  const hardTitle = a.hardFacts && a.hardFacts.title ? String(a.hardFacts.title) : '';\n  const city = pickCity(a);\n  var titre = '';\n  if (headline && String(headline).trim()) titre = String(headline).trim();\n  else if (hardTitle) titre = hardTitle;\n  else titre = 'Annonce ' + idKey;\n  titre = String(titre).slice(0, 200);\n\n  const meta = a.metadata || {};\n  const datePub = meta.creationDate || meta.updateDate || a.publicationDate || a.publishedAt || a.updatedAt || null;\n\n  return {\n    json: {\n      source: 'logic_immo',\n      id_site: idKey,\n      titre: titre,\n      description: stripHtml(String(mainD)),\n      ville: city,\n      quartier: pickQuartier(a),\n      adresse: '',\n      pieces: pickPieces(a),\n      surface_m2: pickSurface(a),\n      loyer_cc: pickLoyer(a),\n      charges: a.charges != null ? n(a.charges, null) : null,\n      meuble: pickMeubleHeuristic(main, a),\n      url: pickUrl(a),\n      date_publication: datePub,\n    },\n  };\n}\n\nconst commonH = {\n  'User-Agent': UA,\n  Origin: 'https://www.logic-immo.com',\n  Referer: 'https://www.logic-immo.com/louer-bretagne-6/rennes-35_ille-et-vilaine/annonces-35_ille-et-vilaine.html',\n  'Accept-Language': 'fr,fr-FR;q=0.9,en-US;q=0.8,en;q=0.7',\n  Accept: 'application/json, text/javascript, application/xml;q=0.1, */*;q=0.1',\n  'Sec-Fetch-Dest': 'empty',\n  'Sec-Fetch-Mode': 'cors',\n  'Sec-Fetch-Site': 'same-origin',\n  'X-Requested-With': 'XMLHttpRequest',\n};\nif (LI_COOKIE) {\n  commonH.Cookie = LI_COOKIE;\n}\n\nvar serp;\ntry {\n  const raw1 = await this.helpers.httpRequest({\n    method: 'POST',\n    url: SERP_URL,\n    headers: {\n      'Content-Type': 'application/json',\n      ...commonH,\n    },\n    body: JSON.stringify(serpBody),\n    returnFullResponse: true,\n  });\n  const st = getHttpStatus(raw1);\n  const body1 = getHttpBody(raw1);\n  let unwrapped = unwrapHttpBody(body1) || (typeof body1 === 'object' && body1 && !isDataDomeBlock(body1) ? body1 : null);\n  if (unwrapped && isDataDomeBlock(unwrapped)) {\n    return [];\n  }\n  if (st != null && (st < 200 || st >= 300) && isDataDomeBlock(unwrapped || body1)) {\n    return [];\n  }\n  if (st != null && (st < 200 || st >= 300)) {\n    if (!unwrapped) return [];\n  }\n  serp = unwrapped;\n} catch (e) {\n  return [];\n}\n\nif (!serp || serp._html || isDataDomeBlock(serp) || serp._blocked) return [];\n\nconst ids = extractIdList(serp);\nif (!ids.length) {\n  if (isDataDomeBlock(serp)) return [];\n  return [];\n}\n\nconst listUrl = 'https://www.logic-immo.com/classifiedList/' + ids.map(encodeURIComponent).join(',');\nvar list = [];\ntry {\n  const raw2 = await this.helpers.httpRequest({\n    method: 'GET',\n    url: listUrl,\n    headers: {\n      ...commonH,\n    },\n    returnFullResponse: true,\n  });\n  const st2 = getHttpStatus(raw2);\n  const b2 = getHttpBody(raw2);\n  if (st2 != null && (st2 < 200 || st2 >= 300)) {\n    list = [];\n  } else {\n    const d0 = unwrapHttpBody(b2) || b2;\n    let d = d0;\n    if (d && d.data && isDataDomeBlock(d) === false) {\n      d = unwrapHttpBody(d) || d0;\n    }\n    list = d && !isDataDomeBlock(d) && d != null ? extractClassifieds(d) : [];\n  }\n} catch (e2) {\n  list = [];\n}\n\nif (list.length === 0) {\n  list = serp != null ? extractClassifieds(serp) : [];\n  const byId = new Map();\n  for (var j = 0; j < list.length; j++) {\n    const cj = list[j];\n    if (cj && idFromItem(cj)) {\n      byId.set(idFromItem(cj), cj);\n    }\n  }\n  const mapped = [];\n  for (var ii = 0; ii < ids.length; ii++) {\n    if (byId.get(ids[ii])) {\n      mapped.push(byId.get(ids[ii]));\n    }\n  }\n  list = mapped;\n}\n\nconst out = [];\nconst seen = new Set();\nfor (var i = 0; i < list.length; i++) {\n  if (!list[i]) continue;\n  if (idFromItem(list[i]) === '') continue;\n  const row = mapOne(list[i]);\n  if (!row) continue;\n  if (seen.has(row.json.id_site)) continue;\n  seen.add(row.json.id_site);\n  out.push(row);\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "merge-branches-logic-immo",
+      "name": "Fusion + Logic-Immo",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        5600
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
       "id": "laforet-http",
       "name": "Laforêt - Récup HTML",
       "type": "n8n-nodes-base.httpRequest",
@@ -2052,6 +2116,597 @@
           "name": "Telegram"
         }
       }
+    },
+    {
+      "id": "lamy-http",
+      "name": "Lamy - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        5800
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const minP = c.pieces_min != null ? c.pieces_min : 2; const maxP = c.pieces_max != null ? c.pieces_max : 3; let rooms = ''; for (let i = minP; i <= maxP; i++) rooms += '&filter%5BroomsCount%5D%5B%5D=' + i; const sMax = c.surface_max_m2 != null && c.surface_max_m2 !== '' ? String(c.surface_max_m2) : ''; return 'https://www.lamy-immobilier.fr/_ajax/our_ads?swlat=47.50676139558199&swlng=-2.6705986880859323&nelat=48.7206366880816&nelng=-0.8523613833984323&filter%5Btype%5D=rental&filter%5Blocations%5D=Ille-et-Vilaine&filter%5BpropertyType%5D%5B%5D=apartment&filter%5BpropertyType%5D%5B%5D=house&filter%5Bprice%5D%5BminPrice%5D=&filter%5Bprice%5D%5BmaxPrice%5D=' + (c.prix_max_cc != null ? c.prix_max_cc : 700) + '&filter%5Bsurface%5D%5BminSurface%5D=' + (c.surface_min_m2 != null ? c.surface_min_m2 : 40) + '&filter%5Bsurface%5D%5BmaxSurface%5D=' + sMax + rooms + '&filter%5Bfrom%5D=filter'; })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "X-Requested-With",
+              "value": "XMLHttpRequest"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "lamy-transform",
+      "name": "Lamy - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        5800
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const j = $input.first().json || {};\nconst rawHtml =\n  (j.itemsListHtml && String(j.itemsListHtml)) ||\n  (j.body && j.body.itemsListHtml && String(j.body.itemsListHtml)) ||\n  '';\nif (rawHtml.length < 50) return [];\nconst out = [];\nconst seen = new Set();\nconst parts = rawHtml.split(/<div class=\\\"estate-item search-item\\\"/i);\nfor (let i = 1; i < parts.length; i++) {\n  const b = parts[i];\n  const idM = b.match(/data-id=\\\"(\\d+)\\\"/i);\n  const id_site = (idM && idM[1]) ? idM[1] : '';\n  if (!id_site) continue;\n  if (seen.has(id_site)) continue;\n  seen.add(id_site);\n  const hrefM = b.match(/href=\\\"(https?:\\/\\/www\\.lamy-immobilier\\.fr[^\\\"]+)\\\"/i);\n  const url = hrefM ? hrefM[1] : '';\n  const priceM = b.match(/class=\\\"price-for-map-inner\\\"[^>]*>\\s*([0-9\\s\\u00A0]+)/i);\n  let loyer_cc = null;\n  if (priceM) {\n    const n = (priceM[1] || '').replace(/[\\s\\u00A0]/g, '');\n    if (n) loyer_cc = parseInt(n, 10);\n  }\n  const locM = b.match(/estate-item__location\\\">\\s*([^<]+)/i);\n  let ville = '';\n  if (locM) {\n    const raw = (locM[1] || '').trim();\n    const vm = raw.match(/^(.+?)\\s*\\((\\d{5})\\)\\s*$/);\n    ville = vm ? vm[1].trim() : raw.replace(/\\s*\\(\\d{5}\\)\\s*$/i, '').trim();\n  }\n  const infosM = b.match(/estate-item__infos\\\">\\s*([^<]+)/i);\n  let pieces = null;\n  let surface_m2 = null;\n  let typeBien = 'Bien';\n  if (infosM) {\n    const t = (infosM[1] || '').trim();\n    const pm = t.match(/(\\d+)\\s*pi[èe]ces?/i);\n    if (pm) pieces = parseInt(pm[1], 10);\n    const sm = t.match(/(\\d+(?:[,.]\\d+)?)\\s*m[²2]/i);\n    if (sm) surface_m2 = parseFloat(String(sm[1]).replace(',', '.'));\n    const segs = t.split(/[·|]/).map(s => s.trim());\n    if (segs[0]) typeBien = segs[0];\n  }\n  out.push({\n    json: {\n      source: 'lamy_immobilier',\n      id_site,\n      titre: [typeBien, ville].filter(Boolean).join(' - ') || ('Annonce ' + id_site),\n      description: '',\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "merge-branches-lamy",
+      "name": "Fusion + Lamy",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        5800
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "parthenay-http",
+      "name": "Parthenay Immo - Récup annonces",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        6000
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.parthenay-immobilier.fr/fr/data_listing-location_formrecherchelocation.html",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/javascript, */*; q=0.01"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded; charset=UTF-8"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "tri",
+              "value": "date1-asc"
+            },
+            {
+              "name": "loc",
+              "value": "location"
+            },
+            {
+              "name": "type[]",
+              "value": "maison"
+            },
+            {
+              "name": "type[]",
+              "value": "appartement"
+            },
+            {
+              "name": "surfacemin",
+              "value": "={{ $('Config critères (défaut)').first().json.surface_min_m2 != null ? $('Config critères (défaut)').first().json.surface_min_m2 : 40 }}"
+            },
+            {
+              "name": "prixmax",
+              "value": "={{ $('Config critères (défaut)').first().json.prix_max_cc != null ? $('Config critères (défaut)').first().json.prix_max_cc : 700 }}"
+            },
+            {
+              "name": "numero",
+              "value": ""
+            },
+            {
+              "name": "coordonnees",
+              "value": ""
+            },
+            {
+              "name": "archivage_statut",
+              "value": ""
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "route",
+              "value": "listing-location"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "parthenay-transform",
+      "name": "Parthenay Immo - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        6000
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = 'https://www.parthenay-immobilier.fr';\nconst cfg = $('Config critères (défaut)').first().json;\nconst minP = cfg.pieces_min != null ? cfg.pieces_min : 2;\nconst maxP = cfg.pieces_max != null ? cfg.pieces_max : 3;\nconst j0 = $input.first().json;\nconst j = (j0 && j0.data) ? j0 : (j0 && j0.body && j0.body.data) ? j0.body : j0;\nif (!j || (j.status && j.status !== 'ok')) return [];\nconst data = j.data;\nif (!data || !data.resultats || !Array.isArray(data.resultats.data)) return [];\nconst list = data.resultats.data;\nconst outHtml = typeof data.output === 'string' ? data.output : '';\n\nfunction stripHtml(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<br\\s*\\/?/gi, ' ')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&[a-z#0-9]+;/gi, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n    .slice(0, 500);\n}\nfunction findUrl(idhabit) {\n  if (!outHtml || idhabit == null) return '';\n  const m = outHtml.match(\n    new RegExp('href=\"(https://www\\.parthenay-immobilier\\.fr/fr/[^\"]*-' + idhabit + '\\.html)\"', 'i')\n  );\n  return m ? m[1] : '';\n}\nfunction slugVille(v) {\n  if (!v || typeof v !== 'string') return '';\n  return v\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .toLowerCase()\n    .trim()\n    .replace(/'/, ' ')\n    .replace(/\\s+/g, '-')\n    .replace(/[^a-z0-9-]/g, '');\n}\nconst out = [];\nconst seen = new Set();\nfor (let k = 0; k < list.length; k++) {\n  const a = list[k];\n  if (!a) continue;\n  const idhabit = a.idhabit;\n  if (idhabit == null) continue;\n  const idKey = String(idhabit);\n  if (seen.has(idKey)) continue;\n  const pieces = a.piece != null ? Number(a.piece) : null;\n  if (pieces == null || isNaN(pieces) || pieces < minP || pieces > maxP) continue;\n  seen.add(idKey);\n  const ville = (a.ville && String(a.ville).trim()) || '';\n  const typ = (a.type2 || a.type || 'appartement').toString().toLowerCase();\n  let url = findUrl(idhabit);\n  if (!url) {\n    const slug = slugVille(ville);\n    if (slug) url = BASE + '/fr/' + typ + '-location-' + slug + '-35-' + idhabit + '.html';\n  }\n  const p = a.prix != null ? Number(a.prix) : null;\n  const chg = a.charges != null ? Number(a.charges) : 0;\n  let loyer_cc = null;\n  if (p != null && !isNaN(p)) loyer_cc = p + (isNaN(chg) ? 0 : chg);\n  out.push({\n    json: {\n      source: 'parthenay_immobilier',\n      id_site: idKey,\n      titre: (a.titre && String(a.titre).trim()) || ('Annonce ' + idKey),\n      description: stripHtml(a.descriptif != null ? String(a.descriptif) : ''),\n      ville: ville,\n      quartier: (a.quartier && String(a.quartier).trim()) || '',\n      adresse: (a.adresse_bien && String(a.adresse_bien).trim()) || '',\n      pieces: pieces,\n      surface_m2: a.surface != null && !isNaN(Number(a.surface)) ? Number(a.surface) : null,\n      loyer_cc: loyer_cc != null && !isNaN(loyer_cc) ? Math.round(loyer_cc) : null,\n      charges: a.charges != null && !isNaN(Number(a.charges)) ? Number(a.charges) : null,\n      meuble: null,\n      url: url || '',\n      date_publication: a.date1 != null ? a.date1 : null\n    }\n  });\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "merge-branches-parthenay",
+      "name": "Fusion + Parthenay",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        6000
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "dany-richard-list-http",
+      "name": "Dany Richard - Récup liste location",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        6200
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.dany-richard-immo.com/location/",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "dany-richard-transform",
+      "name": "Dany Richard - Annonces (liste + fiches)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        6200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const BASE = \"https://www.dany-richard-immo.com\";\nconst UA = \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0\";\nconst cfg = $('Config critères (défaut)').first().json;\nconst minP = cfg.pieces_min != null ? cfg.pieces_min : 2;\nconst maxP = cfg.pieces_max != null ? cfg.pieces_max : 3;\nconst prixMax = cfg.prix_max_cc != null ? cfg.prix_max_cc : 700;\nconst smin = cfg.surface_min_m2 != null ? cfg.surface_min_m2 : 35;\nconst smax = cfg.surface_max_m2 != null ? cfg.surface_max_m2 : 200;\nconst item = $input.first();\nlet listHtml =\n  item.json?.body ?? item.json?.data ?? (typeof item.json === \"string\" ? item.json : \"\");\nif (!listHtml || typeof listHtml !== \"string\") return [];\nfunction strip(s) {\n  if (!s || typeof s !== \"string\") return \"\";\n  return s\n    .replace(/<[^>]+>/g, \" \")\n    .replace(/&#0?39;|&#x27;|&apos;/g, \"'\")\n    .replace(/&quot;/g, '\"')\n    .replace(/&[a-z#0-9]+;/gi, \" \")\n    .replace(/\\s+/g, \" \")\n    .trim();\n}\nfunction parseEur(s) {\n  if (!s) return null;\n  const t = String(s).replace(/\\s/g, \"\").replace(/€/g, \"\").replace(/,/g, \".\");\n  const n = parseInt(t, 10);\n  return isNaN(n) ? null : n;\n}\nfunction pathPieces(p) {\n  const a = p.match(/-(\\d+)-pieces?_/i) || p.match(/-(\\d+)-piece_/i);\n  return a ? parseInt(a[1], 10) : null;\n}\nfunction h1Surface(html) {\n  const m = html.match(/<h1>([^<]+)<\\/h1>/i);\n  if (!m) return null;\n  const h1 = m[1];\n  const a =\n    h1.match(/(\\d+(?:[.,]\\d+)?)\\s*m(?:\\u00b2|2)/i) || h1.match(/(\\d+(?:[.,]\\d+)?)\\s*m\\b/i);\n  return a ? parseFloat(a[1].replace(\",\", \".\")) : null;\n}\nconst out = [];\nconst reArt = /<article class=\"products-list--item\"[^>]*>([\\s\\S]*?)<\\/article>/gi;\nlet m;\nconst candidates = [];\nconst seen0 = new Set();\nwhile ((m = reArt.exec(listHtml)) !== null) {\n  const block = m[1] || \"\";\n  const hm = block.match(/href=\"(\\/location\\/[^\"#]+)\"/i);\n  if (!hm) continue;\n  const path0 = (hm[1] || \"\").trim();\n  if (!path0) continue;\n  if (path0.toLowerCase().includes(\"parking\")) continue;\n  if (seen0.has(path0)) continue;\n  seen0.add(path0);\n  const idM = path0.match(/_([0-9]+)\\s*$/);\n  const id_site = idM ? idM[1] : path0.replace(/[^a-z0-9]+/gi, \"_\");\n  let pieces = pathPieces(path0);\n  if (pieces == null) {\n    const tM1 = block.match(/-(\\d+)\\s+pi[èe]ce/i) || block.match(/(\\d+)\\s+pi[èe]ces/i);\n    if (tM1 && tM1[1]) pieces = parseInt(tM1[1], 10);\n  }\n  if (pieces == null || isNaN(pieces) || pieces < minP || pieces > maxP) continue;\n  const prM = block.match(/class=\"products-list--item__price\"[^>]*>([^<]+)</i);\n  const listPrice = parseEur(prM ? prM[1] : \"\");\n  if (listPrice != null && listPrice > prixMax) continue;\n  candidates.push({ id_site, pieces, url: BASE + path0 });\n}\nconst sent = new Set();\nfor (const c of candidates) {\n  if (sent.has(c.id_site)) continue;\n  sent.add(c.id_site);\n  let detailRaw;\n  try {\n    detailRaw = await this.helpers.httpRequest({\n      method: \"GET\",\n      url: c.url,\n      headers: { \"User-Agent\": UA, Accept: \"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\" },\n      timeout: 30000,\n    });\n  } catch (e) {\n    continue;\n  }\n  const h = typeof detailRaw === \"string\" ? detailRaw : (detailRaw && (detailRaw.body || detailRaw.data)) || \"\";\n  if (!h || typeof h !== \"string\") continue;\n  const ulm = h.match(/<div class=\"product--attributes\"[^>]*>[\\s\\S]*?<ul>([\\s\\S]*?)<\\/ul>/i);\n  const lis = ulm ? ulm[1] : \"\";\n  const kv = {};\n  const reLi = /<li>([\\s\\S]*?)<\\/li>/g;\n  let lm;\n  while ((lm = reLi.exec(lis)) !== null) {\n    const rawL = strip(lm[1]);\n    const line = rawL.replace(/\\s+/g, \" \");\n    const idx = line.indexOf(\":\");\n    if (idx < 0) continue;\n    const k0 = line.slice(0, idx).trim();\n    const v0 = line.slice(idx + 1).trim();\n    if (k0) kv[k0] = v0;\n  }\n  const ville = (kv[\"Ville\"] || \"\").trim();\n  const quartier = (kv[\"Quartier\"] || \"\").trim() || \"\";\n  const typeS = (kv[\"Type\"] || \"\") || \"\";\n  const surfS = (kv[\"Surface\"] || \"\") || \"\";\n  const prixS = (kv[\"Prix\"] || \"\") || \"\";\n  let refA = \"\";\n  for (const k of Object.keys(kv)) {\n    if (/R[ée]f[ée]rence/i.test(k)) {\n      refA = (kv[k] || \"\").trim();\n      break;\n    }\n  }\n  if (!refA) {\n    const r2 = h.match(/Réf[ée]rence[^<]*:([^<]+)/i) || h.match(/R[ée]f[ée]rence[:\\s]*([A-Za-z0-9\\-\\.]+)/i);\n    if (r2) refA = (r2[1] || \"\").trim();\n  }\n  let surface_m2 = null;\n  const sNum = (surfS || \"\").match(/(\\d+(?:[.,]\\d+)?)/);\n  if (sNum) surface_m2 = parseFloat(sNum[1].replace(\",\", \".\"));\n  if (surface_m2 == null) surface_m2 = h1Surface(h);\n  if (surface_m2 == null) continue;\n  if (surface_m2 < smin || surface_m2 > smax) continue;\n  let loyer_cc = parseEur(prixS);\n  if (loyer_cc == null) {\n    const pm2 = h.match(/<li>[\\s\\S]*?Prix[^<]*:([^<]+)<\\/li>/i);\n    loyer_cc = pm2 ? parseEur(pm2[1]) : null;\n  }\n  if (loyer_cc == null) continue;\n  if (loyer_cc > prixMax) continue;\n  const tm = (typeS || \"\").match(/T\\s*(\\d+)/i);\n  let piecesF = c.pieces;\n  if (tm) {\n    const tp = parseInt(tm[1], 10);\n    if (!isNaN(tp)) piecesF = tp;\n  }\n  if (piecesF < minP || piecesF > maxP) continue;\n  const h1M = h.match(/<h1>([^<]+)<\\/h1>/i);\n  const titre = h1M ? strip(h1M[1]) : \"Dany \" + c.id_site;\n  const descM = h.match(/<h1>[^<]+<\\/h1>\\s*([\\s\\S]*?)<div class=\"product--attributes\">/i);\n  const description = descM ? strip(descM[1]).slice(0, 500) : \"\";\n  const chM = h.match(\n    /Loyer\\s*:\\s*([0-9.,]+)\\s*€\\s*\\+\\s*([0-9.,]+)\\s*€\\s*de\\s*charges/i\n  );\n  let charges = chM && chM[2] != null ? parseFloat(String(chM[2]).replace(\",\", \".\")) : null;\n  if (charges != null && isNaN(charges)) charges = null;\n  out.push({\n    json: {\n      source: \"dany_richard\",\n      id_site: refA || c.id_site,\n      titre: titre,\n      description: description,\n      ville: ville,\n      quartier: quartier,\n      adresse: \"\",\n      pieces: piecesF,\n      surface_m2: Math.round(surface_m2 * 100) / 100,\n      loyer_cc: loyer_cc,\n      charges: charges,\n      meuble: null,\n      url: c.url,\n      date_publication: null,\n    },\n  });\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "merge-branches-dany",
+      "name": "Fusion + Dany Richard",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        6200
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "chateaubriand-http",
+      "name": "Chateaubriand - Récup recherche",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        6400
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const pr = c.prix_max_cc != null ? c.prix_max_cc : 700; const sMin = c.surface_min_m2 != null ? c.surface_min_m2 : 40; const sMax = c.surface_max_m2 != null ? c.surface_max_m2 : ''; let u = 'https://www.cabinetchateaubriand.com/recherche-de-bien/?status%5B%5D=location&max-price=' + encodeURIComponent(String(pr)) + '&min-area=' + encodeURIComponent(String(sMin)); if (sMax !== '' && sMax != null) { u += '&max-area=' + encodeURIComponent(String(sMax)); } return u; })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "chateaubriand-transform",
+      "name": "Chateaubriand - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        6400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nconst minP = cfg.pieces_min != null ? cfg.pieces_min : 2;\nconst maxP = cfg.pieces_max != null ? cfg.pieces_max : 3;\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === \"string\" ? item.json : \"\");\nif (!html || typeof html !== \"string\" || html.length < 200) return [];\nfunction strip(s) {\n  if (!s || typeof s !== \"string\") return \"\";\n  return s\n    .replace(/<[^>]+>/g, \" \")\n    .replace(/&nbsp;|&#160;/gi, \" \")\n    .replace(/&[a-z#0-9]+;/gi, \" \")\n    .replace(/\\s+/g, \" \")\n    .trim();\n}\nconst parts = html.split(/<div class=\"rh-ultra-list-card\">/i);\nconst out = [];\nconst seen = new Set();\nfor (let i = 1; i < parts.length; i++) {\n  const b = parts[i];\n  const uM = b.match(/https:\\/\\/www\\.cabinetchateaubriand\\.com\\/bien\\/[^\"'>\\s]+/i);\n  if (!uM) continue;\n  let pathPart = (uM[0] || \"\").split(\"?\")[0].replace(/\\/+$/, \"\");\n  if (!pathPart) continue;\n  if (!pathPart.endsWith(\"/\")) pathPart += \"/\";\n  const url = pathPart;\n  const idMatch = pathPart.match(/\\/bien\\/([^/]+)\\/?$/i);\n  const id_site = idMatch ? idMatch[1] : \"cb_\" + i;\n  if (seen.has(id_site)) continue;\n  seen.add(id_site);\n  const tM = b.match(\n    /<h3[^>]*class=\"[^\"]*rh-ultra-property-title[^\"]*\"[^>]*>[\\s\\S]*?<a[^>]+>([^<]+)<\\/a>/i\n  );\n  const titre = tM ? strip(tM[1]) : \"Annonce \" + id_site;\n  const priceM = b.match(/class=\"ere-price-display\"[^>]*>([^<]+)/i);\n  let loyer_cc = null;\n  if (priceM) {\n    const n = (priceM[1] || \"\").replace(/\\s/g, \"\").replace(/€/g, \"\");\n    if (n) loyer_cc = parseInt(n, 10);\n    if (isNaN(loyer_cc)) loyer_cc = null;\n  }\n  const addrM = b.match(/<div class=\"rh-address-ultra\"[\\s\\S]*?(\\d{5})\\s+([^<]+)</i);\n  const ville = addrM ? (addrM[2] || \"\").trim() : \"\";\n  let surface_m2 = null;\n  const sM = b.match(/data-tooltip=\"Surface\"[\\s\\S]*?<span class=\"figure\">(\\d+(?:[.,]\\d+)?)/i);\n  if (sM) surface_m2 = parseFloat(sM[1].replace(\",\", \".\"));\n  if (surface_m2 == null) {\n    const fa = titre.match(/(\\d+(?:[.,]\\d+)?)\\s*m[²2]/i);\n    if (fa) surface_m2 = parseFloat(fa[1].replace(\",\", \".\"));\n  }\n  let pieces = null;\n  const p1 = titre.match(/(\\d+)\\s*pi[èe]ces?/i);\n  if (p1) pieces = parseInt(p1[1], 10);\n  if (pieces == null) {\n    const tN = titre.match(/\\bT\\s*(\\d+)\\b/i);\n    if (tN) pieces = parseInt(tN[1], 10);\n  }\n  if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n  const dM = b.match(\n    /class=\"added-date\"[^>]*>[\\s\\S]*?Ajout[^:]*:?\\s*<\\/span>\\s*([^<]+)/i\n  );\n  const date_publication = dM ? strip(dM[1]) : null;\n  out.push({\n    json: {\n      source: \"cabinet_chateaubriand\",\n      id_site,\n      titre,\n      description: \"\",\n      ville,\n      quartier: \"\",\n      adresse: \"\",\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication,\n    },\n  });\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "merge-branches-chateaubriand",
+      "name": "Fusion + Chateaubriand",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        6400
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "arthurimmo-http",
+      "name": "Arthurimmo - Récup recherche",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        6600
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const pr = c.prix_max_cc != null ? c.prix_max_cc : 700; const sMin = c.surface_min_m2 != null ? c.surface_min_m2 : 40; const sMax = c.surface_max_m2 != null ? c.surface_max_m2 : ''; const minP = c.pieces_min != null ? c.pieces_min : 2; const maxP = c.pieces_max != null ? c.pieces_max : 3; let u = 'https://www.arthurimmo.com/recherche,basic.htm?transactions=louer&localization=' + encodeURIComponent('Ille-Et-Vilaine (35)') + '&extends='; for (let p = minP; p <= maxP; p++) { u += '&pieces%5B%5D=' + p; } u += '&min_price=&max_price=' + encodeURIComponent(String(pr)) + '&min_surface=' + encodeURIComponent(String(sMin)) + (sMax !== '' && sMax != null ? '&max_surface=' + encodeURIComponent(String(sMax)) : '&max_surface=') + '&reference=&nb_wc=&nb_wc_separes='; return u; })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "arthurimmo-transform",
+      "name": "Arthurimmo - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        6600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nconst minP = cfg.pieces_min != null ? cfg.pieces_min : 2;\nconst maxP = cfg.pieces_max != null ? cfg.pieces_max : 3;\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string' || html.length < 200) return [];\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;|&#160;/gi, ' ')\n    .replace(/&[a-z#0-9]+;/gi, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nconst raw = html.match(/https:\\/\\/www\\.arthurimmo\\.com\\/annonces\\/location\\/[^\"'\\s>]+\\.htm/gi) || [];\nconst urls = [...new Set(raw.map((u) => (u || '').split('?')[0].replace(/\\/+\\s*$/, '')))];\nconst out = [];\nconst seen = new Set();\nfor (const url of urls) {\n  if (!url || seen.has(url)) continue;\n  seen.add(url);\n  const idM = url.match(/\\/(\\d+)\\.htm$/i);\n  const id_site = idM ? idM[1] : 'art_' + out.length;\n  const hRef = 'href=\"' + url + '\"';\n  let start = html.indexOf(hRef);\n  if (start < 0) {\n    const pathOnly = url.replace(/^https:\\/\\/www\\.arthurimmo\\.com/i, '');\n    start = html.indexOf('href=\"' + pathOnly);\n  }\n  if (start < 0) continue;\n  const chunk = html.slice(start, start + 4500);\n  const tM = chunk.match(\n    /<a href=\"https?:\\/\\/www\\.arthurimmo\\.com\\/annonces\\/location\\/[^\"]+\"[^>]*>([\\s\\S]*?)<\\/a>/i\n  );\n  const titre = tM ? strip(tM[1]) : 'Annonce ' + id_site;\n  let pieces = null;\n  const t1 = titre.match(/(\\d+)\\s*pi[èe]ce/i);\n  if (t1) pieces = parseInt(t1[1], 10);\n  if (pieces == null) {\n    const t2 = titre.match(/\\bT\\s*(\\d+)\\b/i);\n    if (t2) pieces = parseInt(t2[1], 10);\n  }\n  if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n  const prM = chunk.match(/([0-9][0-9\\s.,]*[0-9]|[0-9]+)\\s*€\\s*\\/\\s*mois/i);\n  let loyer_cc = null;\n  if (prM) {\n    loyer_cc = parseInt((prM[1] || '').replace(/\\s/g, '').replace(/[^\\d]/g, ''), 10);\n    if (isNaN(loyer_cc)) loyer_cc = null;\n  }\n  const vm = chunk.match(/class=\"text-gray-600 text-sm\"[^>]*>[\\r\\n\\t ]*([^<]+)/i);\n  const ville = vm ? (vm[1] || '').trim() : '';\n  let surface_m2 = null;\n  const sM = titre.match(/(\\d+(?:[.,]\\d+)?)\\s*m[²2]/i);\n  if (sM) surface_m2 = parseFloat(sM[1].replace(',', '.'));\n  let description = '';\n  const dM = chunk.match(/line-clamp-3[^>]*>[\\s\\S]*?<p[^>]*>([\\s\\S]*?)<\\/p>/i);\n  if (dM) description = strip(dM[1]).slice(0, 500);\n  out.push({\n    json: {\n      source: 'arthurimmo',\n      id_site,\n      titre,\n      description,\n      ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null\n    }\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-arthurimmo",
+      "name": "Fusion + Arthurimmo",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        6600
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "agencempi-http",
+      "name": "Agence MPI - Récup recherche",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        6800
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const pr = c.prix_max_cc != null ? c.prix_max_cc : 700; const sMin = c.surface_min_m2 != null ? c.surface_min_m2 : 40; const sMax = c.surface_max_m2 != null ? c.surface_max_m2 : ''; const minP = c.pieces_min != null ? c.pieces_min : 2; const maxP = c.pieces_max != null ? c.pieces_max : 3; let u = 'https://www.agencempi.com/catalog/advanced_search_result.php?action=update_search&search_id='; u += '&C_28_search=EGAL&C_28_type=UNIQUE&C_28=Location&C_28_tmp=Location'; u += '&C_65_search=CONTIENT&C_65_type=TEXT&C_65='; u += '&C_27_search=EGAL&C_27_type=TEXT&C_27=' + encodeURIComponent('1,2'); u += '&C_27_tmp=1&C_27_tmp=2'; u += '&C_34_MIN=' + encodeURIComponent(String(sMin)) + '&C_34_search=COMPRIS&C_34_type=NUMBER'; u += (sMax !== '' && sMax != null) ? ('&C_34_MAX=' + encodeURIComponent(String(sMax))) : '&C_34_MAX='; u += '&C_31_MAX=' + encodeURIComponent(String(pr)) + '&keywords='; u += '&C_31_MIN=&C_31_search=COMPRIS&C_31_type=NUMBER'; u += '&C_33_search=COMPRIS&C_33_type=NUMBER'; u += '&C_33_MIN=' + encodeURIComponent(String(minP)); u += '&C_33_MAX=' + encodeURIComponent(String(maxP)); u += '&C_38_search=COMPRIS&C_38_type=NUMBER&C_38_MIN='; u += '&C_64_search=INFERIEUR&C_64=0&C_64_type=TEXT'; return u; })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "agencempi-transform",
+      "name": "Agence MPI - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        6800
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nconst minP = cfg.pieces_min != null ? cfg.pieces_min : 2;\nconst maxP = cfg.pieces_max != null ? cfg.pieces_max : 3;\nconst item = $input.first();\nfunction pickHtmlFromJson(j) {\n  if (j == null) return '';\n  if (typeof j === 'string') return j;\n  const bodyStr = typeof j.body === 'string' ? j.body : '';\n  const dataStr = typeof j.data === 'string' ? j.data : '';\n  if (bodyStr && bodyStr.length >= 200) return bodyStr;\n  if (dataStr && dataStr.length >= 200) return dataStr;\n  if (dataStr && bodyStr.length < 200 && dataStr.length > bodyStr.length) return dataStr;\n  if (bodyStr && dataStr.length < 200 && bodyStr.length > dataStr.length) return bodyStr;\n  for (const key in j) {\n    if (Object.prototype.hasOwnProperty.call(j, key) && key !== 'headers' && typeof j[key] === 'string') {\n      const s = j[key];\n      if (s.length > 200 && (s.indexOf('listing-item') !== -1 || s.indexOf('agencempi.com') !== -1)) {\n        return s;\n      }\n    }\n  }\n  return bodyStr || dataStr;\n}\nconst html = pickHtmlFromJson(item.json);\nif (!html || typeof html !== 'string' || html.length < 200) return [];\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;|&#160;/gi, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&[a-z#0-9]+;/gi, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nconst ORIGIN = 'https://www.agencempi.com';\nfunction ficheUrl(href) {\n  if (!href) return '';\n  let h = String(href).split('?')[0].replace(/#.*$/, '');\n  if (h.indexOf('//') === 0) return 'https:' + h;\n  if (h.indexOf('../') === 0) return ORIGIN + '/' + h.replace(/^\\.\\.\\//, '');\n  if (h.indexOf('/') === 0) return ORIGIN + h;\n  return ORIGIN + '/' + h;\n}\nconst chunks = html.split(/<div class=\"listing-item\">/i);\nconst out = [];\nconst seen = new Set();\nfor (let i = 1; i < chunks.length; i++) {\n  const b = chunks[i].slice(0, 20000);\n  const hrefM = b.match(/href=\"(\\.\\.\\/fiches\\/[^\"]+\\.html)/i) || b.match(/href=\"(\\/fiches\\/[^\"]+\\.html)/i);\n  if (!hrefM) continue;\n  const url = ficheUrl(hrefM[1]);\n  if (seen.has(url)) continue;\n  const pidM = b.match(/data-productId=\"([0-9]+)\"/i);\n  const pathId = (hrefM[1].match(/_([0-9]{5,})\\//) || [])[1];\n  const idProd = pidM && pidM[1] ? pidM[1] : pathId;\n  if (!idProd) continue;\n  const pName = b.match(/<div class=\"product-name[^\"]*\"[^>]*>([\\s\\S]*?)<\\/div>/i);\n  const nm = [];\n  if (pName) {\n    const reS = /<span[^>]*>([^<]*)<\\/span>/gi;\n    let m;\n    while ((m = reS.exec(pName[1])) !== null) {\n      const t = strip(m[1]);\n      if (t) nm.push(t);\n    }\n  }\n  let titre = nm.length ? nm[0] : 'Annonce ' + idProd;\n  const ville = nm.length > 1 ? nm[nm.length - 1] : '';\n  const blob = (titre + ' ' + ville + ' ' + b.slice(0, 800)).toLowerCase();\n  if (blob.indexOf('colocation') >= 0 || blob.indexOf('collocation') >= 0) continue;\n  const prM = b.match(/<div class=\"product-price\"[^>]*>([\\s\\S]*?)<\\/div>/i);\n  let loyer_cc = null;\n  if (prM) {\n    const num = strip(prM[1]).replace(/[^0-9]/g, '');\n    if (num) loyer_cc = parseInt(num, 10);\n  }\n  let pieces = null;\n  const piM = b.match(\n    /data-list__item--NbPiece[\\s\\S]*?class=\"data-list__item--value\"[^>]*>\\s*([0-9]+)/i\n  );\n  if (piM) pieces = parseInt(piM[1], 10);\n  let surface_m2 = null;\n  const sM = b.match(\n    /data-list__item--Surface[\\s\\S]*?class=\"data-list__item--value\"[^>]*>\\s*([0-9]+(?:[.,][0-9]+)?)/i\n  );\n  if (sM) surface_m2 = parseFloat(sM[1].replace(',', '.'));\n  const refM = b.match(\n    /data-list__item--products_model[\\s\\S]*?class=\"data-list__item--value\"[^>]*>\\s*([0-9]+)/i\n  );\n  const refA = refM && refM[1] ? refM[1].trim() : '';\n  if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n  seen.add(url);\n  const id_site = refA || String(idProd);\n  out.push({\n    json: {\n      source: 'agence_mpi',\n      id_site: String(id_site),\n      titre: [titre, ville].filter(Boolean).join(' — '),\n      description: '',\n      ville: ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: null,\n      url,\n      date_publication: null,\n    },\n  });\n}\nreturn out;"
+      }
+    },
+    {
+      "id": "merge-branches-agencempi",
+      "name": "Fusion + Agence MPI",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        6800
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "nicolazo-fetch-format",
+      "name": "Nicolazo Notaires - Récup et format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        7000
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const c = $('Config critères (défaut)').first().json;\nconst BASE = 'https://nicolazo.notaires.fr';\nconst LIST_PATH = '/annonces-immobilieres-nicolazo-marie-pascale-nicolazo-jerome-mace-laura.html';\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\n\nfunction n(x, fb) {\n  if (x == null) return fb;\n  if (typeof x === 'string' && x.trim() === '') return fb;\n  const v = Number(x);\n  return Number.isFinite(v) ? v : fb;\n}\n\nfunction collectCookies(headers) {\n  const sc = headers && headers['set-cookie'];\n  if (Array.isArray(sc)) {\n    return sc\n      .map(function (x) {\n        return String(x).split(';')[0];\n      })\n      .join('; ');\n  }\n  if (typeof sc === 'string') {\n    return sc.split(';')[0];\n  }\n  return '';\n}\n\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/gi, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&#8364;/g, '€')\n    .replace(/&amp;/g, '&')\n    .replace(/&#039;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction bodyToString(raw) {\n  if (raw == null) return '';\n  if (typeof raw === 'string') return raw;\n  if (raw.body != null && typeof raw.body === 'string') return raw.body;\n  if (raw.data != null && typeof raw.data === 'string') return raw.data;\n  return '';\n}\n\ntry {\n  const prixMax = n(c.prix_max_cc, 680);\n  const sMin = n(c.surface_min_m2, 40);\n  const sMax = c.surface_max_m2 != null && String(c.surface_max_m2).trim() !== '' ? String(c.surface_max_m2) : '';\n  const minP = n(c.pieces_min, 2);\n  const maxP = n(c.pieces_max, 3);\n\n  let cookieHeader = '';\n  let pageHtml = '';\n  try {\n    const r0 = await this.helpers.httpRequest({\n      method: 'GET',\n      url: BASE + LIST_PATH,\n      headers: {\n        'User-Agent': UA,\n        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n        'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n      },\n      timeout: 30000,\n      returnFullResponse: true,\n    });\n    cookieHeader = collectCookies(r0.headers);\n    pageHtml = bodyToString(r0);\n  } catch (e0) {\n    return [];\n  }\n  if (!pageHtml || pageHtml.length < 400) return [];\n\n  const tokM =\n    pageHtml.match(/id=\"real_estate_ads_search__token\"[^>]*value=\"([^\"]+)\"/i) ||\n    pageHtml.match(/name=\"real_estate_ads_search\\[_token\\]\"[^>]*value=\"([^\"]+)\"/i);\n  const token = tokM && tokM[1] ? tokM[1].trim() : '';\n  if (!token) return [];\n\n  const fields = [\n    ['real_estate_ads_search[typeTransactions]', 'LOCATION'],\n    ['real_estate_ads_search[typeBiens]', ''],\n    ['real_estate_ads_search[nameLocalisation]', ''],\n    ['real_estate_ads_search[localites]', ''],\n    ['real_estate_ads_search[prixMin]', ''],\n    ['real_estate_ads_search[prixMax]', String(prixMax)],\n    ['real_estate_ads_search[pieceMin]', String(minP)],\n    ['real_estate_ads_search[pieceMax]', String(maxP)],\n    ['real_estate_ads_search[surfaceMin]', String(sMin)],\n    ['real_estate_ads_search[surfaceMax]', sMax],\n    ['real_estate_ads_search[sortBy]', 'newest_oldest'],\n    ['real_estate_ads_search[parPage]', '20'],\n    ['real_estate_ads_search[page]', '1'],\n    ['real_estate_ads_search[msgErrorMinMax]', 'La valeur min doit être inférieur à la max'],\n    ['real_estate_ads_search[_token]', token],\n  ];\n  const qs = fields\n    .map(function (pair) {\n      return encodeURIComponent(pair[0]) + '=' + encodeURIComponent(pair[1] == null ? '' : String(pair[1]));\n    })\n    .join('&');\n  const listUrl = BASE + LIST_PATH + '?' + qs;\n\n  const h2 = {\n    'User-Agent': UA,\n    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n    'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    Referer: BASE + LIST_PATH,\n  };\n  if (cookieHeader) h2.Cookie = cookieHeader;\n\n  let listHtml = '';\n  try {\n    const r1 = await this.helpers.httpRequest({\n      method: 'GET',\n      url: listUrl,\n      headers: h2,\n      timeout: 30000,\n    });\n    listHtml = bodyToString(r1);\n  } catch (e1) {\n    return [];\n  }\n  if (!listHtml || listHtml.length < 400) return [];\n\n  const parts = listHtml.split(/<div class=\"bloc-annonce img-txt row\">/i);\n  const out = [];\n  const seen = new Set();\n  for (let i = 1; i < parts.length; i++) {\n    const b = parts[i].slice(0, 25000);\n    if (b.indexOf('titre-type location') === -1 && !/class=\"titre-type[^\"]*location/i.test(b)) continue;\n    const hrefM = b.match(\n      /href=\"(detail-annonces-immobilieres-nicolazo[^\"]+\\/([0-9]+)\\.html[^\"]*)\"/i\n    );\n    if (!hrefM) continue;\n    const path = hrefM[1].split('?')[0];\n    const idNum = hrefM[2];\n    const url = path.indexOf('http') === 0 ? path.split('?')[0] : BASE + '/' + path;\n    if (seen.has(url)) continue;\n\n    const villeM = b.match(/<span class=\"titre\">([^<]+)<\\/span>/i);\n    let ville = villeM ? strip(villeM[1]).replace(/\\s*\\(\\s*35\\s*\\)\\s*$/i, '').trim() : '';\n\n    const prM = b.match(/<div class=\"immo-prix[^\"]*\"[^>]*>\\s*([0-9\\s]+)\\s*€\\s*\\/\\s*mois/i);\n    let loyer_cc = null;\n    if (prM) {\n      const num = prM[1].replace(/\\s/g, '');\n      if (num) loyer_cc = parseInt(num, 10);\n    }\n    const chM = b.match(/Dont charge\\s*([0-9]+)\\s*€/i);\n    let charges = chM && chM[1] ? parseInt(chM[1], 10) : null;\n\n    let pieces = null;\n    let surface_m2 = null;\n    const tdM = b.match(/<span class=\"titre-detail[^\"]*\"[^>]*>([\\s\\S]*?)<\\/span>/i);\n    if (tdM) {\n      const td = tdM[1];\n      const pm = td.match(/([0-9]+)\\s*pi[eè]ce/i);\n      if (pm) pieces = parseInt(pm[1], 10);\n      const sm = td.match(/([0-9]+(?:[.,][0-9]+)?)\\s*m(?:²|2)/i);\n      if (sm) surface_m2 = parseFloat(sm[1].replace(',', '.'));\n    }\n\n    const descM = b.match(/<div class=\"desc-immo-detail\"[^>]*>([\\s\\S]*?)<\\/div>/i);\n    let description = descM ? strip(descM[1]).slice(0, 500) : '';\n    const blob = (ville + ' ' + description + ' ' + b.slice(0, 600)).toLowerCase();\n    if (blob.indexOf('colocation') >= 0 || blob.indexOf('collocation') >= 0) continue;\n\n    if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n\n    const typeM = b.match(/titre-detail[^>]*>([\\s\\S]*?)<br/i);\n    let typeLigne = typeM ? strip(typeM[1].split('<')[0]) : '';\n    const titre = [typeLigne, ville].filter(Boolean).join(' — ') || 'Nicolazo — ' + idNum;\n    const meuble = /\\bmeublé\\b/i.test(b + description) ? 'oui' : null;\n\n    seen.add(url);\n    out.push({\n      json: {\n        source: 'nicolazo_notaires',\n        id_site: String(idNum),\n        titre: titre,\n        description: description,\n        ville: ville,\n        quartier: '',\n        adresse: '',\n        pieces: pieces,\n        surface_m2: surface_m2,\n        loyer_cc: loyer_cc,\n        charges: charges,\n        meuble: meuble,\n        url: url,\n        date_publication: null,\n      },\n    });\n  }\n  return out;\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-nicolazo",
+      "name": "Fusion + Nicolazo Notaires",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        7000
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "inova-fetch-format",
+      "name": "Inova Immo - Récup et format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        7200
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const c = $('Config critères (défaut)').first().json;\nconst BASE = 'https://www.inova-immo.com';\nconst LIST_URL = BASE + '/recherche-des-biens/';\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\n\nfunction n(x, fb) {\n  if (x == null) return fb;\n  if (typeof x === 'string' && x.trim() === '') return fb;\n  const v = Number(x);\n  return Number.isFinite(v) ? v : fb;\n}\n\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/gi, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&#8364;/g, '€')\n    .replace(/&amp;/g, '&')\n    .replace(/&#039;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction enc(pairs) {\n  return pairs\n    .map(function (kv) {\n      return encodeURIComponent(kv[0]) + '=' + encodeURIComponent(kv[1] == null ? '' : String(kv[1]));\n    })\n    .join('&');\n}\n\nfunction bodyToString(raw) {\n  if (raw == null) return '';\n  if (typeof raw === 'string') return raw;\n  if (raw.body != null && typeof raw.body === 'string') return raw.body;\n  if (raw.data != null && typeof raw.data === 'string') return raw.data;\n  return '';\n}\n\ntry {\n  const prixMax = n(c.prix_max_cc, 900);\n  const sMin = n(c.surface_min_m2, 40);\n  const minP = n(c.pieces_min, 2);\n  const maxP = n(c.pieces_max, 3);\n\n  const qs = enc([\n    ['status[]', 'location'],\n    ['type[]', 'appartement'],\n    ['type[]', 'maison'],\n    ['max-price', String(prixMax)],\n    ['min-area', String(sMin)],\n  ]);\n  const url = LIST_URL + '?' + qs;\n\n  const raw = await this.helpers.httpRequest({\n    method: 'GET',\n    url: url,\n    headers: {\n      'User-Agent': UA,\n      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n      'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    },\n    timeout: 30000,\n  });\n\n  const html = bodyToString(raw);\n  if (!html || html.length < 400) return [];\n\n  const cards = html.split(/<div class=\\\"rh-ultra-list-card-thumb\\\">/i).slice(1);\n  const out = [];\n  const seen = new Set();\n  for (let i = 0; i < cards.length; i++) {\n    const b = cards[i].slice(0, 45000);\n    if (!/property-status-location/i.test(b) && !/\\bLocation\\b/.test(b)) continue;\n\n    const urlM =\n      b.match(/href=\\\"(https?:\\/\\/www\\.inova-immo\\.com\\/bien\\/[^\"]+)\\\"/i) ||\n      b.match(/href=\\\"(\\/bien\\/[^\"]+)\\\"/i);\n    if (!urlM) continue;\n\n    const u0 = urlM[1];\n    const url2 = u0.startsWith('http') ? u0.split('?')[0] : BASE + u0.split('?')[0];\n    if (seen.has(url2)) continue;\n\n    const idM = url2.match(/\\/bien\\/([^\\/]+)\\/?$/i);\n    const id_site = idM ? idM[1] : url2;\n\n    const titleM = b.match(/class=\\\"rh-ultra-property-title\\\"[^>]*>[\\s\\S]*?<a[^>]*>([\\s\\S]*?)<\\/a>/i);\n    let titre0 = titleM ? strip(titleM[1]) : '';\n\n    let pieces = null;\n    const tpm = (titre0 || '').match(/\\bT\\s*([0-9]+)\\b/i);\n    if (tpm) pieces = parseInt(tpm[1], 10);\n    if (pieces == null) {\n      const pm = (titre0 || '').match(/([0-9]+)\\s*pi[eè]ce/i);\n      if (pm) pieces = parseInt(pm[1], 10);\n    }\n\n    const priceM = b.match(/class=\\\"ere-price-display\\\"[^>]*>\\s*([0-9\\s\\u00A0]+)\\s*€\\s*<\\/span>/i);\n    let loyer_cc = null;\n    if (priceM) {\n      const n1 = String(priceM[1]).replace(/[\\s\\u00A0]/g, '');\n      if (n1) loyer_cc = parseInt(n1, 10);\n    }\n\n    let surface_m2 = null;\n    // Repère \"Surface\" pour éviter de prendre la valeur \"1\" (chambre/sdb).\n    const surfM = b.match(/data-tooltip=\\\"Surface\\\"[\\s\\S]{0,500}?<span class=\\\"figure\\\">\\s*([0-9]+(?:[.,][0-9]+)?)\\s*<\\/span>/i);\n    if (surfM) surface_m2 = parseFloat(surfM[1].replace(',', '.'));\n\n    let ville = '';\n    const addrBlock = b.match(/<div class=\\\"rh-address-ultra\\\"[\\s\\S]*?<\\/div>/i);\n    const addrTxt = addrBlock ? strip(addrBlock[0]) : '';\n    if (addrTxt) {\n      const vm1 = addrTxt.match(/\\b\\d{5}\\b\\s*([^,]+)(?:,\\s*France)?$/i);\n      if (vm1) ville = (vm1[1] || '').trim();\n    }\n\n    const blob = (titre0 + ' ' + ville + ' ' + b.slice(0, 1200)).toLowerCase();\n    if (blob.indexOf('colocation') >= 0 || blob.indexOf('collocation') >= 0) continue;\n\n    const meuble = /\\bmeubl/i.test(blob) ? 'oui' : null;\n\n    if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n\n    const titre = [titre0, ville].filter(Boolean).join(' — ') || 'Inova — ' + id_site;\n\n    seen.add(url2);\n    out.push({\n      json: {\n        source: 'inova_immo',\n        id_site: String(id_site),\n        titre: titre,\n        description: '',\n        ville: ville,\n        quartier: '',\n        adresse: '',\n        pieces: pieces,\n        surface_m2: surface_m2,\n        loyer_cc: loyer_cc,\n        charges: null,\n        meuble: meuble,\n        url: url2,\n        date_publication: null,\n      },\n    });\n  }\n\n  return out;\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-inova",
+      "name": "Fusion + Inova Immo",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        7200
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "stella-http",
+      "name": "Stella At Home - Récup recherche",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        7400
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Config critères (défaut)').first().json; const pr = c.prix_max_cc != null ? c.prix_max_cc : 680; const sMin = c.surface_min_m2 != null ? c.surface_min_m2 : 40; const sMax = c.surface_max_m2 != null ? c.surface_max_m2 : ''; const minP = c.pieces_min != null ? c.pieces_min : 2; const maxP = c.pieces_max != null ? c.pieces_max : 3; let u = 'https://www.stella-at-home.fr/catalog/advanced_search_result.php?action=update_search&search_id='; u += '&C_28_search=EGAL&C_28_type=UNIQUE&C_28=Location&C_28_tmp=Location'; u += '&C_65_search=CONTIENT&C_65_type=TEXT&C_65='; u += '&C_27_search=EGAL&C_27_type=TEXT&C_27=' + encodeURIComponent('2,1'); u += '&C_27_tmp=2&C_27_tmp=1'; u += '&C_34_MIN=' + encodeURIComponent(String(sMin)) + '&C_34_search=COMPRIS&C_34_type=NUMBER'; u += (sMax !== '' && sMax != null) ? ('&C_34_MAX=' + encodeURIComponent(String(sMax))) : '&C_34_MAX='; u += '&C_31_MAX=' + encodeURIComponent(String(pr)) + '&keywords='; u += '&C_31_MIN=&C_31_search=COMPRIS&C_31_type=NUMBER'; u += '&C_33_search=COMPRIS&C_33_type=NUMBER'; u += '&C_33_MIN=' + encodeURIComponent(String(minP)); u += '&C_33_MAX=' + encodeURIComponent(String(maxP)); u += '&C_38_search=COMPRIS&C_38_type=NUMBER&C_38_MIN='; return u; })() }}",
+        "options": {
+          "timeout": 30000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"
+            },
+            {
+              "name": "Accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+          ]
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "stella-transform",
+      "name": "Stella At Home - Vers format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        7400
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nconst minP = cfg.pieces_min != null ? cfg.pieces_min : 2;\nconst maxP = cfg.pieces_max != null ? cfg.pieces_max : 3;\nconst item = $input.first();\nlet html = item.json?.body ?? item.json?.data ?? (typeof item.json === 'string' ? item.json : '');\nif (!html || typeof html !== 'string' || html.length < 200) return [];\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;|&#160;/gi, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&[a-z#0-9]+;/gi, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\nconst ORIGIN = 'https://www.stella-at-home.fr';\nfunction ficheUrl(href) {\n  if (!href) return '';\n  let h = String(href).split('?')[0].replace(/#.*$/, '');\n  if (h.indexOf('//') === 0) return 'https:' + h;\n  if (h.indexOf('../') === 0) return ORIGIN + '/' + h.replace(/^\\.\\.\\//, '');\n  if (h.indexOf('/') === 0) return ORIGIN + h;\n  return ORIGIN + '/' + h;\n}\nconst chunks = html.split(/<div class=\"listing-item\">/i);\nconst out = [];\nconst seen = new Set();\nfor (let i = 1; i < chunks.length; i++) {\n  const b = chunks[i].slice(0, 20000);\n  const hrefM = b.match(/href=\"(\\.\\.\\/fiches\\/[^\"]+\\.html)/i) || b.match(/href=\"(\\/fiches\\/[^\"]+\\.html)/i);\n  if (!hrefM) continue;\n  const url = ficheUrl(hrefM[1]);\n  if (seen.has(url)) continue;\n  const pidM = b.match(/data-productId=\"([0-9]+)\"/i);\n  const pathId = (hrefM[1].match(/_([0-9]{5,})\\//) || [])[1];\n  const idProd = pidM && pidM[1] ? pidM[1] : pathId;\n  if (!idProd) continue;\n  const pName = b.match(/<div class=\"product-name[^\"]*\"[^>]*>([\\s\\S]*?)<\\/div>/i);\n  const nm = [];\n  if (pName) {\n    const reS = /<span[^>]*>([^<]*)<\\/span>/gi;\n    let m;\n    while ((m = reS.exec(pName[1])) !== null) {\n      const t = strip(m[1]);\n      if (t) nm.push(t);\n    }\n  }\n  let titre = nm.length ? nm[0] : 'Annonce ' + idProd;\n  const ville = nm.length > 1 ? nm[nm.length - 1] : '';\n  const blob = (titre + ' ' + ville + ' ' + b.slice(0, 800)).toLowerCase();\n  if (blob.indexOf('colocation') >= 0 || blob.indexOf('collocation') >= 0) continue;\n  const prM = b.match(/<div class=\"product-price\"[^>]*>([\\s\\S]*?)<\\/div>/i);\n  let loyer_cc = null;\n  if (prM) {\n    const num = strip(prM[1]).replace(/[^0-9]/g, '');\n    if (num) loyer_cc = parseInt(num, 10);\n  }\n  let pieces = null;\n  const piM = b.match(\n    /data-list__item--NbPiece[\\s\\S]*?class=\"data-list__item--value\"[^>]*>\\s*([0-9]+)/i\n  );\n  if (piM) pieces = parseInt(piM[1], 10);\n  let surface_m2 = null;\n  const sM = b.match(\n    /data-list__item--Surface[\\s\\S]*?class=\"data-list__item--value\"[^>]*>\\s*([0-9]+(?:[.,][0-9]+)?)/i\n  );\n  if (sM) surface_m2 = parseFloat(sM[1].replace(',', '.'));\n  if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n  seen.add(url);\n  out.push({\n    json: {\n      source: 'stella_at_home',\n      id_site: String(idProd),\n      titre: [titre, ville].filter(Boolean).join(' — '),\n      description: '',\n      ville: ville,\n      quartier: '',\n      adresse: '',\n      pieces,\n      surface_m2,\n      loyer_cc,\n      charges: null,\n      meuble: /\\bmeubl/i.test(blob) ? 'oui' : null,\n      url,\n      date_publication: null,\n    },\n  });\n}\nreturn out;\n"
+      }
+    },
+    {
+      "id": "merge-branches-stella",
+      "name": "Fusion + Stella At Home",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        7400
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "keredes-fetch-format",
+      "name": "Keredes - Récup et format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        7600
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const c = $('Config critères (défaut)').first().json;\nconst BASE = 'https://keredes.coop';\nconst LIST_URL = BASE + '/location/ancien/';\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\n\nfunction n(x, fb) {\n  if (x == null) return fb;\n  if (typeof x === 'string' && x.trim() === '') return fb;\n  const v = Number(x);\n  return Number.isFinite(v) ? v : fb;\n}\n\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/gi, ' ')\n    .replace(/&euro;/gi, '€')\n    .replace(/&#8364;/g, '€')\n    .replace(/&amp;/g, '&')\n    .replace(/&#039;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction enc(pairs) {\n  return pairs\n    .map(function (kv) {\n      return encodeURIComponent(kv[0]) + '=' + encodeURIComponent(kv[1] == null ? '' : String(kv[1]));\n    })\n    .join('&');\n}\n\nfunction bodyToString(raw) {\n  if (raw == null) return '';\n  if (typeof raw === 'string') return raw;\n  if (raw.body != null && typeof raw.body === 'string') return raw.body;\n  if (raw.data != null && typeof raw.data === 'string') return raw.data;\n  return '';\n}\n\ntry {\n  const prixMax = n(c.prix_max_cc, 800);\n  const sMin = n(c.surface_min_m2, 40);\n  const sMax = c.surface_max_m2 != null && String(c.surface_max_m2).trim() !== '' ? String(c.surface_max_m2) : '';\n  const minP = n(c.pieces_min, 2);\n  const maxP = n(c.pieces_max, 3);\n\n  const rooms = [];\n  for (let p = minP; p <= Math.max(minP, maxP); p++) rooms.push(String(p));\n\n  const pairs = [\n    ['type[]', 'bien-ancien'],\n    ['type-de-bien[]', 'appartement'],\n    ['type-de-bien[]', 'maison'],\n    ['localisation', '35 - Ille-et-Vilaine'],\n  ];\n  for (let i = 0; i < rooms.length; i++) pairs.push(['rooms[]', rooms[i]]);\n  pairs.push(['price_min', '']);\n  pairs.push(['price_max', String(prixMax)]);\n  pairs.push(['surface_min', String(sMin)]);\n  pairs.push(['surface_max', sMax]);\n  pairs.push(['categorie-de-bien[]', 'location']);\n\n  const url = LIST_URL + '?' + enc(pairs);\n\n  const raw = await this.helpers.httpRequest({\n    method: 'GET',\n    url: url,\n    headers: {\n      'User-Agent': UA,\n      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n      'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    },\n    timeout: 30000,\n  });\n\n  const html = bodyToString(raw);\n  if (!html || html.length < 400) return [];\n\n  const out = [];\n  const seen = new Set();\n\n  // Le href est sur le tag <a ... class=\"bienCard\">. On match le HTML complet.\n  const re = /<a\\s+href=([\"']?)([^\\s\"'>]+)\\1\\s+class=\\\"bienCard\\\"[^>]*>([\\s\\S]*?)<\\/a>/gi;\n  let m;\n  while ((m = re.exec(html)) !== null) {\n    const href = (m[2] || '').trim();\n    if (!href) continue;\n    const url2 = href.startsWith('http') ? href.split('?')[0] : BASE + href.split('?')[0];\n    if (seen.has(url2)) continue;\n\n    const block = m[3] || '';\n\n    const idM = block.match(/\\bdata-id=([0-9]+)/i) || block.match(/\\bid=([0-9]+)/i);\n    const id_site = idM ? String(idM[1]) : url2;\n\n    const locM = block.match(/class=\\\"bienCard__body__location\\\"[^>]*>\\s*([\\s\\S]*?)<\\/p>/i);\n    const villeRaw = locM ? strip(locM[1]) : '';\n    const ville = villeRaw.replace(/\\s*\\(\\s*\\d+\\s*\\)\\s*$/g, '').trim();\n\n    const titleM = block.match(/class=\\\"bienCard__body__title\\\"[^>]*>\\s*([\\s\\S]*?)<\\/h2>/i);\n    const title = titleM ? strip(titleM[1]) : '';\n\n    const surfM = block.match(/class=\\\"bienCard__body__surface\\\"[^>]*>\\s*([0-9]+(?:[.,][0-9]+)?)\\s*m/i);\n    const surface_m2 = surfM ? parseFloat(surfM[1].replace(',', '.')) : null;\n\n    const prM = block.match(/class=\\\"bienCard__body__price\\\"[^>]*>[\\s\\S]*?([0-9]+)\\s*€\\s*\\/\\s*mois/i);\n    const loyer_cc = prM ? parseInt(prM[1], 10) : null;\n\n    let pieces = null;\n    const pm = (title || '').match(/([0-9]+)\\s*pi[eè]ce/i);\n    if (pm) pieces = parseInt(pm[1], 10);\n    if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n\n    const blob = (title + ' ' + ville + ' ' + block.slice(0, 800)).toLowerCase();\n    if (blob.indexOf('colocation') >= 0 || blob.indexOf('collocation') >= 0) continue;\n\n    seen.add(url2);\n    out.push({\n      json: {\n        source: 'keredes',\n        id_site: String(id_site),\n        titre: [title, ville].filter(Boolean).join(' — ') || 'Keredes — ' + id_site,\n        description: '',\n        ville: ville,\n        quartier: '',\n        adresse: '',\n        pieces: pieces,\n        surface_m2: surface_m2,\n        loyer_cc: loyer_cc,\n        charges: null,\n        meuble: /\\bmeubl/i.test(blob) ? 'oui' : null,\n        url: url2,\n        date_publication: null,\n      },\n    });\n  }\n\n  return out;\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-keredes",
+      "name": "Fusion + Keredes",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        7600
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
+    },
+    {
+      "id": "loquin-fetch-format",
+      "name": "Loquin Immobilier - Récup et format annonces",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        7800
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const cfg = $('Config critères (défaut)').first().json;\nconst UA =\n  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0';\nconst LIST_URL =\n  'https://immobilier-liffre.com/index.php?action=list&ctypmandatmeta=l&ctyp=&cregionmeta=&mprixmin=&mprixmax=680&qsurfhab=&qchambres=&cbien=&cregion=&mode=v';\n\nfunction n(x, fb) {\n  if (x == null) return fb;\n  if (typeof x === 'string' && x.trim() === '') return fb;\n  const v = Number(x);\n  return Number.isFinite(v) ? v : fb;\n}\n\nfunction strip(s) {\n  if (!s || typeof s !== 'string') return '';\n  return s\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;|&#160;/gi, ' ')\n    .replace(/&euro;|&#8364;/gi, '€')\n    .replace(/&sup2;|&#178;/gi, '²')\n    .replace(/&amp;/g, '&')\n    .replace(/&#0?39;|&apos;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n}\n\nfunction bodyToString(raw) {\n  if (raw == null) return '';\n  if (typeof raw === 'string') return raw;\n  if (raw.body != null && typeof raw.body === 'string') return raw.body;\n  if (raw.data != null && typeof raw.data === 'string') return raw.data;\n  return '';\n}\n\ntry {\n  const prixMax = n(cfg.prix_max_cc, 680);\n  const sMin = n(cfg.surface_min_m2, 40);\n  const minP = n(cfg.pieces_min, 2);\n  const maxP = n(cfg.pieces_max, 3);\n\n  // Remplacer mprixmax par Config, qsurfhab par surface min.\n  const listUrl = LIST_URL\n    .replace(/mprixmax=\\d+/i, 'mprixmax=' + encodeURIComponent(String(prixMax)))\n    .replace(/qsurfhab=[^&]*/i, 'qsurfhab=' + encodeURIComponent(String(sMin)));\n\n  const listRaw = await this.helpers.httpRequest({\n    method: 'GET',\n    url: listUrl,\n    headers: {\n      'User-Agent': UA,\n      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n      'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n    },\n    timeout: 30000,\n  });\n  const listHtml = bodyToString(listRaw);\n  if (!listHtml || listHtml.length < 400) return [];\n\n  const urls = [];\n  const re = /href=\\\"(https?:\\/\\/immobilier-liffre\\.com\\/fr\\/annonces-immobilieres\\/offre\\/[^\"]+\\/bien\\/(\\d+)\\/[^\"]+\\.html)\\\"/gi;\n  let m;\n  const seenU = new Set();\n  while ((m = re.exec(listHtml)) !== null) {\n    const u = m[1];\n    if (u && !seenU.has(u)) {\n      seenU.add(u);\n      urls.push(u);\n    }\n  }\n\n  const out = [];\n  for (let i = 0; i < urls.length; i++) {\n    const url = urls[i].split('?')[0];\n    const idM = url.match(/\\/bien\\/(\\d+)\\//i);\n    const id_site = idM ? idM[1] : url;\n\n    let raw;\n    try {\n      raw = await this.helpers.httpRequest({\n        method: 'GET',\n        url: url,\n        headers: {\n          'User-Agent': UA,\n          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',\n          'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',\n        },\n        timeout: 30000,\n      });\n    } catch (e1) {\n      continue;\n    }\n    const html = bodyToString(raw);\n    if (!html || html.length < 400) continue;\n\n    const blob = html.toLowerCase();\n    if (blob.indexOf('colocation') >= 0 || blob.indexOf('collocation') >= 0) continue;\n\n    const h3 = html.match(/<h3 class=\\\"headline\\\">([\\s\\S]*?)<\\/h3>/i);\n    const titreH = h3 ? strip(h3[1]) : '';\n\n    const villeM = html.match(/<h4>\\s*([^<]+)\\s*<\\/h4>/i);\n    const ville = villeM ? strip(villeM[1]) : '';\n\n    let loyer_cc = null;\n    const prM = html.match(/Prix\\s*:\\s*([0-9\\s\\u00A0]+)\\s*€\\s*\\/\\s*mois\\s*CC/i) ||\n      html.match(/Loyer\\s*:\\s*([0-9\\s\\u00A0]+)\\s*€/i);\n    if (prM) {\n      const n0 = strip(prM[1]).replace(/[^0-9]/g, '');\n      if (n0) loyer_cc = parseInt(n0, 10);\n    }\n\n    let charges = null;\n    const chM = html.match(/Charges\\s*:\\s*([0-9\\s\\u00A0]+)\\s*€/i);\n    if (chM) {\n      const n1 = strip(chM[1]).replace(/[^0-9]/g, '');\n      if (n1) charges = parseInt(n1, 10);\n    }\n\n    let pieces = null;\n    const pM = html.match(/<li>\\s*([0-9]+)\\s*Pi/i);\n    if (pM) pieces = parseInt(pM[1], 10);\n\n    let surface_m2 = null;\n    const sM = html.match(/Surface habitable:\\s*&nbsp;\\s*([0-9]+(?:[.,][0-9]+)?)\\s*&nbsp;\\s*m/i) ||\n      html.match(/Surface habitable:\\s*([0-9]+(?:[.,][0-9]+)?)\\s*m/i);\n    if (sM) surface_m2 = parseFloat(String(sM[1]).replace(',', '.'));\n\n    const descM = html.match(/<div id=\\\"desc\\\"[\\s\\S]*?<p>([\\s\\S]*?)<\\/p>/i);\n    const description = descM ? strip(descM[1]).slice(0, 500) : '';\n\n    if (loyer_cc != null && loyer_cc > prixMax) continue;\n    if (surface_m2 != null && surface_m2 < sMin) continue;\n    if (pieces != null && (pieces < minP || pieces > maxP)) continue;\n\n    out.push({\n      json: {\n        source: 'loquin_immobilier',\n        id_site: String(id_site),\n        titre: [titreH, ville].filter(Boolean).join(' — ') || 'Loquin — ' + id_site,\n        description: description,\n        ville: ville,\n        quartier: '',\n        adresse: '',\n        pieces: pieces,\n        surface_m2: surface_m2,\n        loyer_cc: loyer_cc,\n        charges: charges,\n        meuble: /\\bmeubl/i.test(titreH + ' ' + description) ? 'oui' : null,\n        url: url,\n        date_publication: null,\n      },\n    });\n  }\n\n  const seen = new Set();\n  return out.filter(function (it) {\n    const k = it.json.id_site;\n    if (!k || seen.has(k)) return false;\n    seen.add(k);\n    return true;\n  });\n} catch (err) {\n  return [];\n}\n"
+      }
+    },
+    {
+      "id": "merge-branches-loquin",
+      "name": "Fusion + Loquin Immobilier",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        624,
+        7800
+      ],
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      }
     }
   ],
   "connections": {
@@ -2201,6 +2856,71 @@
           },
           {
             "node": "GS - Lire toutes les lignes",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Villejean Beauregard Immobilier - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Logic-Immo - Récup + format",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Lamy - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Parthenay Immo - Récup annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Dany Richard - Récup liste location",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Chateaubriand - Récup recherche",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Arthurimmo - Récup recherche",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agence MPI - Récup recherche",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Nicolazo Notaires - Récup et format annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Inova Immo - Récup et format annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Stella At Home - Récup recherche",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Keredes - Récup et format annonces",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loquin Immobilier - Récup et format annonces",
             "type": "main",
             "index": 0
           }
@@ -3283,6 +4003,418 @@
       ]
     },
     "Fusion + Cesson Immobilier": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Villejean Beauregard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Villejean Beauregard Immobilier - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Villejean Beauregard",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Villejean Beauregard": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Logic-Immo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Logic-Immo - Récup + format": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Logic-Immo",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Logic-Immo": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Lamy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lamy - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "Lamy - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lamy - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Lamy",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Lamy": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Parthenay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parthenay Immo - Récup annonces": {
+      "main": [
+        [
+          {
+            "node": "Parthenay Immo - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parthenay Immo - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Parthenay",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Parthenay": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Dany Richard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dany Richard - Récup liste location": {
+      "main": [
+        [
+          {
+            "node": "Dany Richard - Annonces (liste + fiches)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dany Richard - Annonces (liste + fiches)": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Dany Richard",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Dany Richard": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Chateaubriand",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chateaubriand - Récup recherche": {
+      "main": [
+        [
+          {
+            "node": "Chateaubriand - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chateaubriand - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Chateaubriand",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Chateaubriand": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Arthurimmo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Arthurimmo - Récup recherche": {
+      "main": [
+        [
+          {
+            "node": "Arthurimmo - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Arthurimmo - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Arthurimmo",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Arthurimmo": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Agence MPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agence MPI - Récup recherche": {
+      "main": [
+        [
+          {
+            "node": "Agence MPI - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agence MPI - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Agence MPI",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Agence MPI": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Nicolazo Notaires",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nicolazo Notaires - Récup et format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Nicolazo Notaires",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Nicolazo Notaires": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Inova Immo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inova Immo - Récup et format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Inova Immo",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Inova Immo": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Stella At Home",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stella At Home - Récup recherche": {
+      "main": [
+        [
+          {
+            "node": "Stella At Home - Vers format annonces",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram - Alerte erreur agence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stella At Home - Vers format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Stella At Home",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Stella At Home": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Keredes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keredes - Récup et format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Keredes",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Keredes": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Loquin Immobilier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loquin Immobilier - Récup et format annonces": {
+      "main": [
+        [
+          {
+            "node": "Fusion + Loquin Immobilier",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fusion + Loquin Immobilier": {
       "main": [
         [
           {
