@@ -2068,7 +2068,7 @@
       "parameters": {
         "mode": "runOnceForEachItem",
         "language": "javaScript",
-        "jsCode": "const res = $input.item.json;\nconst choice = (res.choices && res.choices[0]) || {};\nconst msg = (choice.message && choice.message.content) || '';\nconst prev = $('Filtrer doublons').item.json;\nreturn { json: { ...prev, message_telegram: msg || 'Nouvelle annonce' } };"
+        "jsCode": "const res = $input.item.json;\nconst choice = (res.choices && res.choices[0]) || {};\nconst msg = (choice.message && choice.message.content) || '';\nconst prev = $('Filtrer doublons').item.json;\n\n// Envoi Telegram en texte brut (Parse Mode = None) pour éviter les erreurs \"can't parse entities\"\n// et garder les URLs intactes/cliquables. On ne \"trim\" pas pour conserver les retours à la ligne.\nconst text = String(msg ?? '');\nconst isBlank = text.replace(/\\s+/g, '') === '';\nreturn { json: { ...prev, message_telegram: isBlank ? 'Nouvelle annonce' : text } };"
       }
     },
     {
