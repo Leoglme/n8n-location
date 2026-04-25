@@ -2082,9 +2082,11 @@
       ],
       "parameters": {
         "chatId": "6558659046",
-        "text": "={{ $json.message_telegram || 'Nouvelle annonce' }}",
+        "text": "={{ String($json.message_telegram || 'Nouvelle annonce').replace(/\\\\n/g, '\\n') }}",
         "additionalFields": {
-          "appendAttribution": false
+          "appendAttribution": false,
+          "parse_mode": "HTML",
+          "parseMode": "HTML"
         }
       },
       "credentials": {
